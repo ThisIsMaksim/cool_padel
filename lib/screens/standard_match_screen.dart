@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../models/match_config.dart';
+import '../models/game.dart';
 import '../models/standard_match_state.dart';
+import '../state/games_repository.dart';
 import '../theme/app_theme.dart';
 import '../widgets/team_score_panel.dart';
 
 class StandardMatchScreen extends StatefulWidget {
-  const StandardMatchScreen({super.key, required this.config});
+  const StandardMatchScreen({
+    super.key,
+    required this.game,
+    required this.gamesRepository,
+  });
 
-  final MatchConfig config;
+  final Game game;
+  final GamesRepository gamesRepository;
 
   @override
   State<StandardMatchScreen> createState() => _StandardMatchScreenState();
@@ -20,15 +26,22 @@ class _StandardMatchScreenState extends State<StandardMatchScreen> {
   @override
   void initState() {
     super.initState();
-    _state = StandardMatchState(setsToWin: widget.config.setsToWin);
+    _state = widget.game.standardState ??
+        StandardMatchState(setsToWin: widget.game.config.setsToWin);
   }
 
   void _score(int teamIndex) {
-    setState(() => _state = _state.scorePoint(teamIndex));
+    setState(() {
+      _state = _state.scorePoint(teamIndex);
+      widget.gamesRepository.updateStandardState(widget.game.id, _state);
+    });
   }
 
   void _undo() {
-    setState(() => _state = _state.undoLastPoint());
+    setState(() {
+      _state = _state.undoLastPoint();
+      widget.gamesRepository.updateStandardState(widget.game.id, _state);
+    });
   }
 
   String _setsDisplay() {
@@ -43,13 +56,14 @@ class _StandardMatchScreenState extends State<StandardMatchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final config = widget.game.config;
     final winnerName = _state.winnerIndex == 0
-        ? widget.config.team1Name
-        : widget.config.team2Name;
+        ? config.team1Name
+        : config.team2Name;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Стандартный матч'),
+        title: Text('${config.team1Name} vs ${config.team2Name}'),
         actions: [
           IconButton(
             onPressed: _undo,
@@ -111,7 +125,7 @@ class _StandardMatchScreenState extends State<StandardMatchScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TeamScorePanel(
-                    teamName: widget.config.team1Name,
+                    teamName: config.team1Name,
                     primaryScore: _state.formatPoint(_state.team1Points, 0),
                     secondaryScore:
                         '${_state.currentSet.team1Games} гейм${_state.isTiebreak ? ' (TB)' : ''}',
@@ -121,7 +135,7 @@ class _StandardMatchScreenState extends State<StandardMatchScreen> {
                   ),
                   const SizedBox(width: 12),
                   TeamScorePanel(
-                    teamName: widget.config.team2Name,
+                    teamName: config.team2Name,
                     primaryScore: _state.formatPoint(_state.team2Points, 1),
                     secondaryScore:
                         '${_state.currentSet.team2Games} гейм${_state.isTiebreak ? ' (TB)' : ''}',

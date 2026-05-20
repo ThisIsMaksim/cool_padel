@@ -3,11 +3,14 @@ import 'package:flutter/services.dart';
 
 import '../models/match_config.dart';
 import '../models/match_mode.dart';
+import '../state/games_repository.dart';
 import 'standard_match_screen.dart';
 import 'tournament_match_screen.dart';
 
 class MatchSetupScreen extends StatefulWidget {
-  const MatchSetupScreen({super.key});
+  const MatchSetupScreen({super.key, required this.gamesRepository});
+
+  final GamesRepository gamesRepository;
 
   @override
   State<MatchSetupScreen> createState() => _MatchSetupScreenState();
@@ -54,9 +57,17 @@ class _MatchSetupScreenState extends State<MatchSetupScreen> {
       return;
     }
 
+    final game = widget.gamesRepository.createGame(config);
+
     final screen = _mode == MatchMode.standard
-        ? StandardMatchScreen(config: config)
-        : TournamentMatchScreen(config: config);
+        ? StandardMatchScreen(
+            game: game,
+            gamesRepository: widget.gamesRepository,
+          )
+        : TournamentMatchScreen(
+            game: game,
+            gamesRepository: widget.gamesRepository,
+          );
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(builder: (_) => screen),
@@ -66,7 +77,7 @@ class _MatchSetupScreenState extends State<MatchSetupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Новый матч')),
+      appBar: AppBar(title: const Text('Новая игра')),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
@@ -180,14 +191,15 @@ class _MatchSetupScreenState extends State<MatchSetupScreen> {
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: const InputDecoration(
                 labelText: 'Всего очков в матче',
-                helperText: 'Матч завершится, когда сумма очков достигнет этого числа',
+                helperText:
+                    'Матч завершится, когда сумма очков достигнет этого числа',
               ),
             ),
           ],
           const SizedBox(height: 32),
           FilledButton(
             onPressed: _startMatch,
-            child: const Text('Начать матч'),
+            child: const Text('Начать игру'),
           ),
         ],
       ),

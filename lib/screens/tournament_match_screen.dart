@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../models/match_config.dart';
+import '../models/game.dart';
 import '../models/tournament_match_state.dart';
+import '../state/games_repository.dart';
 import '../theme/app_theme.dart';
 import '../widgets/team_score_panel.dart';
 
 class TournamentMatchScreen extends StatefulWidget {
-  const TournamentMatchScreen({super.key, required this.config});
+  const TournamentMatchScreen({
+    super.key,
+    required this.game,
+    required this.gamesRepository,
+  });
 
-  final MatchConfig config;
+  final Game game;
+  final GamesRepository gamesRepository;
 
   @override
   State<TournamentMatchScreen> createState() => _TournamentMatchScreenState();
@@ -20,28 +26,36 @@ class _TournamentMatchScreenState extends State<TournamentMatchScreen> {
   @override
   void initState() {
     super.initState();
-    _state = TournamentMatchState(totalPoints: widget.config.totalPoints);
+    _state = widget.game.tournamentState ??
+        TournamentMatchState(totalPoints: widget.game.config.totalPoints);
   }
 
   void _score(int teamIndex) {
-    setState(() => _state = _state.scorePoint(teamIndex));
+    setState(() {
+      _state = _state.scorePoint(teamIndex);
+      widget.gamesRepository.updateTournamentState(widget.game.id, _state);
+    });
   }
 
   void _undo() {
-    setState(() => _state = _state.undoLastPoint());
+    setState(() {
+      _state = _state.undoLastPoint();
+      widget.gamesRepository.updateTournamentState(widget.game.id, _state);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final config = widget.game.config;
     final winnerName = _state.winnerIndex == 0
-        ? widget.config.team1Name
+        ? config.team1Name
         : _state.winnerIndex == 1
-            ? widget.config.team2Name
+            ? config.team2Name
             : null;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Турнирный матч'),
+        title: Text('${config.team1Name} vs ${config.team2Name}'),
         actions: [
           IconButton(
             onPressed: _undo,
@@ -61,7 +75,7 @@ class _TournamentMatchScreenState extends State<TournamentMatchScreen> {
                 child: Column(
                   children: [
                     Text(
-                      'Лимит: ${widget.config.totalPoints} очков',
+                      'Лимит: ${config.totalPoints} очков',
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 12),
@@ -76,7 +90,7 @@ class _TournamentMatchScreenState extends State<TournamentMatchScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Сыграно: ${_state.playedPoints} / ${widget.config.totalPoints}  '
+                      'Сыграно: ${_state.playedPoints} / ${config.totalPoints}  '
                       '(осталось ${_state.remainingPoints})',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
@@ -106,7 +120,7 @@ class _TournamentMatchScreenState extends State<TournamentMatchScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TeamScorePanel(
-                    teamName: widget.config.team1Name,
+                    teamName: config.team1Name,
                     primaryScore: '${_state.team1Points}',
                     subtitle: '1 мяч = 1 очко',
                     color: AppTheme.team1Color,
@@ -115,7 +129,7 @@ class _TournamentMatchScreenState extends State<TournamentMatchScreen> {
                   ),
                   const SizedBox(width: 12),
                   TeamScorePanel(
-                    teamName: widget.config.team2Name,
+                    teamName: config.team2Name,
                     primaryScore: '${_state.team2Points}',
                     subtitle: '1 мяч = 1 очко',
                     color: AppTheme.team2Color,
@@ -127,7 +141,8 @@ class _TournamentMatchScreenState extends State<TournamentMatchScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Матч заканчивается, когда сумма очков обеих команд достигает ${widget.config.totalPoints}',
+              'Матч заканчивается, когда сумма очков обеих команд '
+              'достигает ${config.totalPoints}',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodySmall,
             ),
