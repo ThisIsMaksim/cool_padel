@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Profile | CoolPadel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#313030",
+                    "surface-container": "#1b211f",
+                    "on-surface": "#dee4e0",
+                    "on-error": "#690005",
+                    "on-background": "#dee4e0",
+                    "secondary": "#c8c6c5",
+                    "surface-bright": "#343a38",
+                    "error-container": "#93000a",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "surface-tint": "#31e193",
+                    "on-tertiary-container": "#484747",
+                    "on-secondary-container": "#bab8b7",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "secondary-fixed": "#e5e2e1",
+                    "inverse-primary": "#006d43",
+                    "primary": "#43ed9e",
+                    "surface-variant": "#303634",
+                    "tertiary": "#d4d1d1",
+                    "tertiary-container": "#b8b6b6",
+                    "surface-container-lowest": "#0a0f0e",
+                    "surface-container-low": "#171d1b",
+                    "on-tertiary-fixed": "#1b1c1c",
+                    "secondary-container": "#4a4949",
+                    "primary-container": "#00d084",
+                    "error": "#ffb4ab",
+                    "outline": "#859588",
+                    "on-surface-variant": "#bacbbd",
+                    "background": "#0f1513",
+                    "on-primary-fixed-variant": "#005231",
+                    "primary-fixed-dim": "#31e193",
+                    "on-tertiary": "#303030",
+                    "surface-container-highest": "#303634",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "surface-dim": "#0f1513",
+                    "surface": "#0f1513",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#474646",
+                    "on-primary": "#003920",
+                    "outline-variant": "#3c4a40",
+                    "surface-container-high": "#252b29",
+                    "on-primary-fixed": "#002111",
+                    "on-primary-container": "#005331",
+                    "inverse-on-surface": "#2c3230",
+                    "primary-fixed": "#59fead",
+                    "inverse-surface": "#dee4e0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "32px",
+                    "gutter": "16px",
+                    "margin-mobile": "16px",
+                    "unit": "4px",
+                    "card-padding": "20px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Sora"],
+                    "data-mono": ["Sora"],
+                    "label-caps": ["Sora"],
+                    "display": ["Sora"],
+                    "body-md": ["Sora"],
+                    "headline-lg": ["Sora"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "data-mono": ["20px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                    "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0f1513;
+            color: #dee4e0;
+            font-family: 'Sora', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-card {
+            background: #1A1A1A;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .avatar-glow {
+            box-shadow: 0 0 30px rgba(67, 237, 158, 0.15);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="pb-32 overflow-x-hidden">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 bg-background/80 dark:bg-background/80 backdrop-blur-xl border-b border-white/10 flex justify-between items-center px-margin-mobile h-16">
+<div class="flex items-center gap-3 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary dark:text-primary" data-icon="sports_tennis">sports_tennis</span>
+<span class="font-display text-display text-primary dark:text-primary tracking-tighter !text-xl">CoolPadel</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant dark:text-on-surface-variant hover:opacity-80 transition-opacity" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant dark:text-on-surface-variant hover:opacity-80 transition-opacity" data-icon="settings">settings</button>
+</div>
+</nav>
+<main class="pt-24 px-margin-mobile max-w-2xl mx-auto space-y-6">
+<!-- Header Profile Section -->
+<section class="flex flex-col items-center text-center space-y-4">
+<div class="relative">
+<div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-primary to-surface-container avatar-glow">
+<img alt="User Profile Avatar" class="w-full h-full rounded-full object-cover border-4 border-background" data-alt="A professional portrait of a fit male athlete in his 30s with a focused expression. He is wearing high-performance dark athletic gear. The lighting is dramatic and cinematic, with sharp rim lights in a vibrant recovery green. The background is a minimalist, dark studio setting with subtle atmospheric smoke, maintaining a sleek, data-driven wellness aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2Y_9HXWPatGV4ny3mBUjfLc0SciL7-lxy-nK0pYiwzqUZTB-wCpxFl9u4JCsXMGnE12HNh-J9zkOY3wZoZlvE8IQ0CDzRr-PhDqLDVmMCZiUMTItHqqEt1-CK-O60Qun1zM0jiyoM-WONBsZXPNnYYU2i5AArDZklMw_EK8-rWWdjp5Nc55gyUzOX58ftCCR9C_EW3Uw-QoQUf7h4Y3_38eFAUjGwEeJIbT-ddcg_SbjrqVElf-7dyIVRuM6lxHJnFhirW-ofAdM"/>
+</div>
+<div class="absolute bottom-0 right-0 bg-primary text-on-primary font-bold px-3 py-1 rounded-full text-[10px] tracking-widest uppercase border-2 border-background">
+                    PRO
+                </div>
+</div>
+<div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Marcus Vance</h1>
+<p class="font-body-md text-body-md text-secondary opacity-70">Master Tier • Barcelona, ES</p>
+</div>
+</section>
+<!-- Stats Bento Grid -->
+<section class="grid grid-cols-2 gap-4">
+<div class="glass-card rounded-xl p-card-padding flex flex-col justify-between h-32">
+<span class="font-label-caps text-label-caps text-secondary opacity-60 uppercase">Global Ranking</span>
+<div class="flex items-baseline gap-1">
+<span class="font-display text-display text-primary !text-4xl">#14</span>
+<span class="text-primary-container text-xs flex items-center"><span class="material-symbols-outlined text-xs" data-icon="arrow_upward">arrow_upward</span>3</span>
+</div>
+</div>
+<div class="glass-card rounded-xl p-card-padding flex flex-col justify-between h-32">
+<span class="font-label-caps text-label-caps text-secondary opacity-60 uppercase">Points</span>
+<span class="font-display text-display text-on-surface !text-4xl">2850</span>
+</div>
+<div class="glass-card rounded-xl p-card-padding flex flex-col justify-between h-32">
+<span class="font-label-caps text-label-caps text-secondary opacity-60 uppercase">Games Played</span>
+<span class="font-display text-display text-on-surface !text-4xl">142</span>
+</div>
+<div class="glass-card rounded-xl p-card-padding flex flex-col justify-between h-32 relative overflow-hidden">
+<span class="font-label-caps text-label-caps text-secondary opacity-60 uppercase">Win Rate</span>
+<span class="font-display text-display text-primary !text-4xl">68%</span>
+<!-- Background visual -->
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined !text-7xl" data-icon="trending_up">trending_up</span>
+</div>
+</div>
+</section>
+<!-- About Section -->
+<section class="glass-card rounded-xl p-card-padding space-y-4">
+<h2 class="font-label-caps text-label-caps text-secondary uppercase">About &amp; Style</h2>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed opacity-90">
+                Aggressive left-side player known for explosive overheads and high-intensity defensive transitions. Specialized in fast-paced indoor courts.
+            </p>
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container-high px-3 py-1 rounded-full text-xs font-semibold text-primary">Left-side</span>
+<span class="bg-surface-container-high px-3 py-1 rounded-full text-xs font-semibold text-secondary">Aero-Carbon Pro X</span>
+<span class="bg-surface-container-high px-3 py-1 rounded-full text-xs font-semibold text-secondary">8 Years Exp</span>
+</div>
+</section>
+<!-- Tournament History -->
+<section class="space-y-4">
+<div class="flex justify-between items-end px-2">
+<h2 class="font-label-caps text-label-caps text-secondary uppercase">Tournament History</h2>
+<button class="text-primary text-xs font-bold hover:underline">View All</button>
+</div>
+<div class="space-y-3">
+<!-- Item 1 -->
+<div class="glass-card rounded-xl p-4 flex items-center justify-between group active:scale-[0.98] transition-all">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary" data-icon="emoji_events">emoji_events</span>
+</div>
+<div>
+<h3 class="font-body-md text-body-md font-bold text-on-surface">Barcelona Open '24</h3>
+<p class="text-xs text-secondary opacity-60">Elite Division • April 12</p>
+</div>
+</div>
+<span class="bg-primary-container/20 text-primary-fixed text-[10px] font-bold px-3 py-1 rounded-full border border-primary/30 uppercase tracking-widest">Winner</span>
+</div>
+<!-- Item 2 -->
+<div class="glass-card rounded-xl p-4 flex items-center justify-between group active:scale-[0.98] transition-all">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-highest rounded-lg flex items-center justify-center border border-white/5">
+<span class="material-symbols-outlined text-secondary" data-icon="workspace_premium">workspace_premium</span>
+</div>
+<div>
+<h3 class="font-body-md text-body-md font-bold text-on-surface">Padel Pro Invitational</h3>
+<p class="text-xs text-secondary opacity-60">Master Tier • March 28</p>
+</div>
+</div>
+<span class="bg-secondary-container/20 text-secondary text-[10px] font-bold px-3 py-1 rounded-full border border-white/10 uppercase tracking-widest">Finalist</span>
+</div>
+<!-- Item 3 -->
+<div class="glass-card rounded-xl p-4 flex items-center justify-between group active:scale-[0.98] transition-all opacity-80">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-highest rounded-lg flex items-center justify-center border border-white/5">
+<span class="material-symbols-outlined text-secondary" data-icon="stars">stars</span>
+</div>
+<div>
+<h3 class="font-body-md text-body-md font-bold text-on-surface">Winter Cup Madrid</h3>
+<p class="text-xs text-secondary opacity-60">Regional Cup • Jan 15</p>
+</div>
+</div>
+<span class="bg-primary-container/20 text-primary-fixed text-[10px] font-bold px-3 py-1 rounded-full border border-primary/30 uppercase tracking-widest">Winner</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface-container/60 dark:bg-surface-container/60 backdrop-blur-2xl border-t border-white/10 shadow-2xl rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary opacity-60 hover:bg-white/5 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-caps text-label-caps">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary opacity-60 hover:bg-white/5 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-caps text-label-caps">Events</span>
+</a>
+<!-- FAB -->
+<div class="relative -mt-10">
+<button class="w-14 h-14 bg-primary text-on-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30 active:scale-90 transition-all">
+<span class="material-symbols-outlined !text-3xl" data-icon="add">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary opacity-60 hover:bg-white/5 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="sports_score">sports_score</span>
+<span class="font-label-caps text-label-caps">Games</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary font-bold hover:bg-white/5 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-caps text-label-caps">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for the stats cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.borderColor = 'rgba(67, 237, 158, 0.3)';
+                card.style.transform = 'translateY(-2px)';
+                card.style.transition = 'all 0.3s ease';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body></html>

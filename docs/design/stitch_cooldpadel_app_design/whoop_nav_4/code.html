@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Sora', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .glass-card {
+            background: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .progress-glow {
+            box-shadow: 0 0 15px rgba(67, 237, 158, 0.3);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Custom scrollbar for horizontal chips */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#313030",
+                        "surface-container": "#1b211f",
+                        "on-surface": "#dee4e0",
+                        "on-error": "#690005",
+                        "on-background": "#dee4e0",
+                        "secondary": "#c8c6c5",
+                        "surface-bright": "#343a38",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "surface-tint": "#31e193",
+                        "on-tertiary-container": "#484747",
+                        "on-secondary-container": "#bab8b7",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "secondary-fixed": "#e5e2e1",
+                        "inverse-primary": "#006d43",
+                        "primary": "#43ed9e",
+                        "surface-variant": "#303634",
+                        "tertiary": "#d4d1d1",
+                        "tertiary-container": "#b8b6b6",
+                        "surface-container-lowest": "#0a0f0e",
+                        "surface-container-low": "#171d1b",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "secondary-container": "#4a4949",
+                        "primary-container": "#00d084",
+                        "error": "#ffb4ab",
+                        "outline": "#859588",
+                        "on-surface-variant": "#bacbbd",
+                        "background": "#0f1513",
+                        "on-primary-fixed-variant": "#005231",
+                        "primary-fixed-dim": "#31e193",
+                        "on-tertiary": "#303030",
+                        "surface-container-highest": "#303634",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "surface-dim": "#0f1513",
+                        "surface": "#0f1513",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#474646",
+                        "on-primary": "#003920",
+                        "outline-variant": "#3c4a40",
+                        "surface-container-high": "#252b29",
+                        "on-primary-fixed": "#002111",
+                        "on-primary-container": "#005331",
+                        "inverse-on-surface": "#2c3230",
+                        "primary-fixed": "#59fead",
+                        "inverse-surface": "#dee4e0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "32px",
+                        "gutter": "16px",
+                        "margin-mobile": "16px",
+                        "unit": "4px",
+                        "card-padding": "20px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Sora"],
+                        "data-mono": ["Sora"],
+                        "label-caps": ["Sora"],
+                        "display": ["Sora"],
+                        "body-md": ["Sora"],
+                        "headline-lg": ["Sora"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "data-mono": ["20px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700" }],
+                        "display": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-background/80 dark:bg-background/80 backdrop-blur-xl border-b border-white/10 flex justify-between items-center px-margin-mobile h-16">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="sports_tennis">sports_tennis</span>
+<h1 class="font-display text-display text-primary dark:text-primary tracking-tighter text-[20px] leading-tight">CoolPadel</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 transition-transform" data-icon="notifications">notifications</span>
+</div>
+</header>
+<main class="pt-20 px-margin-mobile max-w-4xl mx-auto">
+<!-- Search & Filter Section -->
+<section class="mb-8">
+<div class="relative mb-6">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="w-full bg-surface-container border-none rounded-xl py-4 pl-12 pr-4 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary transition-all" placeholder="Search tournaments..." type="text"/>
+</div>
+<div class="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+<button class="flex items-center gap-1 bg-primary text-on-primary px-4 py-2 rounded-full font-label-caps text-label-caps whitespace-nowrap">
+                    All Events
+                </button>
+<button class="flex items-center gap-1 bg-surface-container text-on-surface-variant px-4 py-2 rounded-full font-label-caps text-label-caps whitespace-nowrap border border-white/5 hover:bg-surface-variant transition-colors">
+                    Level <span class="material-symbols-outlined text-[14px]" data-icon="expand_more">expand_more</span>
+</button>
+<button class="flex items-center gap-1 bg-surface-container text-on-surface-variant px-4 py-2 rounded-full font-label-caps text-label-caps whitespace-nowrap border border-white/5 hover:bg-surface-variant transition-colors">
+                    Type <span class="material-symbols-outlined text-[14px]" data-icon="expand_more">expand_more</span>
+</button>
+<button class="flex items-center gap-1 bg-surface-container text-on-surface-variant px-4 py-2 rounded-full font-label-caps text-label-caps whitespace-nowrap border border-white/5 hover:bg-surface-variant transition-colors">
+                    Club <span class="material-symbols-outlined text-[14px]" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</section>
+<!-- Live Hero Section -->
+<section class="mb-10">
+<div class="relative h-64 w-full rounded-2xl overflow-hidden group cursor-pointer shadow-2xl">
+<img alt="Live Match" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A dynamic high-angle action shot of a professional padel match in progress. Two players are mid-stride on a bright blue court, one reaching for a low volley. The stadium lighting is intense and atmospheric, creating a high-performance athletic mood. The color palette features deep blacks of the surrounding environment and the vibrant recovery green of the court accents, echoing a technical, data-driven wellness aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT8oppih88BqumegLDIVfWW7EpSpb8pRpBpiwiwjeT1J7WILoTqpRcrM5BFGvHgUsQU2oupfhY1kenNPOH6Yq_LVJ2n4cUxCk4MSTbqWhmzYmiU_wv7M2sW1KWPSuXLPc6osjJJz2c_aXILa-UXZQ8YZH_flfdeIupu8U3_3PfuenyVFzofeLqp4Tafq_TQTvQ8TyHbFiNTSXNBpWH6IOjWrgSZOps70O8pk7tEY7iiv9iLlZ-194KV7lnWB9idNvWFueZKfcqXYA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+<div class="absolute top-4 left-4 flex items-center gap-2 bg-error px-3 py-1 rounded-full">
+<span class="w-2 h-2 rounded-full bg-on-error animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-on-error uppercase">Live Match</span>
+</div>
+<div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+<div>
+<p class="font-label-caps text-label-caps text-primary mb-1 uppercase tracking-widest">Master Finals 2024</p>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-white leading-tight">Navarro/Lebron vs <br/>Galan/Chingotto</h2>
+</div>
+<div class="flex items-center gap-4 bg-black/40 backdrop-blur-md px-4 py-3 rounded-xl border border-white/10">
+<div class="text-center">
+<p class="text-[10px] text-outline uppercase font-bold">Set 2</p>
+<p class="font-data-mono text-data-mono text-white">4 - 5</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tournament List -->
+<section>
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Upcoming Events</h3>
+<button class="text-primary font-label-caps text-label-caps uppercase hover:underline">View All</button>
+</div>
+<div class="space-y-4">
+<!-- Tournament Card 1 -->
+<div class="glass-card rounded-2xl p-card-padding flex flex-col md:flex-row gap-6 hover:border-primary/30 transition-all duration-300 group">
+<div class="relative w-full md:w-32 h-32 rounded-xl overflow-hidden shrink-0">
+<img alt="Silver Cup" class="w-full h-full object-cover" data-alt="A cinematic close-up of a silver padel trophy standing on a sleek black reflective surface. Subtle green ambient light catches the edges of the metal. The atmosphere is elite and professional, evoking a sense of high-stakes competition. The lighting is low-key with sharp highlights, fitting the modern glassmorphic and dark-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGgW9_c67ocyyaDX4l8wykwmTnmYOfGD5A9qZkBnp3WLJuGgkEdGl-j_Kb5thYa9HEPbNXVmVZW0H_WtKIYHrxIGIFUeTUPXSz26-XIRxU0gIbfqjoAHzx9RKUfj-UsmERcC4rOiQBywz6I9c8GBUTqVNG-0IHX_dGLgVTxlnd2WBmhJXsU5iTj8PkGV93IU10JifzhRHFxOk8jjKEySGlcFRI_-jGRPfZBhCxkXAWPxVWBWiMs5XmRoF0myZrVlby1g4jSZuK-E0"/>
+<div class="absolute inset-0 bg-black/20"></div>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-lg-mobile text-[20px] text-white">Silver Cup Open</h4>
+<span class="bg-surface-variant text-on-surface-variant px-2 py-1 rounded text-[10px] font-bold uppercase">Pro-Am</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant mb-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="text-xs font-medium">May 24, 2024</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+<span class="text-xs font-medium">Padel Pro Madrid</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between gap-4">
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<span class="text-[10px] text-outline uppercase font-bold">12/16 Slots Filled</span>
+<span class="text-[10px] text-primary uppercase font-bold">80%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-primary h-full progress-glow" style="width: 80%"></div>
+</div>
+</div>
+<button class="bg-white/10 hover:bg-primary hover:text-on-primary text-white p-2 rounded-lg transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Tournament Card 2 -->
+<div class="glass-card rounded-2xl p-card-padding flex flex-col md:flex-row gap-6 hover:border-primary/30 transition-all duration-300 group">
+<div class="relative w-full md:w-32 h-32 rounded-xl overflow-hidden shrink-0">
+<img alt="Night Blitz" class="w-full h-full object-cover" data-alt="An atmospheric night shot of an outdoor padel court under glowing floodlights. The court lines are crisp, and the surrounding darkness creates a focused, high-intensity mood. Deep shadows and cool white light contrast with the dark surface. The image represents technical precision and the nocturnal energy of urban padel competition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo7ZKvB0B9pUxdMttMURLKE_yR4WpGZJ2lngkN-JpI7BHn2509fPU0-PlRMyjxXSVUec99kykAaEX1icTANE7fYyq40vHGkMq53YOK672QYMkpco21Mg2TJFEQpmqM0uPScl5rfDPqmKqBliNkZ_EtPqET6Gq9H9T1BvTH3-BlgRyvxPbrZUzxOXBCgB8Phwq33Tx7C68zsRfMknxlCOc16IMQhWIW3-opP9MI7bPDLDARZHwSOe9210MTqLr6FkgAgEGPpkKuHnc"/>
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-white/50 text-4xl" data-icon="dark_mode">dark_mode</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-lg-mobile text-[20px] text-white">Night Padel Blitz</h4>
+<span class="bg-primary/20 text-primary border border-primary/30 px-2 py-1 rounded text-[10px] font-bold uppercase">Popular</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant mb-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="text-xs font-medium">May 26, 2024 • 20:00</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+<span class="text-xs font-medium">Club de Campo</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between gap-4">
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<span class="text-[10px] text-outline uppercase font-bold">4/32 Slots Filled</span>
+<span class="text-[10px] text-on-surface-variant uppercase font-bold">12%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-primary h-full opacity-40" style="width: 12%"></div>
+</div>
+</div>
+<button class="bg-white/10 hover:bg-primary hover:text-on-primary text-white p-2 rounded-lg transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Tournament Card 3 -->
+<div class="glass-card rounded-2xl p-card-padding flex flex-col md:flex-row gap-6 hover:border-primary/30 transition-all duration-300 group opacity-75">
+<div class="relative w-full md:w-32 h-32 rounded-xl overflow-hidden shrink-0 grayscale">
+<img alt="Mixed Doubles" class="w-full h-full object-cover" data-alt="Abstract minimalist photography of a green padel ball resting against the high-tension mesh wire of a court fence. The depth of field is shallow, blurring the background. The lighting is overcast and soft, emphasizing textures. The composition is clean and modern, highlighting the technical elements of the sport within a dark-mode inspired aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAitHggd23VkOtsrSbP1J3RaJfr_0ieM-oaupvWWpwrN51dHvhj4e6VO4dLThSYL3jRc7_Znm_T3hlxW0QYuGvTfOJR1VsKJgt8Q9NbF5VSrN4xMsKpx0aOidm2GPsrzXYuzzmupt6FCEncrllcb7mStoKBBy7tDRKv4dfpqENgQhYLEi9kdGtqUusvzU6--WSSYa_mNFVjw5lWLK28sr9PumO1IUtHzSgHejdra5N3SOCL9dSn0MQP9F74SuWXQ6zpCe4afZdTlFw"/>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-lg-mobile text-[20px] text-white">Mixed Doubles Series</h4>
+<span class="bg-surface-container-highest text-outline px-2 py-1 rounded text-[10px] font-bold uppercase">Sold Out</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant mb-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="text-xs font-medium">June 01, 2024</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+<span class="text-xs font-medium">The Indoor Lab</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between gap-4">
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<span class="text-[10px] text-outline uppercase font-bold">FULL</span>
+<span class="text-[10px] text-outline uppercase font-bold">100%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-outline h-full" style="width: 100%"></div>
+</div>
+</div>
+<button class="bg-white/5 text-outline p-2 rounded-lg cursor-not-allowed">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-8 left-0 right-0 z-50 flex items-center justify-center gap-4 px-margin-mobile">
+<!-- Navigation Pill -->
+<nav class="flex-1 max-w-sm h-20 bg-surface-container-low/80 backdrop-blur-2xl border border-white/10 rounded-full flex items-center justify-around px-6 shadow-2xl">
+<a class="flex flex-col items-center gap-1 text-on-surface/40 hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="font-label-caps text-[10px] font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-2xl fill-icon">calendar_today</span>
+<span class="font-label-caps text-[10px] font-bold">Events</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface/40 hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">sports_score</span>
+<span class="font-label-caps text-[10px] font-bold">Games</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface/40 hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">person</span>
+<span class="font-label-caps text-[10px] font-bold">Profile</span>
+</a>
+</nav>
+<!-- Action Button Square -->
+<button class="w-20 h-20 bg-surface-container-low/80 backdrop-blur-2xl border border-white/10 rounded-[28px] flex items-center justify-center shadow-2xl active:scale-95 transition-transform group relative">
+<div class="absolute inset-0 rounded-[28px] bg-primary/5 blur-xl group-hover:bg-primary/10 transition-all"></div>
+<div class="w-12 h-12 rounded-full border-2 border-primary/40 flex items-center justify-center group-hover:border-primary transition-colors relative z-10">
+<span class="material-symbols-outlined text-3xl text-on-surface font-light">add</span>
+</div>
+</button>
+</div>
+<script>
+        // Simple scroll interaction for header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 10) {
+                header.classList.add('bg-background/95');
+                header.classList.add('shadow-lg');
+            } else {
+                header.classList.remove('bg-background/95');
+                header.classList.remove('shadow-lg');
+            }
+        });
+
+        // Add micro-interaction to tournament cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'scale(1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

@@ -17,16 +17,15 @@ class RatingTab extends StatelessWidget {
         final players = appState.social.ratingList;
 
         return SafeArea(
+          bottom: false,
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
                   child: Text(
                     'Рейтинг',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ),
               ),
@@ -79,7 +78,7 @@ class RatingTab extends StatelessWidget {
                   );
                 },
               ),
-              const SliverToBoxAdapter(child: SizedBox(height: 24)),
+              const SliverToBoxAdapter(child: SizedBox(height: 120)),
             ],
           ),
         );

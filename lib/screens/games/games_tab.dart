@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../app/app_state.dart';
 import '../../models/game.dart';
-import '../../models/match_mode.dart';
+import '../../theme/app_theme.dart';
 import 'active_game_screen.dart';
-import 'create_game_screen.dart';
 
 class GamesTab extends StatelessWidget {
   const GamesTab({super.key, required this.appState});
@@ -19,97 +18,123 @@ class GamesTab extends StatelessWidget {
         final active = appState.games.activeGames;
         final history = appState.games.finishedGames;
 
-        return Scaffold(
-          body: SafeArea(
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
-                    child: Row(
-                      children: [
-                        Expanded(
+        return SafeArea(
+          bottom: false,
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppTheme.marginMobile,
+                    12,
+                    AppTheme.marginMobile,
+                    0,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Игры',
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
+                      ),
+                      if (active.isNotEmpty)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppTheme.surfaceContainerHigh,
+                            borderRadius: BorderRadius.circular(999),
+                          ),
                           child: Text(
-                            'Игры',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.copyWith(fontWeight: FontWeight.bold),
+                            'LIVE',
+                            style: AppTheme.labelCaps(
+                              Theme.of(context).colorScheme,
+                              color: AppTheme.secondary,
+                            ).copyWith(fontSize: 10),
                           ),
                         ),
-                        FilledButton.icon(
-                          onPressed: () => _createGame(context),
-                          icon: const Icon(Icons.add, size: 18),
-                          label: const Text('Создать'),
-                        ),
-                      ],
-                    ),
+                    ],
                   ),
                 ),
-                if (active.isNotEmpty) ...[
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                      child: Text(
-                        'Активные',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                  ),
-                  SliverList.separated(
-                    itemCount: active.length,
-                    separatorBuilder: (_, _) => const SizedBox(height: 10),
-                    itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: _GameCard(
-                        game: active[index],
-                        onTap: () => _openGame(context, active[index].id),
-                      ),
-                    ),
-                  ),
-                ],
+              ),
+              if (active.isNotEmpty) ...[
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
-                    child: Text(
-                      'История',
-                      style: Theme.of(context).textTheme.titleMedium,
+                    padding: const EdgeInsets.all(AppTheme.marginMobile),
+                    child: _GameCard(
+                      game: active.first,
+                      glow: true,
+                      onTap: () => _openGame(context, active.first.id),
                     ),
                   ),
                 ),
-                if (history.isEmpty)
-                  const SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.all(32),
-                      child: Center(child: Text('История игр пуста')),
-                    ),
-                  )
-                else
+                if (active.length > 1)
                   SliverList.separated(
-                    itemCount: history.length,
+                    itemCount: active.length - 1,
                     separatorBuilder: (_, _) => const SizedBox(height: 10),
                     itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppTheme.marginMobile,
+                      ),
                       child: _GameCard(
-                        game: history[index],
-                        onTap: () => _openGame(context, history[index].id),
+                        game: active[index + 1],
+                        onTap: () => _openGame(context, active[index + 1].id),
                       ),
                     ),
                   ),
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
               ],
-            ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppTheme.marginMobile,
+                    16,
+                    AppTheme.marginMobile,
+                    8,
+                  ),
+                  child: Text(
+                    'НЕДАВНИЕ МАТЧИ',
+                    style: AppTheme.labelCaps(
+                      Theme.of(context).colorScheme,
+                    ).copyWith(
+                      color: AppTheme.secondary.withValues(alpha: 0.6),
+                    ),
+                  ),
+                ),
+              ),
+              if (history.isEmpty)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(32),
+                    child: Center(
+                      child: Text(
+                        'История игр пуста',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                  ),
+                )
+              else
+                SliverList.separated(
+                  itemCount: history.length,
+                  separatorBuilder: (_, _) => const SizedBox(height: 10),
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppTheme.marginMobile,
+                    ),
+                    child: _GameCard(
+                      game: history[index],
+                      onTap: () => _openGame(context, history[index].id),
+                    ),
+                  ),
+                ),
+              const SliverToBoxAdapter(child: SizedBox(height: 120)),
+            ],
           ),
         );
       },
-    );
-  }
-
-  void _createGame(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => CreateGameScreen(appState: appState),
-      ),
     );
   }
 
@@ -123,57 +148,90 @@ class GamesTab extends StatelessWidget {
 }
 
 class _GameCard extends StatelessWidget {
-  const _GameCard({required this.game, required this.onTap});
+  const _GameCard({
+    required this.game,
+    required this.onTap,
+    this.glow = false,
+  });
 
   final Game game;
   final VoidCallback onTap;
+  final bool glow;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundColor:
-                    Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
-                child: Icon(
-                  game.config.mode == MatchMode.standard
-                      ? Icons.sports_score
-                      : Icons.leaderboard,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    final scheme = Theme.of(context).colorScheme;
+    return AppTheme.glassSurface(
+      glow: glow,
+      onTap: onTap,
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
+                    if (game.isActive)
+                      Container(
+                        width: 8,
+                        height: 8,
+                        margin: const EdgeInsets.only(right: 8),
+                        decoration: const BoxDecoration(
+                          color: AppTheme.primary,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    if (!game.isActive)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
+                        margin: const EdgeInsets.only(right: 8),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primary.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          'ЗАВЕРШЕНА',
+                          style: AppTheme.labelCaps(
+                            scheme,
+                            color: AppTheme.primary,
+                          ).copyWith(fontSize: 10),
+                        ),
+                      ),
                     Text(
-                      game.title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    Text(game.scoreSummary),
-                    Text(
-                      game.modeLabel,
-                      style: Theme.of(context).textTheme.bodySmall,
+                      game.modeLabel.toUpperCase(),
+                      style: AppTheme.labelCaps(scheme)
+                          .copyWith(fontSize: 10, color: AppTheme.secondary),
                     ),
                   ],
                 ),
-              ),
-              Icon(
-                game.isActive ? Icons.play_circle : Icons.check_circle,
-                color: game.isActive ? Colors.green : Colors.grey,
-              ),
-            ],
+                const SizedBox(height: 8),
+                Text(
+                  game.title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  game.scoreSummary,
+                  style: AppTheme.dataMono(
+                    scheme,
+                    color: AppTheme.onSurface,
+                    size: 16,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+          Icon(
+            game.isActive ? Icons.play_circle_outline : Icons.chevron_right,
+            color: game.isActive
+                ? AppTheme.primary
+                : AppTheme.secondary.withValues(alpha: 0.4),
+          ),
+        ],
       ),
     );
   }

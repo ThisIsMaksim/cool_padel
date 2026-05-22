@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#313030",
+                    "surface-container": "#1b211f",
+                    "on-surface": "#dee4e0",
+                    "on-error": "#690005",
+                    "on-background": "#dee4e0",
+                    "secondary": "#c8c6c5",
+                    "surface-bright": "#343a38",
+                    "error-container": "#93000a",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "surface-tint": "#31e193",
+                    "on-tertiary-container": "#484747",
+                    "on-secondary-container": "#bab8b7",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "secondary-fixed": "#e5e2e1",
+                    "inverse-primary": "#006d43",
+                    "primary": "#43ed9e",
+                    "surface-variant": "#303634",
+                    "tertiary": "#d4d1d1",
+                    "tertiary-container": "#b8b6b6",
+                    "surface-container-lowest": "#0a0f0e",
+                    "surface-container-low": "#171d1b",
+                    "on-tertiary-fixed": "#1b1c1c",
+                    "secondary-container": "#4a4949",
+                    "primary-container": "#00d084",
+                    "error": "#ffb4ab",
+                    "outline": "#859588",
+                    "on-surface-variant": "#bacbbd",
+                    "background": "#0f1513",
+                    "on-primary-fixed-variant": "#005231",
+                    "primary-fixed-dim": "#31e193",
+                    "on-tertiary": "#303030",
+                    "surface-container-highest": "#303634",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "surface-dim": "#0f1513",
+                    "surface": "#0f1513",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#474646",
+                    "on-primary": "#003920",
+                    "outline-variant": "#3c4a40",
+                    "surface-container-high": "#252b29",
+                    "on-primary-fixed": "#002111",
+                    "on-primary-container": "#005331",
+                    "inverse-on-surface": "#2c3230",
+                    "primary-fixed": "#59fead",
+                    "inverse-surface": "#dee4e0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "32px",
+                    "gutter": "16px",
+                    "margin-mobile": "16px",
+                    "unit": "4px",
+                    "card-padding": "20px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Sora"],
+                    "data-mono": ["Sora"],
+                    "label-caps": ["Sora"],
+                    "display": ["Sora"],
+                    "body-md": ["Sora"],
+                    "headline-lg": ["Sora"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "data-mono": ["20px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                    "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(26, 26, 26, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .performance-glow {
+            box-shadow: 0 0 20px rgba(67, 237, 158, 0.15);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-background/80 dark:bg-background/80 backdrop-blur-xl border-b border-white/10 flex justify-between items-center px-margin-mobile h-16">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary/30">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="A professional portrait of a fit male padel player in his 30s, wearing high-performance athletic gear. The lighting is dramatic and moody with a subtle green rim light, emphasizing an elite, technical athletic vibe. High-end photography style with a dark, blurred gym background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_6LtXO9W-HFKkzw_sKEahZyPUlYfI29I26zQchN5p7xzyOArXT93gPp8_dZjS1ZFjbhCNJl0ffXI2tH03yPjQXvjNhAPfv0bKss6kmp88U2spavv517r_R0onjEDr-Kmm3Z-yFPEFW2a7EXCO8IFhL8NHLKThAGGSSIWDk7Mo0GQEAlZxwWz7ouHk6cFQSOvLaTXaLid1Rz0ZVnfLJt2NYFm73pGyGiDDUVNkldoFbPO4Fj1n4klYKmi1H55XGBodUwuZe0qqUJc"/>
+</div>
+<h1 class="font-display text-headline-lg-mobile text-primary dark:text-primary tracking-tighter">CoolPadel</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary dark:text-primary hover:opacity-80 transition-opacity active:scale-95 transition-transform" data-icon="notifications">notifications</button>
+</div>
+</header>
+<main class="pt-20 px-margin-mobile max-w-2xl mx-auto space-y-8 pb-40">
+<!-- Featured Tournament Carousel -->
+<section class="space-y-4">
+<div class="flex justify-between items-end">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Tournaments</h2>
+<span class="font-label-caps text-label-caps text-primary uppercase">View All</span>
+</div>
+<div class="flex gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory">
+<div class="min-w-[280px] h-[180px] rounded-xl relative overflow-hidden snap-start glass-card">
+<img class="absolute inset-0 w-full h-full object-cover opacity-60" data-alt="An action shot of a padel court at dusk, with professional stadium lighting casting long shadows. The surface is vibrant blue, and the glass walls reflect a modern architectural setting. The atmosphere is intense and high-performance, featuring deep blacks and neon green accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyUlW6oDbMDiwaWvunhK84FleanfjO25c9mKgXpEKH7EHMF4c59ae9BqugiG0ztj2NLTm0_QUUiJd4Bj9BpwfhSKa5AJsQIjNerAcsoRSvGjZSbf-i1esEsGbCE5dKP_UheY0RFDPilbvueVhUu33SB3OLphwN3qpuLA3moJGpyLutgI18wT6n4pdOohDPFxDKWizKyOCWBBRpBYdlU-Snc_pZ23U3ccQFypaxtHn3eu0aWpHBAHWoHA_wk0JFwadIeKMPnqrGIq8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<span class="bg-primary text-on-primary font-label-caps text-[10px] px-2 py-0.5 rounded-full mb-2 inline-block">MAJOR</span>
+<h3 class="font-headline-lg-mobile text-white leading-tight">Elite Pro Masters</h3>
+<p class="text-secondary text-sm">Oct 12-14 • Madrid</p>
+</div>
+</div>
+<div class="min-w-[280px] h-[180px] rounded-xl relative overflow-hidden snap-start glass-card">
+<img class="absolute inset-0 w-full h-full object-cover opacity-60" data-alt="Close up of a neon green padel ball resting on the court surface with high-performance carbon fiber rackets in the background. The style is sleek, dark, and technical, using deep charcoals and glowing green highlights to evoke a premium sporting brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjMQAWSQF0_8L-5hnRe5_13V8MKc-kACBPp6FatMpE7uk-MyBclfbVgDAt60POE06WypDRIP3Q078FvqFMd_WVmM8mQ6oTMpdLvLdAIjlEBai9aGSJqIs4Y_a9GiatEanIM8Zhr5rb4_DsMVhpfCFdHVUMbs1nrS-Lzhf8uSn8ugcgk84J5PLPSHX9V9ZwEZBDbxqU7Qxt8Ish-zlMpu2jKMhVXMfzmu0N-sW1gCkgZUCLFu1oJuz6KNMP6RnaC47kKtcYX8y41pU"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<span class="bg-surface-container text-primary border border-primary/30 font-label-caps text-[10px] px-2 py-0.5 rounded-full mb-2 inline-block">CHALLENGER</span>
+<h3 class="font-headline-lg-mobile text-white leading-tight">Night Smash Open</h3>
+<p class="text-secondary text-sm">Oct 20 • Berlin</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Performance Dashboard -->
+<section class="space-y-4">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Performance</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="glass-card performance-glow rounded-xl p-card-padding flex flex-col justify-between aspect-square">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="bolt">bolt</span>
+<div>
+<div class="font-data-mono text-display text-primary leading-none">12</div>
+<div class="font-label-caps text-label-caps text-secondary uppercase mt-2">Winning Streak</div>
+</div>
+</div>
+<div class="glass-card rounded-xl p-card-padding flex flex-col justify-between aspect-square">
+<div class="relative w-12 h-12">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-highest" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-dasharray="125.6" stroke-dashoffset="12.5" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-[10px] font-bold text-primary">5%</span>
+</div>
+</div>
+<div>
+<div class="font-data-mono text-headline-lg text-on-surface leading-none">Top 5%</div>
+<div class="font-label-caps text-label-caps text-secondary uppercase mt-2">Regional Rank</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Nearby Events -->
+<section class="space-y-4">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Nearby Events</h2>
+<div class="space-y-3">
+<div class="glass-card rounded-xl p-4 flex items-center gap-4 active:scale-95 transition-transform cursor-pointer">
+<div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Modern padel facility during golden hour. The court glass reflects the warm sunset colors, contrasted with cool deep shadows in the background. The aesthetic is clean and premium, evoking a high-end sports club atmosphere with focused lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwvEOP3qhjxPW8VGo7Vv24XQLhjgqK4mblfy9-ficKkxF4hQwsGQNIXmrGmEOokY-3_2ItkY3CHUj8uqrAdHaqlBGX46DM76B6jxXHNmXq2v7YE1lgGW1U_aXCSx9sHHcKbfb-p_voqlkgjo4i-Ivk_i8h_-LnS7IwyVWPqGRr0u8aazZCp51ygrDT7Zq9uIpaY1KXys6RJYUuqCzexBxnW8fxyTxuu-Hq_TSkJPnjzhsOdZ-Gd7AXPU1cnDE4SG8kuJdieF9xx8Q"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-bold text-on-surface">Sunset Padel Open</h4>
+<p class="text-secondary text-xs mt-1">Today • 18:30 • 2.4km away</p>
+<div class="flex gap-1 mt-2">
+<div class="w-5 h-5 rounded-full border-2 border-background overflow-hidden -ml-0 bg-surface-container">
+<img alt="Player" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbb0Rn-VWM-k7zYeyzRsugF5VlolST2N5DC4SOOYEj0P454uEpnmVm8kOqqRz3UgVYYwkhMfhWtgnnXFH1zvYokNp1WSuamqMwYUTM1JFEUmkddLTkXqtOW0YRxo0PoFq9heQ6Ece-0cgc1qZzv6qMS12FWAmRpKbwI9_R67iKoB-nO_3pLw_2M6fjDu2-rFSyuhT3YZbeU1eh8zWrjmS6qJH60FJsBVEOcO3i2FfsAjabo8To1pI4ED29htXbs8DjQ9epU3i02wQ"/>
+</div>
+<div class="w-5 h-5 rounded-full border-2 border-background overflow-hidden -ml-2 bg-surface-container">
+<img alt="Player" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoS69gAEhrsCVDguJCnZAcsC_OBU56iC8weyJ4grqIKCvvjB3L7_w1kZ7iP3g1qcC46yhxAXxaTcjyHGWtgpKGRiGnvt_a6QN8bMlk4HPpHHc4lElYXcy7MPmOlu2qASbhDLchCSZPVi-5nXFAsKxy4VMn--aOkZGE2YYhIZQ6gQZqQjqlnTyld4w90IQTlxsuiwDy5wv_23ehDqHQe9hbRG3Qb9eTQZ6a7lDn9ap3KtePfwr33HVORdFq5j5fmQtbKvtAVOugPwg"/>
+</div>
+<span class="text-[10px] text-secondary ml-1 self-center">+ 8 attending</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="glass-card rounded-xl p-4 flex items-center gap-4 active:scale-95 transition-transform cursor-pointer">
+<div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Close-up of technical padel gear, specifically the handle of a high-end racket with sweat-wicking grip tape. The lighting is low-key with a focus on texture and material quality, using a dark-mode palette and subtle green highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmklvz0CqFWUyd0jckwNBamswle42wSkIfeGNinDLfQ8HUWoa-rb29rGWJu1NuOMYETdwcInSUWLI_QLitlN_N2Q1pMzf81ITEW57vbUjzvxiDdG5mDMK0N7oSN9RsUDmTRPp_lbGAH3Q9xBZTz8PyOqukk1NMOUNY5a-2n99AFzIL5IdiAD_marbX1zBcZNFvmVEqO3S96ZTIDtITsM_3IjmSkRn2tqTEKtbDx9uCh7KMZUBmzD6wWreFS3kwr-OygaVXKkcsvos"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-bold text-on-surface">Novice Weekend League</h4>
+<p class="text-secondary text-xs mt-1">Sat • 10:00 • 5.1km away</p>
+<div class="flex gap-1 mt-2">
+<div class="w-5 h-5 rounded-full border-2 border-background overflow-hidden bg-surface-container">
+<img alt="Player" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqlTsu6TRDrafgvlxXDkL5bcnPW1s-TKIyBXMplrfb1XEncR25q7uCMngmrZbk2C4EIZglRHRdSyIx4cYSzjrW7I3kretKPVlcAjyGT4-GSeBP5Y9FEOnAmlX4_uXOH4mFwzsbdxd3WJ_c52-XSxSECK8Bc7NRqTBS1ZzrdSdpxwRW5r84NYBEACSt1K4HO2GqbyJT-zET9QXLtN3NKdPh5NIm7mLOOadHCKLmVutrwYhINUMtv0d_ZyGnhzlFuy_5FvHC6EHNRi4"/>
+</div>
+<span class="text-[10px] text-secondary ml-1 self-center">3 spots left</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<div class="fixed bottom-8 left-0 right-0 z-50 flex items-center justify-center gap-4 px-margin-mobile">
+<!-- Navigation Pill -->
+<nav class="flex-1 max-w-sm h-20 bg-surface-container-low/80 backdrop-blur-2xl border border-white/10 rounded-full flex items-center justify-around px-6 shadow-2xl">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="font-label-caps text-[10px] font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface/40 hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">calendar_today</span>
+<span class="font-label-caps text-[10px] font-bold">Events</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface/40 hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">sports_score</span>
+<span class="font-label-caps text-[10px] font-bold">Games</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface/40 hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">person</span>
+<span class="font-label-caps text-[10px] font-bold">Profile</span>
+</a>
+</nav>
+<!-- Action Button Square -->
+<button class="w-20 h-20 bg-surface-container-low/80 backdrop-blur-2xl border border-white/10 rounded-[28px] flex items-center justify-center shadow-2xl active:scale-95 transition-transform group">
+<div class="w-12 h-12 rounded-full border-2 border-primary/40 flex items-center justify-center group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-3xl text-on-surface font-light">add</span>
+</div>
+</button>
+</div>
+<script>
+        // Simple intersection observer for subtle reveal animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-4');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section, .glass-card').forEach(el => {
+            el.classList.add('transition-all', 'duration-700', 'ease-out', 'opacity-0', 'translate-y-4');
+            observer.observe(el);
+        });
+    </script>
+</body></html>

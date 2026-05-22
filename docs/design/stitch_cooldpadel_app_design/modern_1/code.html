@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#95d4b3",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-container": "#a73c00",
+                    "tertiary-fixed": "#ffdbce",
+                    "tertiary": "#802c00",
+                    "primary": "#0f5238",
+                    "secondary-fixed": "#dce1ff",
+                    "on-secondary": "#ffffff",
+                    "surface-variant": "#e5e2e1",
+                    "on-error": "#ffffff",
+                    "surface-container-high": "#eae7e7",
+                    "on-primary-container": "#a8e7c5",
+                    "primary-container": "#2d6a4f",
+                    "on-tertiary-fixed": "#370e00",
+                    "on-secondary-fixed": "#02174b",
+                    "on-surface": "#1c1b1b",
+                    "on-secondary-container": "#3e4e84",
+                    "on-primary": "#ffffff",
+                    "surface-glass": "rgba(255, 255, 255, 0.7)",
+                    "emerald-accent": "#40916C",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#ffcfbe",
+                    "inverse-surface": "#313030",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#f3f0ef",
+                    "background": "#fcf9f8",
+                    "on-tertiary-fixed-variant": "#7e2c00",
+                    "secondary": "#4c5c92",
+                    "on-secondary-fixed-variant": "#344479",
+                    "inverse-primary": "#95d4b3",
+                    "surface-container": "#f0eded",
+                    "error": "#ba1a1a",
+                    "outline": "#707973",
+                    "on-primary-fixed": "#002114",
+                    "tertiary-fixed-dim": "#ffb598",
+                    "deep-navy": "#02275C",
+                    "surface-container-low": "#f6f3f2",
+                    "surface-dim": "#dcd9d9",
+                    "outline-variant": "#bfc9c1",
+                    "on-surface-variant": "#404943",
+                    "on-background": "#1c1b1b",
+                    "surface-container-highest": "#e5e2e1",
+                    "secondary-fixed-dim": "#b5c4ff",
+                    "primary-fixed": "#b1f0ce",
+                    "on-primary-fixed-variant": "#0e5138",
+                    "surface-bright": "#fcf9f8",
+                    "surface-tint": "#2c694e",
+                    "surface": "#fcf9f8",
+                    "secondary-container": "#b2c1ff",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "section-margin": "40px",
+                    "container-padding": "24px",
+                    "stack-gap": "16px",
+                    "base": "8px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Sora"],
+                    "body-lg": ["Sora"],
+                    "headline-md": ["Sora"],
+                    "display-lg": ["Sora"],
+                    "headline-lg": ["Sora"],
+                    "body-md": ["Sora"],
+                    "label-lg": ["Sora"],
+                    "headline-lg-mobile": ["Sora"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+        body {
+            background-color: #fcf9f8;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full z-50 flex justify-between items-center px-container-padding py-base bg-surface-glass/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a athletic man in his early 30s with a confident expression. He is wearing high-end performance athletic wear in deep navy and emerald green tones. The lighting is soft and directional, creating a clean, modern aesthetic with a blurred outdoor tennis court background under a bright, high-key sky." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfE3gW22R8bU2M2-v6x3nAKzSxDcCAi8Zajy4GbR5xvTJSXuwnmhyKgodKz9LBTtBKwfPXZIkhKlQkDKw6cEQ9kCbyhJpT2mtkw14qCKrEfIan55UY0hDjs4KbykTE0kdWFmb8FbKneu5tESfyj5NcJoj1loE0qEGzAYYgog_Cyoqhm84h9i0VK0aoD9b5Tdzw59WXGlSFsqtue-5nbReEc7BlVle18l9hIM5q7uAi1kAO-lUeTaw6x0jabqOFkc0GaYghHzg6yBM"/>
+</div>
+<h1 class="font-headline-md text-headline-md-mobile font-bold text-primary">PadelPro</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center hover:bg-surface-container-low/50 rounded-full transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+</div>
+</header>
+<main class="max-w-2xl mx-auto px-container-padding pb-32 pt-8 space-y-section-margin">
+<!-- Profile Header Section -->
+<section class="relative">
+<div class="flex flex-col items-center text-center space-y-4">
+<div class="relative group">
+<div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-primary to-emerald-accent shadow-xl">
+<div class="w-full h-full rounded-full border-4 border-background overflow-hidden">
+<img alt="Marco Rossi" class="w-full h-full object-cover" data-alt="A medium close-up of a competitive athlete, a man with a determined yet friendly gaze. He is wearing a professional padel jersey with subtle geometric patterns. The background is an abstract blend of architectural glass and green foliage, maintaining a premium, modern corporate athletic feel with soft-key lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYAa0remmXs-ejp024maiciLmRqn2GSVxidCh-bjxRy9po_ywNm1QgSLsNWtoag9cbVAKYfyx9510HqStejp_ynSgli4UeAZYydhoNaMoxB36lnExmey2w7xJcIB1A2ZneHjiL_LLtrd19wRTEmFvvPsHgJHLEpTKZuVvU3P0RwgBtFlgvQhSsxW-PGobEppdBYdDDezN18f0aer-TBDnsttFtIeslw_VeFkYFwXbnZb-lKipB-PfuNP-3SDeOQcI5SmZB78Ee314"/>
+</div>
+</div>
+<span class="absolute bottom-1 right-1 bg-tertiary text-on-tertiary px-3 py-1 rounded-full font-label-sm text-label-sm shadow-lg border-2 border-background">PRO</span>
+</div>
+<div class="space-y-1">
+<h2 class="font-headline-lg text-headline-lg-mobile text-on-surface">Marco Rossi</h2>
+<p class="font-body-md text-on-surface-variant">Milan, Italy</p>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex items-center gap-2 px-6 py-2.5 bg-primary text-on-primary rounded-xl font-label-lg transition-transform active:scale-95 shadow-md">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                        Favorite
+                    </button>
+<button class="flex items-center justify-center w-12 h-12 bg-surface-container-high rounded-xl text-primary transition-transform active:scale-95 border border-outline-variant/10">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Stats Grid (Bento Style) -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="glass-card p-5 rounded-xl flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Ranking</span>
+<span class="font-display-lg text-[32px] text-primary">#14</span>
+<div class="mt-2 flex items-center text-emerald-accent font-label-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>2 spots</span>
+</div>
+</div>
+<div class="glass-card p-5 rounded-xl flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Points</span>
+<span class="font-display-lg text-[32px] text-primary">2850</span>
+<span class="mt-2 font-label-sm text-on-surface-variant opacity-60">Elite Tier</span>
+</div>
+<div class="glass-card p-5 rounded-xl flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Games</span>
+<span class="font-display-lg text-[32px] text-primary">142</span>
+<span class="mt-2 font-label-sm text-on-surface-variant opacity-60">2024 Season</span>
+</div>
+<div class="glass-card p-5 rounded-xl flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Win Rate</span>
+<span class="font-display-lg text-[32px] text-primary">68%</span>
+<div class="w-full h-1 bg-surface-container-high rounded-full mt-4 overflow-hidden">
+<div class="h-full bg-primary w-[68%]"></div>
+</div>
+</div>
+</section>
+<!-- About Section -->
+<section class="space-y-4">
+<h3 class="font-headline-md text-headline-md text-on-surface">About</h3>
+<div class="glass-card p-6 rounded-xl leading-relaxed">
+<p class="font-body-md text-on-surface-variant">
+                    Competitive padel player with 8 years of experience on the circuit. Known for aggressive net play and high-precision volleys. Currently focusing on the Euro-Masters series and training at the Milan Padel Academy. Always looking for high-intensity matches and tactical challenges.
+                </p>
+<div class="flex gap-2 mt-6 flex-wrap">
+<span class="px-3 py-1 bg-primary-fixed-dim/30 text-primary font-label-sm rounded-full">Aggressive Baseliner</span>
+<span class="px-3 py-1 bg-primary-fixed-dim/30 text-primary font-label-sm rounded-full">Pro Coach Cert</span>
+<span class="px-3 py-1 bg-primary-fixed-dim/30 text-primary font-label-sm rounded-full">Varlion Brand Athlete</span>
+</div>
+</div>
+</section>
+<!-- Tournament History -->
+<section class="space-y-4">
+<div class="flex justify-between items-end">
+<h3 class="font-headline-md text-headline-md text-on-surface">Tournament History</h3>
+<button class="font-label-lg text-primary hover:underline">View All</button>
+</div>
+<div class="space-y-3">
+<!-- Winner -->
+<div class="glass-card p-4 rounded-xl flex items-center gap-4 transition-transform hover:scale-[1.01]">
+<div class="w-12 h-12 rounded-lg bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+</div>
+<div class="flex-1">
+<h4 class="font-body-lg font-bold text-on-surface">Milan Summer Open</h4>
+<p class="font-label-sm text-on-surface-variant">August 2024 • Pro Category</p>
+</div>
+<div class="text-right">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full font-label-sm">Winner</span>
+</div>
+</div>
+<!-- Finalist -->
+<div class="glass-card p-4 rounded-xl flex items-center gap-4 transition-transform hover:scale-[1.01]">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[32px]">sports_tennis</span>
+</div>
+<div class="flex-1">
+<h4 class="font-body-lg font-bold text-on-surface">Rome Masters Cup</h4>
+<p class="font-label-sm text-on-surface-variant">June 2024 • Invitation Only</p>
+</div>
+<div class="text-right">
+<span class="bg-secondary/10 text-secondary px-3 py-1 rounded-full font-label-sm">Finalist</span>
+</div>
+</div>
+<!-- Top 8 -->
+<div class="glass-card p-4 rounded-xl flex items-center gap-4 transition-transform hover:scale-[1.01]">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[32px]">military_tech</span>
+</div>
+<div class="flex-1">
+<h4 class="font-body-lg font-bold text-on-surface">Iberia Padel Tour</h4>
+<p class="font-label-sm text-on-surface-variant">March 2024 • European Circuit</p>
+</div>
+<div class="text-right">
+<span class="bg-outline-variant/30 text-on-surface-variant px-3 py-1 rounded-full font-label-sm">Top 8</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter py-3 bg-surface-glass/90 backdrop-blur-xl border-t border-outline-variant/10 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-primary-fixed-dim/20 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-primary-fixed-dim/20 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">emoji_events</span>
+<span class="font-label-sm text-label-sm">Events</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-primary-fixed-dim/20 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">sports_tennis</span>
+<span class="font-label-sm text-label-sm">Games</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-primary-fixed-dim/20 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-label-sm text-label-sm">Rankings</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for stats counting effect or hover logic
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-2px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body></html>

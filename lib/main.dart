@@ -42,7 +42,7 @@ class CoolPadelApp extends StatelessWidget {
         return MaterialApp(
           title: 'CoolPadel',
           debugShowCheckedModeBanner: false,
-          theme: AppTheme.light,
+          theme: AppTheme.dark,
           home: home,
         );
       },

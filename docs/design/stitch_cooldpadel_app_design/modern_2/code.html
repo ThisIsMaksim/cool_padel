@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#95d4b3",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-container": "#a73c00",
+                    "tertiary-fixed": "#ffdbce",
+                    "tertiary": "#802c00",
+                    "primary": "#0f5238",
+                    "secondary-fixed": "#dce1ff",
+                    "on-secondary": "#ffffff",
+                    "surface-variant": "#e5e2e1",
+                    "on-error": "#ffffff",
+                    "surface-container-high": "#eae7e7",
+                    "on-primary-container": "#a8e7c5",
+                    "primary-container": "#2d6a4f",
+                    "on-tertiary-fixed": "#370e00",
+                    "on-secondary-fixed": "#02174b",
+                    "on-surface": "#1c1b1b",
+                    "on-secondary-container": "#3e4e84",
+                    "on-primary": "#ffffff",
+                    "surface-glass": "rgba(255, 255, 255, 0.7)",
+                    "emerald-accent": "#40916C",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#ffcfbe",
+                    "inverse-surface": "#313030",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#f3f0ef",
+                    "background": "#fcf9f8",
+                    "on-tertiary-fixed-variant": "#7e2c00",
+                    "secondary": "#4c5c92",
+                    "on-secondary-fixed-variant": "#344479",
+                    "inverse-primary": "#95d4b3",
+                    "surface-container": "#f0eded",
+                    "error": "#ba1a1a",
+                    "outline": "#707973",
+                    "on-primary-fixed": "#002114",
+                    "tertiary-fixed-dim": "#ffb598",
+                    "deep-navy": "#02275C",
+                    "surface-container-low": "#f6f3f2",
+                    "surface-dim": "#dcd9d9",
+                    "outline-variant": "#bfc9c1",
+                    "on-surface-variant": "#404943",
+                    "on-background": "#1c1b1b",
+                    "surface-container-highest": "#e5e2e1",
+                    "secondary-fixed-dim": "#b5c4ff",
+                    "primary-fixed": "#b1f0ce",
+                    "on-primary-fixed-variant": "#0e5138",
+                    "surface-bright": "#fcf9f8",
+                    "surface-tint": "#2c694e",
+                    "surface": "#fcf9f8",
+                    "secondary-container": "#b2c1ff",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "section-margin": "40px",
+                    "container-padding": "24px",
+                    "stack-gap": "16px",
+                    "base": "8px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Sora"],
+                    "body-lg": ["Sora"],
+                    "headline-md": ["Sora"],
+                    "display-lg": ["Sora"],
+                    "headline-lg": ["Sora"],
+                    "body-md": ["Sora"],
+                    "label-lg": ["Sora"],
+                    "headline-lg-mobile": ["Sora"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        @keyframes pulse-live {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-live {
+            animation: pulse-live 2s infinite ease-in-out;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="sticky top-0 w-full z-50 flex justify-between items-center px-container-padding py-base bg-surface-glass/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-sm">
+<div class="flex items-center gap-3">
+<img alt="User Profile" class="w-10 h-10 rounded-full object-cover border-2 border-primary/20" data-alt="A professional studio headshot of a young male athlete with a clean-cut appearance, looking confidently at the camera. The lighting is soft and high-key, creating a bright and modern look consistent with a premium sports app. The background is a minimalist, neutral gray that emphasizes the subject's professional yet energetic persona." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt0ineN3YahhOXl7xMFX3rNHWdCXvpriK39z_TmasHNu5XZ8aBgAqnPv1IlWAcUaoCJKMkzuwblztiVfvFLTzq3yI77Jbgr_dK00r2a1VD3uq7qPgOdrwbNVojFtij2ub4_Uo8bfUTn3NHogvuSfH4eymtPB9VVlrqv2DjAz4fYOwMEoMUcpowLU7_wn8XMYLRwDVaaKrzGkfCLRnS8n1cePD-lGe0HsQ6lDuQLQslDZ3azdmrxn88hu7mfgib7R_qyv2sHGG0Iyg"/>
+<span class="font-headline-md text-headline-md-mobile font-bold text-primary">PadelPro</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center hover:bg-surface-container-low/50 rounded-full transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main class="max-w-4xl mx-auto px-container-padding py-stack-gap">
+<!-- Action Header -->
+<div class="flex items-center justify-between mb-section-margin">
+<div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface">Live Courts</h1>
+<p class="font-body-md text-on-surface-variant">Real-time match tracking</p>
+</div>
+<button class="flex items-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-xl font-label-lg transition-transform active:scale-95 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                Create Game
+            </button>
+</div>
+<!-- Active Game Bento Section -->
+<section class="mb-section-margin">
+<div class="glass-card rounded-xl p-6 shadow-sm relative overflow-hidden group">
+<!-- Decorative court lines background element -->
+<div class="absolute inset-0 opacity-5 pointer-events-none">
+<div class="absolute inset-x-0 top-1/2 h-px bg-primary"></div>
+<div class="absolute inset-y-0 left-1/2 w-px bg-primary"></div>
+</div>
+<div class="relative z-10">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-2">
+<span class="bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full text-label-sm font-bold animate-live flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                                LIVE
+                            </span>
+<span class="font-label-lg text-primary">Club Padel Pro</span>
+</div>
+<span class="font-label-sm text-on-surface-variant">Court 4 • Standard Match</span>
+</div>
+<div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
+<!-- Team A -->
+<div class="flex flex-col items-center gap-4 flex-1">
+<div class="flex -space-x-4">
+<img class="w-16 h-16 rounded-full border-4 border-white object-cover" data-alt="Close up portrait of a smiling female padel player with athletic gear, bright natural outdoor lighting, high-end lifestyle photography style, emerald green accents in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXANFrVUKZkl_gPz1qsgqXf7UhguAYqJW5s6A4_KYrVVdfUhjTLCcJwxY4IL6c4eKjgymQ5D1twvL5D_gXa28q6NT8cMf7VtVZ4Yk1P1vrE7nxy3JLpWf1zb52uQQ6J4dDD3yl7i-f3h0u_N5LkZ4InUCTQYlmE-B3imVeNXxXLYmUK344SC-B499mdaVCZlxbwGMPF6p0xOcJ2EvBWiO-vGD3msz7J2dm2inVKEwQl1vA3bgY_twNCiGxBN-3e7bVohs1kA83YB8"/>
+<img class="w-16 h-16 rounded-full border-4 border-white object-cover" data-alt="Close up portrait of a focused male padel player in a white polo shirt, high-key studio lighting, modern minimalist aesthetic, soft shadows, clean professional sports photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5KvJw4PZt1ySEgHnLPZl4nXv9Yz_qUoRu3ghwKVcCeLuDJhTlG8Ah5qHLMhnp8RPPpnI60U2bxUHRM5jRpNtRZHilraxWooqo92uvv4soTJthBptOcoW8AWBq0p1ru65n-lbXectts3rsUQaDMSixrHzn5F8jhMSzl3Vdxx_fkJcAnFXa13ngR7K9E5gSiX7lUcJd2s1ZNfWK5X4TvUeDEqpuXiBQ7WdTByRMYYi2S7mUOz4G50Q6lmvvsSUDwsQ3yaptLBxTvUU"/>
+</div>
+<div class="text-center">
+<p class="font-label-lg text-on-surface">Team Sofia &amp; Marc</p>
+<p class="font-label-sm text-primary">Serving</p>
+</div>
+</div>
+<!-- Main Scoreboard -->
+<div class="flex flex-col items-center">
+<div class="flex items-baseline gap-6 mb-2">
+<span class="font-display-lg text-display-lg text-primary">4</span>
+<span class="text-outline-variant font-headline-md text-headline-md">-</span>
+<span class="font-display-lg text-display-lg text-on-surface">2</span>
+</div>
+<div class="bg-surface-container-high px-4 py-2 rounded-lg">
+<span class="font-headline-md text-headline-md text-primary">30</span>
+<span class="text-outline mx-1">-</span>
+<span class="font-headline-md text-headline-md text-on-surface-variant">15</span>
+</div>
+</div>
+<!-- Team B -->
+<div class="flex flex-col items-center gap-4 flex-1">
+<div class="flex -space-x-4">
+<img class="w-16 h-16 rounded-full border-4 border-white object-cover" data-alt="Portrait of a determined male athlete looking past the camera, sharp focus, vibrant natural lighting of an outdoor padel court, modern athletic aesthetic with deep green tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKQvjN07pRDfvZyk8znW3YpzVl4qJUpvfayU6UG0632ayYGEODci3nvwoHPLBViJ8VjuxP_NbouGsr-khbV3hKrC6jeKsWX4yzqNBJMmVJxhgxt2Hwb6p5BMKyMqN4maFGng7sWHMtak7ElVG8pVH5xw8PMZ7ECUlAK-bYfVtzIFhGAHrgJz6Sgq7en3tLAKR4sbA55JpdiWD9cYr32TQBahNkv_4Ldayir6PruWWIgWHRBMYjteLvVs7ZFQ3L38tJJNyqsPmEvAE"/>
+<img class="w-16 h-16 rounded-full border-4 border-white object-cover" data-alt="Close up of a female athlete with ponytail, wearing premium sportswear, soft morning light illuminating the face, elegant but energetic mood, shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJLGu3VyxYNXXNB-4zo0hk61HK66w6uSozfZoUoZ1ZBuMxzWcahAiwZg0UgsBhXfcPOi-7DhCmhUmML467heW_MdiNkhaNT8tYedtZk1-JL0mtS9GvReOzEy-yjLxhg4b5NVUaKv7OgeAofs84OSYHYAllPwZXBU1BEfsX-VLj5lzgVzEFSEBBizBDrJRVeTkql8vqmQlNFQ4aSZ0BAau5Vz91tIBnu0IqoiwibrJAvK3BbdTY-p2Wr34Vk_TdsaNGEFg9Yaa6tJA"/>
+</div>
+<div class="text-center">
+<p class="font-label-lg text-on-surface">Team Alex &amp; Elena</p>
+<p class="font-label-sm text-on-surface-variant">Receiving</p>
+</div>
+</div>
+</div>
+<div class="mt-8 flex justify-center gap-4">
+<button class="bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant px-6 py-2 rounded-xl font-label-lg transition-all">View Details</button>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-xl font-label-lg transition-all">Quick Update</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Match History -->
+<section>
+<div class="flex items-center justify-between mb-stack-gap px-2">
+<h2 class="font-headline-md text-headline-md text-on-surface">Match History</h2>
+<button class="text-primary font-label-lg flex items-center gap-1 hover:underline">
+                    View All <span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<div class="grid grid-cols-1 gap-4">
+<!-- History Item 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant/10 rounded-xl p-4 hover:shadow-md transition-shadow flex items-center justify-between">
+<div class="flex items-center gap-6 flex-1">
+<div class="flex items-center gap-3">
+<div class="relative">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Portrait of a young man in athletic wear, warm sunset lighting, blurred sports background, professional lifestyle aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx7F5x8GhtrqogsAGmz9WuINs8bqGZGve5thd1_P5TFY4KROrt0VAzqbCq-Y0fnKMSADJiSvYdYWr5gajITu68HrY3RHAKGf3YIx17pNYrx08_YCQEfasSQcl1hXE8w1mN8DjHG-BF3UzbQ0mdDeOhVZSOEa7i9epMrXjRVfBoKVXHWB3Fka0DknWnL6l92kV7D2zAySEvadiqezSAwi-CxsTtUWFr-awLt2LZ4HMn3z3byV9zvw5U-Jxvndltd_wowrK7xTMh18Y"/>
+<span class="absolute -bottom-1 -right-1 w-5 h-5 bg-primary text-white text-[10px] flex items-center justify-center rounded-full border-2 border-white font-bold">W</span>
+</div>
+<div class="hidden sm:block">
+<p class="font-label-lg text-on-surface leading-tight">M. Chen</p>
+<p class="font-label-sm text-on-surface-variant text-[10px]">Level 4.5</p>
+</div>
+</div>
+<div class="text-center bg-surface-container px-3 py-1 rounded-lg">
+<span class="font-headline-md text-headline-md text-on-surface tabular-nums">6-4, 6-2</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="hidden sm:block text-right">
+<p class="font-label-lg text-on-surface leading-tight">J. Smith</p>
+<p class="font-label-sm text-on-surface-variant text-[10px]">Level 4.2</p>
+</div>
+<div class="relative">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Portrait of a competitive female athlete, high-contrast studio lighting, moody but clean professional look, focused expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVE8-WgPBJcjmnWXCVgwk2rsUcChjEVaQLUPmqqwp7mCKaoIr6zSkCqHX0oT8nLQjQHYYxWtQKytv5Z0TvfKinDJtEqnXWmy-vrEtS8YfPfAIhh4l7N5xG9IIvqDjwxmwmQ_4jxVeAP-4twJhTwbOUAsTNWUaPjwcraABd0wrBG9AuvP102V3_8ZJtFR1wL3cVlOs2aLEs0ctNCRfC-LpNf-qD74jQgKouPaDcsAi45vi6aStO3b9WE3X1SXU5Z9cKeahEVt4Te8k"/>
+<span class="absolute -bottom-1 -right-1 w-5 h-5 bg-error text-white text-[10px] flex items-center justify-center rounded-full border-2 border-white font-bold">L</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1 ml-4">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-label-sm font-bold">WINNER</span>
+<span class="text-on-surface-variant text-[11px] font-label-sm">2 days ago</span>
+</div>
+</div>
+<!-- History Item 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant/10 rounded-xl p-4 hover:shadow-md transition-shadow flex items-center justify-between">
+<div class="flex items-center gap-6 flex-1">
+<div class="flex items-center gap-3">
+<div class="relative">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Professional portrait of a male athlete in a dark sports shirt, soft sidelighting, sophisticated and calm athletic mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHYophZEG36kiJ4nEJ2ONiTHKmc17pNHMlRUJ_iQXNRId7LR91jurhMpy458Pmf4hc6WApsYOTP48nD27sYSEwivgJmgrslV5WkG3Wvqm4p95E0UGLVQplmXrSWiOczrfsX_pUSl2J5WoP_p1L3n-1a66Ks0Msxpo-LbAvETen3BTh7eP58ZG3tG1nCn9xLzALDnT-QPeRYmn1bdY8WxNE2_5l8cJ1UfR5SzdEPmEFdfWDrYv3EmS767OjK_RtXfAgAH9Oylo-XN4"/>
+<span class="absolute -bottom-1 -right-1 w-5 h-5 bg-error text-white text-[10px] flex items-center justify-center rounded-full border-2 border-white font-bold">L</span>
+</div>
+<div class="hidden sm:block">
+<p class="font-label-lg text-on-surface leading-tight">L. Vance</p>
+<p class="font-label-sm text-on-surface-variant text-[10px]">Level 3.8</p>
+</div>
+</div>
+<div class="text-center bg-surface-container px-3 py-1 rounded-lg">
+<span class="font-headline-md text-headline-md text-on-surface tabular-nums">3-6, 5-7</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="hidden sm:block text-right">
+<p class="font-label-lg text-on-surface leading-tight">K. Davis</p>
+<p class="font-label-sm text-on-surface-variant text-[10px]">Level 4.0</p>
+</div>
+<div class="relative">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Candid style portrait of a female tennis player laughing, bright sunny environment, vibrant greens and whites, clean and energetic sports aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwCawSFmVenLw40ttfwOP3A_i4SePcL8pgTyPr7P1XDuwirhDNpWATwmyVG7KaNHF1JSwISNF1TBaJWdUZL7Azxi37L6x0Ctr72SsIr3M2LxTJT613wVsMoLloGKWhMN3M83xxt41zirVO5YBQjG_z5JPK5exm9qT-wMmGeEf3eKqL5uve1EWmUMb3JG9_DORM8Vksdtj9q5yyLbwfUAOzEd4q7GiPZ_76EtHDLCpPtHBF_BFjuZXQGQxrWSzLxVmqkLUf6g9yFTg"/>
+<span class="absolute -bottom-1 -right-1 w-5 h-5 bg-primary text-white text-[10px] flex items-center justify-center rounded-full border-2 border-white font-bold">W</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1 ml-4">
+<span class="bg-error-container text-error px-3 py-1 rounded-full text-label-sm font-bold uppercase">Loss</span>
+<span class="text-on-surface-variant text-[11px] font-label-sm">June 12</span>
+</div>
+</div>
+<!-- History Item 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant/10 rounded-xl p-4 hover:shadow-md transition-shadow flex items-center justify-between">
+<div class="flex items-center gap-6 flex-1">
+<div class="flex items-center gap-3">
+<div class="relative">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Detailed close up of a female athlete's face, sweating slightly from effort, cinematic natural light, high-end professional sports branding style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBs96EtLzVlgvxKGH3xOxgyQsRMTLJlKAeu95tg5SR8WN6GTJ2w18SMh6pEDdShqey8RKf6NXW8eesV0LA0KkMzNfqLmsQQszpizlpwU2S_CdcuhtI4T19feRxtlg9CER8Mr05uiAs2bvuhyPZLV568PBbNB4SiiAnPe1lUGhzWpYeQ3iVcNk4ols6bXXDWyLVBafFlPRjWrOEs0vjB6ajjaSgSARqfH2Y0CkE-oK2CKe_EdtBg32tTB02ZGyUjAEoWaVqeIhdVmVc"/>
+<span class="absolute -bottom-1 -right-1 w-5 h-5 bg-primary text-white text-[10px] flex items-center justify-center rounded-full border-2 border-white font-bold">W</span>
+</div>
+<div class="hidden sm:block">
+<p class="font-label-lg text-on-surface leading-tight">A. Petrova</p>
+<p class="font-label-sm text-on-surface-variant text-[10px]">Level 5.0</p>
+</div>
+</div>
+<div class="text-center bg-surface-container px-3 py-1 rounded-lg">
+<span class="font-headline-md text-headline-md text-on-surface tabular-nums">6-1, 6-0</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="hidden sm:block text-right">
+<p class="font-label-lg text-on-surface leading-tight">R. Tan</p>
+<p class="font-label-sm text-on-surface-variant text-[10px]">Level 4.7</p>
+</div>
+<div class="relative">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Portrait of a male padel player in action, bright natural daylight, crisp focus on the face, blurry green court background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4vQUq6sKdFULQ5YtFfwv8xeBldJZEvWy6MXbwLHV0bUuCjxs3UILb3ScVr5JP9749cKE3iQv572_oiPO1GvTYQ0siUv9bAXw1kvbbipSsFOn4wgMgCdbC8S0GEtKmCL0HNVIIOdjDrnpdyBX1jxnvL0BfJuoWVeYNM5jCnL4-Hdi3pPSzHQpZtoE5PZnFxULnUHpMIKkxEZpGcyKjqN1UBaZngK7LHhdutHdzkjkbRhNqk4ssXBLm8QZHUa62g3wCD6hybBLpEz8"/>
+<span class="absolute -bottom-1 -right-1 w-5 h-5 bg-error text-white text-[10px] flex items-center justify-center rounded-full border-2 border-white font-bold">L</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1 ml-4">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-label-sm font-bold uppercase">Winner</span>
+<span class="text-on-surface-variant text-[11px] font-label-sm">June 08</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter py-3 bg-surface-glass/90 backdrop-blur-xl border-t border-outline-variant/10 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-primary-fixed-dim/20 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-primary-fixed-dim/20 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="emoji_events">emoji_events</span>
+<span class="font-label-sm text-label-sm">Events</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 transition-all active:scale-90 font-bold" href="#">
+<span class="material-symbols-outlined" data-icon="sports_tennis" style="font-variation-settings: 'FILL' 1;">sports_tennis</span>
+<span class="font-label-sm text-label-sm">Games</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-primary-fixed-dim/20 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-label-sm text-label-sm">Rankings</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-primary-fixed-dim/20 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for match history items
+        document.querySelectorAll('.bg-surface-container-lowest').forEach(item => {
+            item.addEventListener('click', () => {
+                item.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    item.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+    </script>
+</body></html>

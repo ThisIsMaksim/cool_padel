@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&amp;family=Hanken+Grotesk:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#585e6f",
+                    "primary": "#506600",
+                    "surface-dim": "#d9dadb",
+                    "on-tertiary-fixed": "#0d1a38",
+                    "secondary-container": "#dadff3",
+                    "on-primary-fixed-variant": "#3c4d00",
+                    "primary-fixed": "#c3f400",
+                    "inverse-primary": "#abd600",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#506600",
+                    "surface-container": "#edeeef",
+                    "tertiary-fixed-dim": "#bac6ec",
+                    "on-error": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#ccff00",
+                    "secondary-fixed": "#dde2f6",
+                    "on-surface-variant": "#444933",
+                    "primary-fixed-dim": "#abd600",
+                    "on-tertiary-fixed-variant": "#3a4666",
+                    "inverse-on-surface": "#f0f1f2",
+                    "tertiary-fixed": "#dae2ff",
+                    "surface-variant": "#e1e3e4",
+                    "background": "#f8f9fa",
+                    "error": "#ba1a1a",
+                    "on-background": "#191c1d",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f3f4f5",
+                    "secondary-fixed-dim": "#c1c6d9",
+                    "tertiary": "#525e7f",
+                    "on-secondary-fixed-variant": "#414756",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed": "#151b29",
+                    "outline": "#747a60",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#5e6a8c",
+                    "surface-container-highest": "#e1e3e4",
+                    "on-surface": "#191c1d",
+                    "tertiary-container": "#e8ecff",
+                    "surface": "#f8f9fa",
+                    "surface-bright": "#f8f9fa",
+                    "on-primary-container": "#5b7300",
+                    "on-secondary-container": "#5d6273",
+                    "surface-container-high": "#e7e8e9",
+                    "inverse-surface": "#2e3132",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#c4c9ac",
+                    "on-primary-fixed": "#161e00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "64px",
+                    "sm": "12px",
+                    "lg": "40px",
+                    "gutter": "16px",
+                    "margin-mobile": "20px",
+                    "md": "24px",
+                    "xs": "4px",
+                    "base": "8px",
+                    "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Sora"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "headline-xl": ["Sora"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "headline-md": ["Sora"],
+                    "headline-lg": ["Sora"],
+                    "label-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #506600 0%, #c3f400 100%);
+        }
+        .profile-mesh {
+            background-color: #f8f9fa;
+            background-image: radial-gradient(at 0% 0%, rgba(195, 244, 0, 0.15) 0, transparent 50%), 
+                              radial-gradient(at 100% 0%, rgba(80, 102, 0, 0.05) 0, transparent 50%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24 profile-mesh">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-margin-mobile py-4 w-full sticky top-0 z-50 bg-surface dark:bg-on-background">
+<div class="flex items-center gap-3">
+<span class="font-headline-md text-headline-md-mobile font-bold text-primary dark:text-primary-fixed">CoolPadel</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="hover:opacity-80 transition-opacity duration-150 text-secondary dark:text-secondary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="hover:opacity-80 transition-opacity duration-150 text-primary dark:text-primary-fixed">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-margin-mobile mt-6">
+<!-- Profile Header Section -->
+<section class="relative mb-xl">
+<div class="flex flex-col md:flex-row items-center gap-6 md:gap-10">
+<div class="relative group">
+<div class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-primary-container overflow-hidden shadow-lg transition-transform duration-300 group-hover:scale-105">
+<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a determined male athlete in his late 20s, wearing high-performance sports apparel. The lighting is dramatic and high-contrast, emphasizing his athletic features against a soft-focus padel court background. The overall aesthetic is clean, modern, and energetic, incorporating a subtle green and navy color palette consistent with a premium sports brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuBfKmttAvQeknS8Bt7AKeKmwuiPqCowECZlicftr5C35ExowrikqC0eixrfI9ShFSDBG5R8Ymn0GtHCCrP67fHaBLo1y-JVSi1oGfdFRKI4a18TEZ7KY7PQNzagou-Vckdahjq5XsGEuRwEpPH8P6X9WEzzU4QQpw2sSjafIdZxRnte02T1x6H1XvArqUABohyKGGNi_VS6zMfd6X3uKAKrEpUm8Tb4nIdwFnEfWFyXL46AzwzqFVTzvdwbcO-iJJDtlprIUxUGY"/>
+</div>
+<div class="absolute bottom-1 right-1 bg-primary-container p-2 rounded-full shadow-md">
+<span class="material-symbols-outlined text-on-primary-container text-[20px]" data-icon="edit">edit</span>
+</div>
+</div>
+<div class="flex-1 text-center md:text-left">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg mb-1">Александр Волков</h1>
+<p class="text-secondary font-label-lg tracking-wide uppercase mb-4">Уровень: Pro</p>
+<div class="flex flex-wrap justify-center md:justify-start gap-3">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-xl font-label-lg flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-md">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+                            Добавить в избранное
+                        </button>
+<button class="bg-surface-container-high text-on-surface px-6 py-2 rounded-xl font-label-lg flex items-center gap-2 hover:bg-surface-container-highest transition-all border border-outline-variant">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+                            Поделиться
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Bento Grid -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-xl">
+<div class="glass-card p-5 rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col items-center">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="leaderboard">leaderboard</span>
+<span class="font-label-sm text-secondary uppercase">Рейтинг</span>
+<span class="font-headline-md text-primary">#14</span>
+</div>
+<div class="glass-card p-5 rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col items-center">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="stars">stars</span>
+<span class="font-label-sm text-secondary uppercase">Очки</span>
+<span class="font-headline-md text-primary">2,850</span>
+</div>
+<div class="glass-card p-5 rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col items-center">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="sports_tennis">sports_tennis</span>
+<span class="font-label-sm text-secondary uppercase">Игры</span>
+<span class="font-headline-md text-primary">142</span>
+</div>
+<div class="glass-card p-5 rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col items-center">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="trending_up">trending_up</span>
+<span class="font-label-sm text-secondary uppercase">Победы</span>
+<span class="font-headline-md text-primary">68%</span>
+</div>
+</section>
+<!-- Main Content Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Sidebar Info -->
+<aside class="space-y-8">
+<div class="bg-surface-container-low p-6 rounded-2xl">
+<h3 class="font-headline-md text-headline-md mb-4 text-primary">О себе</h3>
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="location_on">location_on</span>
+<div>
+<p class="font-label-lg text-on-surface">Москва, РФ</p>
+<p class="text-label-sm text-secondary">Padel Club "Olimp"</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="hand_gesture">hand_gesture</span>
+<div>
+<p class="font-label-lg text-on-surface">Правша</p>
+<p class="text-label-sm text-secondary">Стиль: Агрессивный</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="calendar_month">calendar_month</span>
+<div>
+<p class="font-label-lg text-on-surface">В клубе с 2021</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-primary-container/20 p-6 rounded-2xl border border-primary-container">
+<h3 class="font-label-lg text-primary uppercase mb-3">Любимая площадка</h3>
+<img class="w-full h-32 object-cover rounded-xl mb-3 shadow-inner" data-alt="A premium indoor padel court with bright blue turf and glass walls. The lighting is crisp and professional, showcasing the clean lines and modern design of the facility. The perspective is from the baseline looking towards the net, conveying a sense of readiness and athletic focus. The high-ceiling industrial architecture is visible in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlN6Z6UJ1hzilJfvVwLioaPkRv-a4wMM9RdE3Dtvdswq_WuJU9CaDwY770PYZNvL40ywAzLWDxKv1UjDMN_shVg5nGRypbq3-PcB2T397s960hSplyIYKvD8lYQ3_9JnuW17YwI5Gxor56UNSUkIi62F91JxXAwLjX-MQWJnsjCyepfJ7u42N52OLnRlitgKF6kOwAfhQ2OtJFfVyI9GDpQ7o0r1L6upY2GPIMUT3tPk_dIIfxURjmE9dz1vEGN87Dq_W2BAqxjiY"/>
+<p class="font-headline-md text-on-primary-container">Grand Padel Arena</p>
+</div>
+</aside>
+<!-- History and Activities -->
+<div class="lg:col-span-2 space-y-8">
+<div>
+<div class="flex justify-between items-end mb-6">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile">История турниров</h2>
+<button class="text-primary font-label-lg flex items-center gap-1 hover:underline">
+                            Все <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<div class="space-y-4">
+<!-- Tournament Card -->
+<div class="group bg-surface p-1 rounded-2xl hover:shadow-xl transition-all duration-300 border border-outline-variant/30 overflow-hidden">
+<div class="flex items-center gap-4 p-4">
+<div class="bg-primary-container w-14 h-14 rounded-xl flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary-container text-3xl" data-icon="emoji_events">emoji_events</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-md text-on-surface">Moscow Spring Cup</h4>
+<span class="bg-secondary-fixed text-on-secondary-fixed text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">Финалист</span>
+</div>
+<p class="text-label-sm text-secondary">15 Мая 2024 • Категория A</p>
+</div>
+</div>
+<div class="px-4 pb-4 flex justify-between items-center">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Profile avatar of a sport teammate" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdYAMXTDaH0--T6h1UDYOCjIr8YNFdIrURMUd88wB96Fpgar62I8kM2tFz7FAunTfkgfVnE8gw1ZwEJIdMMyx2I-kel_-ecoUqG2TiaxK8eJJl0OAjkyPYvdIM2Z7LpnS2yYpZY9CW28FTSudZKKyeCTWLn2nG7eOk0N4kAWuCINntRQGqLYfQJ71UZf5NTf_efLQBKBq47LFfw6Jot5T4_mVw6RHHyY9osriEFAWm2oBJEzKsynoVqbPo4Dvwu47OVhEX6wZmw0E"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Profile avatar of a sport teammate" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkFA4prpRw-OaWevyDevYIaMEHirELiM4XBj9sJOKdSTlPq5KH6S1jLlfH92LIFlZ5H5epQmHoON1ErstS8CKv1wwPqwljUiTU-MXUBg7dhWZMqyGo8rifMyuESKoqixqQxHVv0qROxKAi8ckQ8sd3BAGyYQ3sDX_TqXfF5pM3HjLgNbUBGE_aGdQ7qJPmVCBi3UqRYloDzeZsz4bH9GCevMW9cv9gzog0RSVxfkKiJfxQ-G4LZx7r-X8d5BVDBR_4rhWyPNHdZBg"/>
+</div>
+<span class="text-label-sm text-on-surface-variant italic">Партнер: Дмитрий С.</span>
+</div>
+</div>
+<!-- Tournament Card -->
+<div class="group bg-surface-container-low p-1 rounded-2xl hover:shadow-md transition-all duration-300 border border-outline-variant/20 overflow-hidden">
+<div class="flex items-center gap-4 p-4">
+<div class="bg-on-tertiary-fixed/10 w-14 h-14 rounded-xl flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-tertiary text-3xl" data-icon="military_tech">military_tech</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-md text-on-surface">Open League #4</h4>
+<span class="bg-primary-container text-on-primary-container text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">Победитель</span>
+</div>
+<p class="text-label-sm text-secondary">2 апреля 2024 • Категория B</p>
+</div>
+</div>
+</div>
+<!-- Tournament Card -->
+<div class="group bg-surface-container-low p-1 rounded-2xl hover:shadow-md transition-all duration-300 border border-outline-variant/20 overflow-hidden">
+<div class="flex items-center gap-4 p-4">
+<div class="bg-surface-dim w-14 h-14 rounded-xl flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-3xl" data-icon="workspace_premium">workspace_premium</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-md text-on-surface">Winter Smash Masters</h4>
+<span class="bg-surface-variant text-on-surface-variant text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">Топ 8</span>
+</div>
+<p class="text-label-sm text-secondary">12 января 2024 • Категория Pro</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Achievements/Badges -->
+<div class="bg-on-background p-8 rounded-3xl text-white shadow-2xl relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 kinetic-gradient opacity-20 blur-3xl -mr-10 -mt-10"></div>
+<h3 class="font-headline-md text-headline-md-mobile mb-6 relative z-10">Достижения</h3>
+<div class="flex gap-6 overflow-x-auto pb-4 scrollbar-hide relative z-10">
+<div class="flex flex-col items-center shrink-0 w-20">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center mb-2 shadow-[0_0_20px_rgba(195,244,0,0.4)]">
+<span class="material-symbols-outlined text-on-primary-fixed text-3xl" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<span class="text-[10px] text-center font-label-lg">10 побед подряд</span>
+</div>
+<div class="flex flex-col items-center shrink-0 w-20">
+<div class="w-16 h-16 rounded-full bg-secondary-container/20 flex items-center justify-center mb-2 border border-white/20">
+<span class="material-symbols-outlined text-secondary-fixed text-3xl" data-icon="nightlight" style="font-variation-settings: 'FILL' 1;">nightlight</span>
+</div>
+<span class="text-[10px] text-center font-label-lg">Ночной игрок</span>
+</div>
+<div class="flex flex-col items-center shrink-0 w-20">
+<div class="w-16 h-16 rounded-full bg-secondary-container/20 flex items-center justify-center mb-2 border border-white/20">
+<span class="material-symbols-outlined text-secondary-fixed text-3xl" data-icon="handshake" style="font-variation-settings: 'FILL' 1;">handshake</span>
+</div>
+<span class="text-[10px] text-center font-label-lg">Честная игра</span>
+</div>
+<div class="flex flex-col items-center shrink-0 w-20 opacity-50">
+<div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-2 border border-dashed border-white/30">
+<span class="material-symbols-outlined text-white/40 text-3xl" data-icon="lock">lock</span>
+</div>
+<span class="text-[10px] text-center font-label-lg">Топ 1</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-5 py-3 shadow-[0_-4px_20px_0_rgba(0,0,0,0.05)] bg-surface dark:bg-on-background">
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-3 py-1 transition-all duration-200 active:scale-95 hover:bg-secondary-container dark:hover:bg-secondary rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-3 py-1 transition-all duration-200 active:scale-95 hover:bg-secondary-container dark:hover:bg-secondary rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="emoji_events">emoji_events</span>
+<span class="font-label-sm text-label-sm">Tournaments</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-3 py-1 transition-all duration-200 active:scale-95 hover:bg-secondary-container dark:hover:bg-secondary rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="sports_tennis">sports_tennis</span>
+<span class="font-label-sm text-label-sm">Games</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-3 py-1 transition-all duration-200 active:scale-95 hover:bg-secondary-container dark:hover:bg-secondary rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-label-sm text-label-sm">Rankings</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl px-3 py-1 transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for active scale effects on cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'scale(1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

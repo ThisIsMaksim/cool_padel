@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&amp;family=Hanken+Grotesk:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#585e6f",
+                    "primary": "#506600",
+                    "surface-dim": "#d9dadb",
+                    "on-tertiary-fixed": "#0d1a38",
+                    "secondary-container": "#dadff3",
+                    "on-primary-fixed-variant": "#3c4d00",
+                    "primary-fixed": "#c3f400",
+                    "inverse-primary": "#abd600",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#506600",
+                    "surface-container": "#edeeef",
+                    "tertiary-fixed-dim": "#bac6ec",
+                    "on-error": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#ccff00",
+                    "secondary-fixed": "#dde2f6",
+                    "on-surface-variant": "#444933",
+                    "primary-fixed-dim": "#abd600",
+                    "on-tertiary-fixed-variant": "#3a4666",
+                    "inverse-on-surface": "#f0f1f2",
+                    "tertiary-fixed": "#dae2ff",
+                    "surface-variant": "#e1e3e4",
+                    "background": "#f8f9fa",
+                    "error": "#ba1a1a",
+                    "on-background": "#191c1d",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f3f4f5",
+                    "secondary-fixed-dim": "#c1c6d9",
+                    "tertiary": "#525e7f",
+                    "on-secondary-fixed-variant": "#414756",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed": "#151b29",
+                    "outline": "#747a60",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#5e6a8c",
+                    "surface-container-highest": "#e1e3e4",
+                    "on-surface": "#191c1d",
+                    "tertiary-container": "#e8ecff",
+                    "surface": "#f8f9fa",
+                    "surface-bright": "#f8f9fa",
+                    "on-primary-container": "#5b7300",
+                    "on-secondary-container": "#5d6273",
+                    "surface-container-high": "#e7e8e9",
+                    "inverse-surface": "#2e3132",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#c4c9ac",
+                    "on-primary-fixed": "#161e00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "64px",
+                    "sm": "12px",
+                    "lg": "40px",
+                    "gutter": "16px",
+                    "margin-mobile": "20px",
+                    "md": "24px",
+                    "xs": "4px",
+                    "base": "8px",
+                    "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Sora"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "headline-xl": ["Sora"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "headline-md": ["Sora"],
+                    "headline-lg": ["Sora"],
+                    "label-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #506600 0%, #ccff00 100%);
+        }
+        .soft-shadow {
+            box-shadow: 0 4px 20px 0 rgba(25, 28, 29, 0.05);
+        }
+        .active-glow {
+            box-shadow: 0 0 15px rgba(204, 255, 0, 0.4);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-32">
+<!-- Top Navigation -->
+<nav class="flex justify-between items-center px-margin-mobile py-4 w-full sticky top-0 z-50 bg-surface">
+<div class="flex items-center gap-3">
+<span class="font-headline-md text-headline-md-mobile font-bold text-primary">CoolPadel</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity duration-150" data-icon="search">search</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A high-quality professional studio portrait of a confident young athletic man with a friendly expression. The lighting is crisp and modern, reflecting a premium sports app aesthetic. The background is a clean, minimalist off-white, keeping the focus entirely on the person who embodies a healthy and active lifestyle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAl4zTZ2gNOQrZDh2yiHaFhB3gJNxqxMtmuoXWc-AA6ylDx9bBeQx9DIORQuTPfOhLPOXF7HO9lsc7XQNPM1mT2w6rGKBq00Hswa7_T9StPux_2GkfLZJbOMuX4i2No7eICrnQ1RcsAgFbpm7P_X92g4aJeuitrK2RAsPd046ODU4b0eA5HvojFNS6-Dwmc5n4EKIyZuexwwZP75Ave7LC41WdbI0SdmOvprecc-WcQsXnYb__9n1bs9Hp8QpGljm8DZYhHKS_yHho"/>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="px-margin-mobile mt-6 max-w-4xl mx-auto">
+<!-- Header & Tabs -->
+<header class="mb-8">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile mb-4">Рейтинг игроков</h1>
+<div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+<button class="px-6 py-2 rounded-full bg-on-background text-background font-label-lg whitespace-nowrap">Мужчины</button>
+<button class="px-6 py-2 rounded-full border-2 border-outline text-secondary font-label-lg whitespace-nowrap hover:bg-surface-container transition-colors">Женщины</button>
+<button class="px-6 py-2 rounded-full border-2 border-outline text-secondary font-label-lg whitespace-nowrap hover:bg-surface-container transition-colors">Пары</button>
+</div>
+</header>
+<!-- Top 3 Podium (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-10">
+<!-- Rank 2 -->
+<div class="order-2 md:order-1 bg-surface-container-low rounded-xl p-6 flex flex-col items-center justify-end relative overflow-hidden soft-shadow border border-outline-variant/30">
+<div class="absolute top-4 left-4 font-headline-md text-secondary/30">#2</div>
+<img class="w-20 h-20 rounded-full mb-4 border-2 border-secondary/20" data-alt="Portrait of a focused male athlete in high-performance sportswear, set against a blurred background of a modern padel court. The lighting is dramatic and energetic, emphasizing the 'Kinetic Modernism' style with vibrant lime green accents in the environment. Professional sports photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXBw16zn_ARsBeXa3mTzFnTXeA9qkxTizY5yKKgjVgrYTnWzy-PJcSmBH2nAswlCZz8118-NErICQ_YzwvvEnwVp4bvvY5lBTzTnCCydmDV8Nx7R8sTtX4W4awESDZbwhaxr6TPIBYKHmBs1eBK_xefkxVe5pKFfFoi03c4Oqxe1f5FVzvO7FNZ5SYM432tNNuNB24TmCsSNKvfRps7yc2P5pOLnf4KH1aNsrVz-YBj8fQUv7kEOJqmlhblO5IvxhwUexw0KghrJU"/>
+<p class="font-headline-md text-center">Александр В.</p>
+<div class="mt-2 px-3 py-1 bg-secondary-fixed rounded-full text-on-secondary-fixed font-label-sm">2,840 очков</div>
+</div>
+<!-- Rank 1 (Hero) -->
+<div class="order-1 md:order-2 bg-primary-container rounded-xl p-8 flex flex-col items-center justify-center relative overflow-hidden active-glow border-2 border-primary">
+<div class="absolute top-4 right-4"><span class="material-symbols-outlined text-primary text-4xl" data-weight="fill">emoji_events</span></div>
+<div class="absolute top-4 left-4 font-headline-xl text-primary/20">#1</div>
+<img class="w-32 h-32 rounded-full mb-4 border-4 border-white" data-alt="A professional athletic headshot of a top-tier padel player looking determined. The aesthetic is clean and high-contrast, featuring a bright lime green glow around the subject that represents peak performance. The background is a soft, deep charcoal navy, ensuring the athlete stands out as a champion." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAysf5XG8aeoYRclFFJFZt5ufIREeYDjc-qMCenfNKaM7u81f_ZheloVaV_yFEnzcGSguaNDTuMqYUgZmKqtE-or03oJBCTVBbenjcflaF5UCR6OTgB5IOjulWn_H8Y5s8nylLwOijRJvbVhy158nRrLo9sJaTgJBRMHm7yKTFZOJDQpxJHtdUCLhXJmPJ7HB1woFqcYd9Vb9mSXpMWqiQv7TheIuN5ejRwp_Lo8lFEFfw6IMHOKgPAF1xaPxm-2__kh4Q9RmO9P4o"/>
+<p class="font-headline-lg-mobile text-center text-on-primary-container">Дмитрий П.</p>
+<div class="mt-3 px-4 py-2 bg-primary text-on-primary rounded-full font-label-lg shadow-lg">3,150 очков</div>
+</div>
+<!-- Rank 3 -->
+<div class="order-3 bg-surface-container-low rounded-xl p-6 flex flex-col items-center justify-end relative overflow-hidden soft-shadow border border-outline-variant/30">
+<div class="absolute top-4 left-4 font-headline-md text-secondary/30">#3</div>
+<img class="w-20 h-20 rounded-full mb-4 border-2 border-secondary/20" data-alt="Dynamic portrait of a professional padel player in action-ready pose. The lighting is warm and golden-hour inspired, reflecting a prestigious sports club atmosphere. The background uses the Electric Lime and Deep Charcoal Navy color palette in a subtle, artistic blur to maintain consistency with the brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaj9H8LxIw3EyD81625VqCui-152LzhrrkqT1ngRCd_rCUp-gxU2jjzqmd7j_vV63neQdCl2Rz7oIqCxZuR1S9X5p2sthL1qytu7JvHJPRSWRccit2fuy5xj3E6ifO_U4AzHTtreXkCubbggC_dKk-JkQSsZbYciqKlMhtbAso-E8vxDxl9RvAG4XkL8mY_de17Riym4Lnb7G0vQrRsYwvCOtJV5SPMBvX8tbHbi_Fqo2Kj4MIQq1JlBROw8a_nP3NH_KmWKajM8s"/>
+<p class="font-headline-md text-center">Игорь М.</p>
+<div class="mt-2 px-3 py-1 bg-secondary-fixed rounded-full text-on-secondary-fixed font-label-sm">2,710 очков</div>
+</div>
+</div>
+<!-- Ranking List -->
+<div class="space-y-3">
+<div class="flex justify-between px-4 text-secondary font-label-sm uppercase tracking-wider mb-2">
+<span>Ранг и Игрок</span>
+<span>Очки</span>
+</div>
+<!-- Player Rows -->
+<a class="group flex items-center justify-between p-4 bg-surface rounded-xl border border-outline-variant/20 hover:border-primary transition-all duration-200 active:scale-[0.98] soft-shadow" href="#">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-secondary w-8">4</span>
+<img class="w-12 h-12 rounded-full bg-surface-container" data-alt="Minimalist avatar portrait of a sports enthusiast, presented in a clean SaaS-style circle. The lighting is flat and modern with high-key whites and soft grey tones, fitting perfectly into a light-mode sports application interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgizVkNmKehUyGfInWNo8QieY3IgH1xJXJJvdbcvZNFQVXsF8fs2QYlsdhbBW2DLi-Ojye8UvwRY9JnQz5YjiXb62YMaDGwS1HMmXM8YjJCguDs7yGBxr8lzt9LAmE5jBVX9tY6qklDZ9UlLeCOK9FdMwsMlyq-82QtgXMQ05kb1RYsYAo5EpD51PbbgKiUEMGmaMJNydE09G75np_LgsplBKL-mJnlZ2-nyqAyUX6a7NSEg_KCHxHx7HeZODCZX3LHUjpKVlXjfU"/>
+<div>
+<p class="font-headline-md text-on-surface group-hover:text-primary transition-colors">Сергей К.</p>
+<p class="text-secondary text-label-sm">Москва • Pro League</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-on-surface">2,590</p>
+<div class="flex items-center text-primary text-xs font-bold">
+<span class="material-symbols-outlined text-[14px]">arrow_drop_up</span> +12
+                    </div>
+</div>
+</a>
+<a class="group flex items-center justify-between p-4 bg-surface-container-low rounded-xl border border-transparent hover:border-primary transition-all duration-200 active:scale-[0.98]" href="#">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-secondary w-8">5</span>
+<img class="w-12 h-12 rounded-full bg-surface-container" data-alt="Athletic profile picture for a sports ranking system, featuring a young man with a focused gaze. The style is 'Kinetic Modernism', with soft diffused shadows and a very clean, airy white background that prioritizes readability and professional athletic aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTtFs86Bt8eYB05hSxy7phlC_6yqTYkjYdHtLyhps5VGUrcuPTXxxQUxdbQ65gUFhzIU-rg5tPfUpQ2am96GTI0otwWtBUhKotsZh-HzDEHMwUiW2lMZJusC814XpOylTsZE11pID45Gs0uz80JbtFljZxB6YIYdk1848Is-VCwkXuNuTtd_w-RucPmqfv0okxCdLtm-IbXT2oZhupbseedGQXq442gcHA4ejA8M0-rpyumNBN_6sO7QDIZm5di9MNGqfFw2_ivtI"/>
+<div>
+<p class="font-headline-md text-on-surface group-hover:text-primary transition-colors">Артем Б.</p>
+<p class="text-secondary text-label-sm">Санкт-Петербург • Pro League</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-on-surface">2,420</p>
+<div class="flex items-center text-error text-xs font-bold">
+<span class="material-symbols-outlined text-[14px]">arrow_drop_down</span> -2
+                    </div>
+</div>
+</a>
+<a class="group flex items-center justify-between p-4 bg-surface rounded-xl border border-outline-variant/20 hover:border-primary transition-all duration-200 active:scale-[0.98] soft-shadow" href="#">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-secondary w-8">6</span>
+<img class="w-12 h-12 rounded-full bg-surface-container" data-alt="A sleek, modern headshot of a padel athlete. The lighting is high-energy with subtle neon green highlights reflecting off the skin, suggesting a fast-paced sports environment. The composition is clean and minimalist, following the design system's 'Kinetic Modernism' guidelines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTjwSBGLjgT0R0SYi33yCdeQoWf4DdGEoZ_kkvkpzNWlLWx2UMGf5wAydsheQjs0PH4KkXvJGhEl2lN9T7RMbSILrTOMQOy2BZsbSK4PV58MSUIwk71vWur2udQhhfz0UrWc2A7udL4q2gjj_p4QkoLIVNBxFDPw3Szwb4bBKsIG_J6Ykxd2dIFiKSRHDv2L2Tr4n4BGzL5Hnl0oSjX90H2E9cOl6lWpAj5PvS8wF6DMiBosAtq7-DIoDNtQoXu9iyMBkAsHQER98"/>
+<div>
+<p class="font-headline-md text-on-surface group-hover:text-primary transition-colors">Никита Л.</p>
+<p class="text-secondary text-label-sm">Казань • Master</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-on-surface">2,180</p>
+<div class="flex items-center text-primary text-xs font-bold">
+<span class="material-symbols-outlined text-[14px]">remove</span> 0
+                    </div>
+</div>
+</a>
+<a class="group flex items-center justify-between p-4 bg-surface-container-low rounded-xl border border-transparent hover:border-primary transition-all duration-200 active:scale-[0.98]" href="#">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-secondary w-8">7</span>
+<img class="w-12 h-12 rounded-full bg-surface-container" data-alt="Professional athlete headshot featuring bright, even lighting and a crisp white background. The subject is dressed in premium sports apparel in navy tones. The overall look is professional, motivating, and perfectly aligned with a high-octane SaaS platform for padel tennis competitors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzmpk3-taOnBa5QsRU19kSSnkas6-SA7Zrpy49kouMR2jtUmBRyNZlmzT8BsRWhswVWP_1rrhdC5rHu5A_ZYT95SA2uv--PE0coA4eeyGdlIZ5Q4l9hu1IpCHp3dLgsrJFX0Z6qJ6kcdZHrtZHQPa2_vmY6663KyafjG9L5xmfgJf3VMUuSQW0GazQ_xxWMXYcE23ztw8B6XJsclAnUwwj_ye3vZ9HH14xEjie3Le-aqBX16flgcAViK11Nf3VNQ2X81uIbDvz1Y0"/>
+<div>
+<p class="font-headline-md text-on-surface group-hover:text-primary transition-colors">Максим С.</p>
+<p class="text-secondary text-label-sm">Сочи • Master</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-on-surface">2,050</p>
+<div class="flex items-center text-primary text-xs font-bold">
+<span class="material-symbols-outlined text-[14px]">arrow_drop_up</span> +5
+                    </div>
+</div>
+</a>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-5 py-3 shadow-[0_-4px_20px_0_rgba(0,0,0,0.05)] bg-surface">
+<a class="flex flex-col items-center justify-center text-secondary px-3 py-1 transition-all duration-200 active:scale-95 hover:bg-secondary-container rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary px-3 py-1 transition-all duration-200 active:scale-95 hover:bg-secondary-container rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="emoji_events">emoji_events</span>
+<span class="font-label-sm text-label-sm mt-1">Tournaments</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary px-3 py-1 transition-all duration-200 active:scale-95 hover:bg-secondary-container rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="sports_tennis">sports_tennis</span>
+<span class="font-label-sm text-label-sm mt-1">Games</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+<span class="font-label-sm text-label-sm mt-1">Rankings</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary px-3 py-1 transition-all duration-200 active:scale-95 hover:bg-secondary-container rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</a>
+</nav>
+<!-- FAB for Quick Match -->
+<button class="fixed right-6 bottom-24 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<script>
+        // Simple interactivity for tabs
+        const tabButtons = document.querySelectorAll('header button');
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabButtons.forEach(b => {
+                    b.classList.remove('bg-on-background', 'text-background');
+                    b.classList.add('border-2', 'border-outline', 'text-secondary');
+                });
+                btn.classList.remove('border-2', 'border-outline', 'text-secondary');
+                btn.classList.add('bg-on-background', 'text-background');
+            });
+        });
+
+        // Hover effect for podium cards
+        const podiumCards = document.querySelectorAll('.podium-card');
+        podiumCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('active-glow');
+            });
+            card.addEventListener('mouseleave', () => {
+                if(!card.classList.contains('border-primary')) {
+                    card.classList.remove('active-glow');
+                }
+            });
+        });
+    </script>
+</body></html>

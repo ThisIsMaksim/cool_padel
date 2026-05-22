@@ -26,8 +26,9 @@ class ProfileTab extends StatelessWidget {
             .toList();
 
         return SafeArea(
+          bottom: false,
           child: ListView(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.fromLTRB(16, 20, 16, 120),
             children: [
               Row(
                 children: [

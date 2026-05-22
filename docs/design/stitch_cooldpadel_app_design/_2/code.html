@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#585e6f",
+                    "primary": "#506600",
+                    "surface-dim": "#d9dadb",
+                    "on-tertiary-fixed": "#0d1a38",
+                    "secondary-container": "#dadff3",
+                    "on-primary-fixed-variant": "#3c4d00",
+                    "primary-fixed": "#c3f400",
+                    "inverse-primary": "#abd600",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#506600",
+                    "surface-container": "#edeeef",
+                    "tertiary-fixed-dim": "#bac6ec",
+                    "on-error": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#ccff00",
+                    "secondary-fixed": "#dde2f6",
+                    "on-surface-variant": "#444933",
+                    "primary-fixed-dim": "#abd600",
+                    "on-tertiary-fixed-variant": "#3a4666",
+                    "inverse-on-surface": "#f0f1f2",
+                    "tertiary-fixed": "#dae2ff",
+                    "surface-variant": "#e1e3e4",
+                    "background": "#f8f9fa",
+                    "error": "#ba1a1a",
+                    "on-background": "#191c1d",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f3f4f5",
+                    "secondary-fixed-dim": "#c1c6d9",
+                    "tertiary": "#525e7f",
+                    "on-secondary-fixed-variant": "#414756",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed": "#151b29",
+                    "outline": "#747a60",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#5e6a8c",
+                    "surface-container-highest": "#e1e3e4",
+                    "on-surface": "#191c1d",
+                    "tertiary-container": "#e8ecff",
+                    "surface": "#f8f9fa",
+                    "surface-bright": "#f8f9fa",
+                    "on-primary-container": "#5b7300",
+                    "on-secondary-container": "#5d6273",
+                    "surface-container-high": "#e7e8e9",
+                    "inverse-surface": "#2e3132",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#c4c9ac",
+                    "on-primary-fixed": "#161e00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "64px",
+                    "sm": "12px",
+                    "lg": "40px",
+                    "gutter": "16px",
+                    "margin-mobile": "20px",
+                    "md": "24px",
+                    "xs": "4px",
+                    "base": "8px",
+                    "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Sora"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "headline-xl": ["Sora"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "headline-md": ["Sora"],
+                    "headline-lg": ["Sora"],
+                    "label-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f8f9fa;
+            color: #191c1d;
+            font-family: 'Hanken Grotesk', sans-serif;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .kinetic-bg {
+            background: linear-gradient(135deg, #f8f9fa 0%, #edeeef 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .electric-glow:focus {
+            box-shadow: 0 0 15px rgba(195, 244, 0, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<div class="kinetic-bg"></div>
+<!-- Top Navigation Anchor (Shared Component logic: Transactional page usually suppresses shell, but we keep branding) -->
+<header class="flex justify-center items-center px-margin-mobile py-8 w-full z-50">
+<h1 class="font-headline-md text-headline-md-mobile font-bold text-primary tracking-tighter">CoolPadel</h1>
+</header>
+<main class="flex-grow flex items-center justify-center px-margin-mobile pb-xl">
+<div class="w-full max-w-md">
+<!-- Login Card -->
+<div class="bg-surface-container-lowest rounded-xl p-md md:p-lg shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-surface-variant relative overflow-hidden">
+<!-- Athletic Accent Line -->
+<div class="absolute top-0 left-0 w-full h-1 bg-primary-fixed"></div>
+<div class="mb-lg">
+<h2 class="font-headline-md text-headline-md text-on-background mb-base">С возвращением!</h2>
+<p class="font-body-md text-body-md text-secondary">Войдите в свой аккаунт, чтобы управлять играми и турнирами.</p>
+</div>
+<form action="#" class="space-y-md" method="POST">
+<!-- Email Field -->
+<div class="space-y-xs">
+<label class="font-label-lg text-label-lg text-on-surface-variant block px-1" for="email">Email</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-2 border-outline-variant rounded-lg px-md py-3 font-body-md text-on-surface focus:outline-none focus:border-primary-fixed electric-glow transition-all duration-200" id="email" name="email" placeholder="name@example.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-xs">
+<div class="flex justify-between items-center px-1">
+<label class="font-label-lg text-label-lg text-on-surface-variant" for="password">Пароль</label>
+<a class="font-label-sm text-label-sm text-primary hover:underline transition-all" href="#">Забыли пароль?</a>
+</div>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-2 border-outline-variant rounded-lg px-md py-3 font-body-md text-on-surface focus:outline-none focus:border-primary-fixed electric-glow transition-all duration-200" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full bg-primary-fixed text-on-primary-fixed font-headline-md text-headline-md-mobile py-4 rounded-xl shadow-lg hover:bg-inverse-primary active:scale-[0.98] transition-all duration-200 flex justify-center items-center gap-base mt-lg" type="submit">
+                        Войти
+                        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+<!-- Divider -->
+<div class="relative my-xl">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant"></div>
+</div>
+<div class="relative flex justify-center text-label-sm uppercase tracking-widest">
+<span class="bg-surface-container-lowest px-md text-secondary">Или через соцсети</span>
+</div>
+</div>
+<!-- Social Logins -->
+<div class="grid grid-cols-2 gap-gutter">
+<button class="flex items-center justify-center gap-base border-2 border-outline-variant rounded-xl py-3 px-md font-label-lg text-on-surface hover:bg-surface-container-high transition-colors active:scale-95">
+<span class="material-symbols-outlined text-secondary" data-icon="google">google</span>
+                        Google
+                    </button>
+<button class="flex items-center justify-center gap-base border-2 border-outline-variant rounded-xl py-3 px-md font-label-lg text-on-surface hover:bg-surface-container-high transition-colors active:scale-95">
+<span class="material-symbols-outlined text-secondary" data-icon="apple">ios</span>
+                        Apple
+                    </button>
+</div>
+</div>
+<!-- Bottom Prompt -->
+<p class="mt-md text-center font-body-md text-body-md text-secondary">
+                Нет аккаунта? 
+                <a class="text-primary font-bold hover:underline" href="#">Зарегистрироваться</a>
+</p>
+</div>
+</main>
+<!-- Decorative Athletic Imagery (Bento style hint) -->
+<div class="hidden lg:block fixed right-10 bottom-10 w-64 h-64 opacity-20 pointer-events-none">
+<img alt="Athletic Padel Texture" class="w-full h-full object-cover rounded-full rotate-12 grayscale" data-alt="A dynamic close-up photograph of a professional padel racket hitting a neon yellow ball with high velocity. The lighting is dramatic and cinematic, emphasizing the athletic motion and the carbon fiber texture of the racket. The color palette is dominated by deep greys and blacks with a striking electric lime green glow from the ball, reflecting a high-octane performance sports aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKLSCJ47_Zi3lntfg7WiFN9pgdCvkkE6Xq0K6NqtvOUqZmgMCSZCbKyCJZubH2o4_IchAeVKPHK7jaTRWntPXv54EdrlGmqvEqOsaPp_tG5Y2odnFDVUAnhZ6gMAsa27tqUiX79ZDunIsesD3_SwyNTiZzhNETvjfJYfknEuCoIRXW77KdiPGVp16Sq3XHG6a2ypP4PtZiE_o4xu6jWFgk507qJYwGQ2oWHia-9YOR-2A7xnPqZUrUNdlIcGn6DHy4vb8cl-ZziLQ"/>
+</div>
+<script>
+        // Simple micro-interaction for input focus
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.parentElement.classList.add('scale-[1.01]');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.parentElement.classList.remove('scale-[1.01]');
+            });
+        });
+    </script>
+</body></html>

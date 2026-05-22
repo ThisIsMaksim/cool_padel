@@ -5,6 +5,7 @@ import '../../models/game.dart';
 import '../../models/tournament.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_header.dart';
+import '../../widgets/section_header.dart';
 import '../games/active_game_screen.dart';
 import '../tournaments/tournament_detail_screen.dart';
 
@@ -29,14 +30,22 @@ class HomeTab extends StatelessWidget {
         final carouselItems = _carouselItems(upcomingGames, upcomingTournaments);
 
         return SafeArea(
+          bottom: false,
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
                 child: AppHeader(
                   title: 'CoolPadel',
+                  showLogo: true,
                   notificationCount: 2,
                   onProfileTap: onOpenProfile,
                   onNotificationsTap: () {},
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: SectionHeader(
+                  title: 'Турниры',
+                  trailingLabel: 'Все',
                 ),
               ),
               SliverToBoxAdapter(
@@ -47,8 +56,7 @@ class HomeTab extends StatelessWidget {
                     itemCount: carouselItems.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding:
-                            const EdgeInsets.only(left: 12, right: 4, bottom: 8),
+                        padding: const EdgeInsets.only(left: 12, right: 4),
                         child: _CarouselCard(
                           appState: appState,
                           item: carouselItems[index],
@@ -58,59 +66,20 @@ class HomeTab extends StatelessWidget {
                   ),
                 ),
               ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
-                  child: Container(
-                    height: 110,
-                    decoration: BoxDecoration(
-                      gradient: AppTheme.heroGradient.gradient,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Premium-корт',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'Скидка 20% на бронирование в Padel Club Moscow',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(color: Colors.white70),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Icon(Icons.local_offer,
-                            color: AppTheme.accentGold, size: 40),
-                      ],
-                    ),
-                  ),
-                ),
+              const SliverToBoxAdapter(
+                child: SectionHeader(title: 'Показатели'),
               ),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppTheme.marginMobile,
+                  ),
                   child: Row(
                     children: [
                       _QuickStat(
-                        label: 'Активные игры',
+                        label: 'Серия побед',
                         value: '${appState.games.activeCount}',
+                        glow: true,
                       ),
                       const SizedBox(width: 12),
                       _QuickStat(
@@ -121,7 +90,60 @@ class HomeTab extends StatelessWidget {
                   ),
                 ),
               ),
-              const SliverToBoxAdapter(child: SizedBox(height: 24)),
+              const SliverToBoxAdapter(
+                child: SectionHeader(title: 'Рядом'),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppTheme.marginMobile,
+                    0,
+                    AppTheme.marginMobile,
+                    120,
+                  ),
+                  child: AppTheme.glassSurface(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 64,
+                          height: 64,
+                          decoration: BoxDecoration(
+                            color: AppTheme.surfaceContainerHigh,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(
+                            Icons.local_offer,
+                            color: AppTheme.primary,
+                            size: 32,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Premium-корт',
+                                style:
+                                    Theme.of(context).textTheme.titleMedium,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Скидка 20% · Padel Club Moscow',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Icon(
+                          Icons.chevron_right,
+                          color: AppTheme.secondary,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         );
@@ -175,11 +197,12 @@ class _CarouselCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (item.isPlaceholder) {
-      return Card(
+      return AppTheme.glassSurface(
         child: Center(
           child: Text(
             'Создайте игру или запишитесь на турнир',
             style: Theme.of(context).textTheme.bodyMedium,
+            textAlign: TextAlign.center,
           ),
         ),
       );
@@ -191,60 +214,60 @@ class _CarouselCard extends StatelessWidget {
         ? item.game!.scoreSummary
         : '${item.tournament!.club} · ${item.tournament!.formatLabel}';
 
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () {
-          if (isGame) {
-            Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => ActiveGameScreen(
-                  appState: appState,
-                  gameId: item.game!.id,
-                ),
+    return AppTheme.glassSurface(
+      glow: isGame,
+      onTap: () {
+        if (isGame) {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => ActiveGameScreen(
+                appState: appState,
+                gameId: item.game!.id,
               ),
-            );
-          } else {
-            Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => TournamentDetailScreen(
-                  appState: appState,
-                  tournamentId: item.tournament!.id,
-                ),
-              ),
-            );
-          }
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                AppTheme.brandPrimary.withValues(alpha: 0.9),
-                AppTheme.brandLight.withValues(alpha: 0.85),
-              ],
             ),
-          ),
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Chip(
-                label: Text(isGame ? 'Игра' : 'Турнир'),
-                backgroundColor: Colors.white24,
-                labelStyle: const TextStyle(color: Colors.white),
+          );
+        } else {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => TournamentDetailScreen(
+                appState: appState,
+                tournamentId: item.tournament!.id,
               ),
-              const Spacer(),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+            ),
+          );
+        }
+      },
+      child: SizedBox(
+        height: 170,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Chip(
+              label: Text(
+                (isGame ? 'Игра' : 'Турнир').toUpperCase(),
+                style: AppTheme.labelCaps(
+                  Theme.of(context).colorScheme,
+                  color: isGame ? AppTheme.onPrimary : AppTheme.primary,
+                ).copyWith(fontSize: 10),
               ),
-              const SizedBox(height: 4),
-              Text(subtitle, style: const TextStyle(color: Colors.white70)),
-            ],
-          ),
+              backgroundColor:
+                  isGame ? AppTheme.primary : AppTheme.surfaceContainerHigh,
+              side: BorderSide(
+                color: AppTheme.primary.withValues(alpha: 0.3),
+              ),
+              padding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+            ),
+            const Spacer(),
+            Text(
+              title,
+              style: Theme.of(context).textTheme.titleLarge,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 4),
+            Text(subtitle, style: Theme.of(context).textTheme.bodySmall),
+          ],
         ),
       ),
     );
@@ -252,27 +275,39 @@ class _CarouselCard extends StatelessWidget {
 }
 
 class _QuickStat extends StatelessWidget {
-  const _QuickStat({required this.label, required this.value});
+  const _QuickStat({
+    required this.label,
+    required this.value,
+    this.glow = false,
+  });
 
   final String label;
   final String value;
+  final bool glow;
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Expanded(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+      child: AppTheme.glassSurface(
+        glow: glow,
+        child: SizedBox(
+          height: 120,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (glow)
+                const Icon(Icons.bolt, color: AppTheme.primary, size: 28),
+              const Spacer(),
               Text(
                 value,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: AppTheme.dataMono(scheme, color: AppTheme.primary, size: 40),
               ),
-              Text(label, style: Theme.of(context).textTheme.bodySmall),
+              const SizedBox(height: 4),
+              Text(
+                label.toUpperCase(),
+                style: AppTheme.labelCaps(scheme),
+              ),
             ],
           ),
         ),

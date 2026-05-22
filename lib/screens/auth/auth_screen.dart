@@ -69,9 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Text(
                 'Войдите, чтобы вести игры и турниры',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.black54,
-                    ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 40),
               TextField(

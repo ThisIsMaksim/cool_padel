@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .kinetic-border {
+            position: relative;
+            overflow: hidden;
+        }
+        .kinetic-border::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #c3f400;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+        .kinetic-border:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#585e6f",
+                    "primary": "#506600",
+                    "surface-dim": "#d9dadb",
+                    "on-tertiary-fixed": "#0d1a38",
+                    "secondary-container": "#dadff3",
+                    "on-primary-fixed-variant": "#3c4d00",
+                    "primary-fixed": "#c3f400",
+                    "inverse-primary": "#abd600",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#506600",
+                    "surface-container": "#edeeef",
+                    "tertiary-fixed-dim": "#bac6ec",
+                    "on-error": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#ccff00",
+                    "secondary-fixed": "#dde2f6",
+                    "on-surface-variant": "#444933",
+                    "primary-fixed-dim": "#abd600",
+                    "on-tertiary-fixed-variant": "#3a4666",
+                    "inverse-on-surface": "#f0f1f2",
+                    "tertiary-fixed": "#dae2ff",
+                    "surface-container-low": "#f3f4f5",
+                    "secondary-fixed-dim": "#c1c6d9",
+                    "tertiary": "#525e7f",
+                    "on-secondary-fixed-variant": "#414756",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed": "#151b29",
+                    "outline": "#747a60",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#5e6a8c",
+                    "surface-container-highest": "#e1e3e4",
+                    "on-surface": "#191c1d",
+                    "tertiary-container": "#e8ecff",
+                    "surface": "#f8f9fa",
+                    "surface-bright": "#f8f9fa",
+                    "on-primary-container": "#5b7300",
+                    "on-secondary-container": "#5d6273",
+                    "surface-container-high": "#e7e8e9",
+                    "inverse-surface": "#2e3132",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#c4c9ac",
+                    "on-primary-fixed": "#161e00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "64px",
+                    "sm": "12px",
+                    "lg": "40px",
+                    "gutter": "16px",
+                    "margin-mobile": "20px",
+                    "md": "24px",
+                    "xs": "4px",
+                    "base": "8px",
+                    "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Sora"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "headline-xl": ["Sora"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "headline-md": ["Sora"],
+                    "headline-lg": ["Sora"],
+                    "label-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-on-background flex justify-between items-center px-margin-mobile py-4 w-full sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="A professional portrait of a padel player in their late 20s, wearing high-performance athletic apparel. The lighting is crisp and natural, highlighting an active lifestyle. The background is a blurred, high-end sports facility with subtle Electric Lime and Navy blue tones. The overall aesthetic is clean, energetic, and modern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLWfkBpC9QMv2NuGNfQXk1pyBRf9Jqm0g25sdfSZxa4LWtq848RDCDdrIeNWEsggoZ_LOkKMiZXCzuQ94xdsyc_b6afEbvtu4_rTWJBHb45LyoeRABJZSCAkz6V7A4u5t_XnQNXoPxL-YTJdemVryg_ZYl4vB9Wu-qKr132VElzTMuKxqLOlELh1qXa_pJsmXfxtCvdE2cFkDVSV8LbjvXFJ7Eu9QjBDNs6wMtmNfCTFM9J7xLoxuQyyGUV6MPq-GieYo6mjV8lw8"/>
+</div>
+</div>
+<h1 class="font-headline-md text-headline-md-mobile font-bold text-primary dark:text-primary-fixed">CoolPadel</h1>
+<button class="text-primary dark:text-primary-fixed hover:opacity-80 transition-opacity duration-150">
+<span class="material-symbols-outlined text-[28px]" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main class="space-y-8 animate-in fade-in duration-700">
+<!-- Welcome Section -->
+<section class="px-margin-mobile mt-4">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-secondary uppercase tracking-widest">Добро пожаловать</span>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Привет, Александр! 👋</h2>
+</div>
+</section>
+<!-- Quick Actions Grid -->
+<section class="px-margin-mobile">
+<div class="grid grid-cols-2 gap-4">
+<button class="flex flex-col items-center justify-center p-6 bg-primary-container text-on-primary-container rounded-xl shadow-md active:scale-95 transition-all duration-200">
+<span class="material-symbols-outlined text-4xl mb-2" data-icon="add_circle">add_circle</span>
+<span class="font-label-lg text-label-lg">Создать игру</span>
+</button>
+<button class="flex flex-col items-center justify-center p-6 bg-secondary-fixed text-on-secondary-fixed rounded-xl shadow-md active:scale-95 transition-all duration-200">
+<span class="material-symbols-outlined text-4xl mb-2" data-icon="search">search</span>
+<span class="font-label-lg text-label-lg">Найти турнир</span>
+</button>
+</div>
+</section>
+<!-- Promotional Banner -->
+<section class="px-margin-mobile">
+<div class="relative w-full h-48 rounded-2xl overflow-hidden shadow-lg group cursor-pointer">
+<img alt="New Equipment Promotion" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A dynamic, high-action close-up shot of a professional padel racket striking a ball. The scene is set on a premium blue padel court with bright Electric Lime accents. High-speed photography captures motion blur and intensity. The lighting is cinematic, highlighting the texture of the carbon fiber racket and the vibrant colors of the sport." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCnxqFuoD620nI_4xQMzfoHI3J5LCzjuH-8_EWgR-2fYXgc2qJsA0YdAGUQ2OQt0sOG6y5OJLg5p9k3LVdMdouVpkG1HMgMNjAJ89_ODG6ukesxGjnNutNIl1Ob_lsxnXKkVSJvSJWdlCLkVI_fl5X5oljNGTb0v63UX62I0twngslbNT-LPXA9rxCkozLU2g9UHO3g09eKenBtGib1hnaliP0L_7tAooLyQpOqSj8NhVItpBsB17iKv2-DgQbMkWX6KXFk_kOsKw"/>
+<div class="absolute inset-0 bg-gradient-to-r from-on-background/80 to-transparent flex flex-col justify-center px-8">
+<span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full w-fit font-label-sm text-label-sm mb-2">НОВИНКА</span>
+<h3 class="font-headline-md text-headline-md-mobile text-white mb-2 max-w-[200px]">Экипировка 2024 уже здесь</h3>
+<p class="text-white/80 font-label-lg text-label-lg">Скидка 15% на первое бронирование</p>
+</div>
+</div>
+</section>
+<!-- Horizontal Carousel: Upcoming Games & Tournaments -->
+<section>
+<div class="flex justify-between items-end px-margin-mobile mb-4">
+<h3 class="font-headline-md text-headline-md-mobile text-on-surface">Ближайшие события</h3>
+<a class="text-primary font-label-lg text-label-lg hover:underline transition-all" href="#">Все</a>
+</div>
+<div class="flex overflow-x-auto no-scrollbar gap-gutter px-margin-mobile snap-x pb-4">
+<!-- Game Card 1 -->
+<div class="min-w-[280px] bg-surface-container-lowest rounded-xl p-4 snap-center shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/30">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full font-label-sm text-label-sm">Сегодня, 18:30</span>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-surface-dim overflow-hidden">
+<img alt="Player 1" class="w-full h-full object-cover" data-alt="Close-up portrait of a sporty man smiling, set in a modern gym environment with soft lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7L3Ajf_cdYc14MPbRz62F1fUZL2bEzlNQatP2wZWKI-hSRHJPaJXVyZvK-DOs6eCgWd9qxade812BtOULq3Q1j5113Gx3CpyyqutgeyifL1J8w3-Ds1grnjmWNrGxBWk5YvEMnxihYWcz_qf-qUOF6AZqV6l99SydE58hGYB8Jh3zWjKyIv4xlRSFIQ6im6Vn-wfibgV75OEdmG4REDwcA6plxpeD374pLiMAjlaBVi6OpruOU7OcDAMmAUoDSPWhm22W9CE3KUQ"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-surface-dim overflow-hidden">
+<img alt="Player 2" class="w-full h-full object-cover" data-alt="Close-up portrait of a sporty woman, cinematic lighting in an outdoor sports setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB57QadpO43dF-KGrIJKQ4fZr0HOS6iD5zKR3BJiN15eYI5EGJfpFofoxg3pKN7iPUNoLlf9WSs90bTyP2qbtTHBCzReCYvCJzdzdVB4gIeGpsTJmzQmDLcK9EgmiHsbCm-R90IS44H57Px3fqcRcd3-H8P3ypPAEWrKM2jVhkkzGSbKDVsQ8nH9WHCMy9YQvJkEmBsP-2ogSl68nXIAPJq2raBBo-KLPF95Ardjl9IkCodukLw6TRm3fTmu04nDTUGd-9mcaC55-4"/>
+</div>
+</div>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-1">Doubles Pro</h4>
+<p class="text-secondary font-body-md text-body-md mb-4 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span> Padel Arena North
+                    </p>
+<div class="flex justify-between items-center">
+<span class="text-primary font-bold">2 места свободно</span>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-lg text-label-lg active:scale-95 transition-all">Участвовать</button>
+</div>
+</div>
+<!-- Tournament Card -->
+<div class="min-w-[280px] bg-on-background rounded-xl p-4 snap-center shadow-xl relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-20">
+<span class="material-symbols-outlined text-white text-6xl" data-icon="emoji_events">emoji_events</span>
+</div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full font-label-sm text-label-sm">24-26 Октября</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-white mb-1 relative z-10">Padel Masters Cup</h4>
+<p class="text-surface-dim font-body-md text-body-md mb-6 relative z-10 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="military_tech">military_tech</span> Приз: 50,000₽
+                    </p>
+<div class="flex items-center gap-3 relative z-10">
+<div class="flex flex-col">
+<span class="text-white/60 font-label-sm text-label-sm uppercase">Рейтинг</span>
+<span class="text-white font-bold">Amateur+</span>
+</div>
+<button class="ml-auto bg-white text-on-background px-4 py-2 rounded-lg font-label-lg text-label-lg active:scale-95 transition-all">Регистрация</button>
+</div>
+</div>
+<!-- Game Card 2 -->
+<div class="min-w-[280px] bg-surface-container-lowest rounded-xl p-4 snap-center shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/30">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full font-label-sm text-label-sm">Завтра, 10:00</span>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-surface-dim flex items-center justify-center text-xs font-bold text-secondary">JS</div>
+</div>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-1">Friendly Singles</h4>
+<p class="text-secondary font-body-md text-body-md mb-4 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span> City Court Hub
+                    </p>
+<div class="flex justify-between items-center">
+<span class="text-secondary font-bold">1 место свободно</span>
+<button class="bg-secondary text-on-secondary px-4 py-2 rounded-lg font-label-lg text-label-lg active:scale-95 transition-all">Присоединиться</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Section (Bento Style) -->
+<section class="px-margin-mobile pb-8">
+<h3 class="font-headline-md text-headline-md-mobile text-on-surface mb-4">Твой прогресс</h3>
+<div class="grid grid-cols-2 grid-rows-2 gap-4 h-64">
+<div class="row-span-2 bg-primary-fixed-dim/20 rounded-2xl p-6 flex flex-col justify-between border border-primary-fixed/30">
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="trending_up" data-weight="fill" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<div>
+<div class="font-headline-xl text-headline-xl text-primary leading-none">12</div>
+<div class="font-label-lg text-label-lg text-on-surface-variant mt-1">Побед подряд</div>
+</div>
+</div>
+<div class="bg-surface-container-high rounded-2xl p-4 flex items-center gap-3">
+<div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-secondary" data-icon="workspace_premium">workspace_premium</span>
+</div>
+<div>
+<div class="font-bold text-on-surface">Топ 5%</div>
+<div class="text-label-sm text-secondary">Рейтинг города</div>
+</div>
+</div>
+<div class="bg-surface-container-high rounded-2xl p-4 flex items-center gap-3">
+<div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-secondary" data-icon="timer">timer</span>
+</div>
+<div>
+<div class="font-bold text-on-surface">48ч</div>
+<div class="text-label-sm text-secondary">На корте в мес.</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-5 py-3 bg-surface dark:bg-on-background shadow-[0_-4px_20px_0_rgba(0,0,0,0.05)]">
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl px-3 py-1 transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="home" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-3 py-1 transition-all duration-200 hover:bg-secondary-container dark:hover:bg-secondary active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="emoji_events">emoji_events</span>
+<span class="font-label-sm text-label-sm mt-1">Tournaments</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-3 py-1 transition-all duration-200 hover:bg-secondary-container dark:hover:bg-secondary active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="sports_tennis">sports_tennis</span>
+<span class="font-label-sm text-label-sm mt-1">Games</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-3 py-1 transition-all duration-200 hover:bg-secondary-container dark:hover:bg-secondary active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-label-sm text-label-sm mt-1">Rankings</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-3 py-1 transition-all duration-200 hover:bg-secondary-container dark:hover:bg-secondary active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple haptic feedback simulation for buttons
+        document.querySelectorAll('button, a').forEach(elem => {
+            elem.addEventListener('click', () => {
+                if (window.navigator.vibrate) {
+                    window.navigator.vibrate(10);
+                }
+            });
+        });
+
+        // Subtle animation for cards on scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-4');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.snap-center').forEach(card => {
+            card.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+            observer.observe(card);
+        });
+    </script>
+</body></html>

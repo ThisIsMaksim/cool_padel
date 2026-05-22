@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CoolPadel - Игры</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#585e6f",
+                        "primary": "#506600",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-fixed": "#0d1a38",
+                        "secondary-container": "#dadff3",
+                        "on-primary-fixed-variant": "#3c4d00",
+                        "primary-fixed": "#c3f400",
+                        "inverse-primary": "#abd600",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#506600",
+                        "surface-container": "#edeeef",
+                        "tertiary-fixed-dim": "#bac6ec",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#ccff00",
+                        "secondary-fixed": "#dde2f6",
+                        "on-surface-variant": "#444933",
+                        "primary-fixed-dim": "#abd600",
+                        "on-tertiary-fixed-variant": "#3a4666",
+                        "inverse-on-surface": "#f0f1f2",
+                        "tertiary-fixed": "#dae2ff",
+                        "surface-variant": "#e1e3e4",
+                        "background": "#f8f9fa",
+                        "error": "#ba1a1a",
+                        "on-background": "#191c1d",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary-fixed-dim": "#c1c6d9",
+                        "tertiary": "#525e7f",
+                        "on-secondary-fixed-variant": "#414756",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#151b29",
+                        "outline": "#747a60",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#5e6a8c",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-surface": "#191c1d",
+                        "tertiary-container": "#e8ecff",
+                        "surface": "#f8f9fa",
+                        "surface-bright": "#f8f9fa",
+                        "on-primary-container": "#5b7300",
+                        "on-secondary-container": "#5d6273",
+                        "surface-container-high": "#e7e8e9",
+                        "inverse-surface": "#2e3132",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c4c9ac",
+                        "on-primary-fixed": "#161e00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "64px",
+                        "sm": "12px",
+                        "lg": "40px",
+                        "gutter": "16px",
+                        "margin-mobile": "20px",
+                        "md": "24px",
+                        "xs": "4px",
+                        "base": "8px",
+                        "margin-desktop": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Sora"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-xl": ["Sora"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Sora"],
+                        "headline-lg": ["Sora"],
+                        "label-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-glow {
+            box-shadow: 0 0 15px -3px rgba(171, 214, 0, 0.4);
+        }
+        .kinetic-scroll::-webkit-scrollbar { display: none; }
+        .kinetic-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-margin-mobile py-4 w-full sticky top-0 z-50 bg-surface dark:bg-on-background">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApuN_w1xHUfeyt9KRidcUHVF54W3wuYoxIfr9mWg9b0oJCXuDmfnxT7ti21uUYpDWbVZzabi4Fn9IbOpShKBJNmP5YVB7Wow_z0nKRohV00zUCu42soSOH313S7CegVYcZcmINA8n5ZqGPv9GOxnkRxQoZJH_0nv6J6Nfa9AV74eETxWIbovl96JSlMl-BD0TPrhT7eCI_sqbQ1n2ZfLr5xUwSzZJbUoQIhmYMpuNLhI8eQNIRyIqI8V2FYV-FCumHHCyQkAdwgX0"/>
+</div>
+<h1 class="font-headline-md text-headline-md-mobile font-bold text-primary dark:text-primary-fixed">CoolPadel</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-secondary dark:text-secondary-fixed-dim hover:opacity-80 transition-opacity duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<main class="px-margin-mobile pt-4 space-y-8">
+<!-- Live Game Banner (Asymmetric Layout) -->
+<section class="relative overflow-hidden rounded-xl bg-on-background p-6 text-white shadow-xl">
+<div class="absolute top-0 right-0 p-4">
+<div class="flex items-center gap-2 bg-primary px-3 py-1 rounded-full animate-pulse">
+<span class="w-2 h-2 bg-white rounded-full"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Live</span>
+</div>
+</div>
+<div class="flex flex-col gap-6">
+<div class="flex justify-between items-end">
+<div class="space-y-1">
+<p class="font-label-lg text-label-lg text-primary-fixed">Текущая игра</p>
+<h2 class="font-headline-md text-headline-md">Club Padel Pro</h2>
+</div>
+<div class="text-right">
+<p class="font-label-sm text-label-sm opacity-70">Сет 2</p>
+<p class="font-headline-md text-headline-md text-primary-fixed">4 - 2</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white/10 rounded-lg p-4 backdrop-blur-md border border-white/10">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-sm text-label-sm opacity-60">Команда A</span>
+<span class="material-symbols-outlined text-primary-fixed" data-icon="sports_tennis" style="font-variation-settings: 'FILL' 1;">sports_tennis</span>
+</div>
+<div class="flex -space-x-2">
+<img alt="Player" class="w-8 h-8 rounded-full border-2 border-on-background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkMiBegevj_WaFMx8QZbUWMGuDjxwWI5MXUkurw_5eJx0KWFAfCzPVjRhgJF43nc-PyblU2xNrQey7RgtDXNmGoyJxuH276dDuIot2lE3B_6ruw913nAhyignT26hghofesYJgn98BmacFH7NFG9UVF0-c9QPTmId6ZtCdfr_PHhSF3hLrMKungVzxDZuOk7RO2lhzbQ2i1eQmnh5GazxEPLg3qiaM3cUSBIyQJsiPFKa7CzxxAJKhM4GGNqjY5ww9dSjTfGdrNMQ"/>
+<img alt="Player" class="w-8 h-8 rounded-full border-2 border-on-background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA82Vm4OgBFXTJt1IHiEGHp48zoKYh3CF_nxzuQuBLyDiV54Tm-W-i877_BooLZXyXsaqf_7LUOywoSUCBk4OuK8cQA42gLDwit-xZyT9qgC82zyP2I93enix4uxfv2NOLYZIvNj7RCMtQldyXq3Nw2s8p1zBE0GmS04ipk2LaVUwgtN5HbN1Y1evO10rxqSYhDwIP0yg8JJLSSLHqUS5OmuGtrRaFz9A9V-8_IeQ_AJG7BpU2kTQtD7F46C2HplqoVU35vapg3rPI"/>
+</div>
+<p class="mt-2 font-headline-md text-headline-md">15</p>
+</div>
+<div class="bg-white/5 rounded-lg p-4 border border-white/5">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-sm text-label-sm opacity-60">Команда B</span>
+</div>
+<div class="flex -space-x-2">
+<img alt="Player" class="w-8 h-8 rounded-full border-2 border-on-background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxXgX473TCYcopoaCXlwxweXxvT452nmForXINxb4da-GY9VbSvIrfqVcSEcmw-W8jJBVxMvElbOrydS3tCmYXoyg8eAG8hFl1yMuW0FqnMVfWLWxxv78svyMArO5e2vCPPn5nMUBgcTWfHU9c3L40YhLw9cppB_A_BqdIiB8lgZOhFdRDuGo2qigBsFhKV50fgX7Tr1sA-squZ1t8K2mCqFQ37Hu410-VmnJAsHVbVokDu4wV2iPCO7k-z8L0X_1_tgTf-3DGuD0"/>
+<img alt="Player" class="w-8 h-8 rounded-full border-2 border-on-background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlMlDscbGcsBWIh7gD6ENW2Lq9G_QXLwyr5lJrG3qxjN6D70HT_aLySauQsgjRq-HOtT8v_NZWo5HXufRgSIYYamt4q90fLh65MKmbuCqIQkhVtZVCcQKaOEzvRDg4Ggz_ms2ViYRFGi1G9gwH-tqOdIdXZIBeCNbq7IfvuERDgMueCZyAROl5ktqqBNov3E5XgCRdoohMIhBQjUbCzzvD0TdGs16w5t3rCIESXqFSt0eLcVOPbUXPYE-iGPy6sUIYn6qAurIOVb4"/>
+</div>
+<p class="mt-2 font-headline-md text-headline-md">30</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Actions -->
+<div class="flex flex-col gap-4">
+<button class="flex items-center justify-center gap-3 bg-primary-container text-on-primary-container font-label-lg text-label-lg py-4 rounded-xl shadow-lg active:scale-95 transition-all duration-200" onclick="openCreateFlow()">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+                СОЗДАТЬ ИГРУ
+            </button>
+</div>
+<!-- History Section (Bento Inspired) -->
+<section class="space-y-4">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md">История игр</h3>
+<button class="text-primary font-label-lg text-label-lg">Все</button>
+</div>
+<div class="space-y-4">
+<!-- Match Card 1 -->
+<div class="bg-white rounded-xl p-5 border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-sm text-label-sm text-secondary">Вчера, 18:30 • Classic</span>
+</div>
+<div class="bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded text-[10px] font-bold uppercase">Победа</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex-1 text-center">
+<div class="flex justify-center -space-x-3 mb-2">
+<img alt="Me" class="w-12 h-12 rounded-full border-2 border-white shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0IiShmY4_yGPKLRqX8PHhrG962oaMSwmYkSgkuD_QmOirCW-maaVcfYpchbUE03pAvfHboM0eWhk5ZEYplAg9BNqwrqfulXBVuvQ3A1WbDJ2XJ7TJqgtYXe84t8E-i-96ZPsYioj1zS5jsGyvjvie1kETVw18AW-T500AgwoFthkrGYbJGfOC6eI2BeVFGTW3TkuYPLe__Gjl6nSu7gKsZ8ybk_P_c-ym0kQ7liiS6zuYX9iEFxOvyIDM38Alv1mlIscjoUjtEeQ"/>
+<img alt="Partner" class="w-12 h-12 rounded-full border-2 border-white shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzxwRg6Xh_-t2ClLkZvIETx43kSub4wI0F7tkAH8fcnSRCArv46WEmpDJm8mEAnaJlkXeYq9qhMEc428OWl95aIWzrbAZAduRGv4akyp94G61v1JJB3Z0pr0fM55H3nyzg1OsbZ4J_UUuKtcF_wyGf-M8VsabItHG9jv3pjLDMrjJyI0UB27CWADdBPEj6ef4LzUMpcKoUTw9GoXG5VjAVgHLrwZYIOWyrzuqeuMAN76Lbt1d7O5c0T9Pth1uuNHpZ75Oz4diSbUE"/>
+</div>
+<p class="font-label-lg text-label-lg truncate">Вы &amp; Иван</p>
+</div>
+<div class="px-6 flex flex-col items-center">
+<span class="font-headline-md text-headline-md text-primary">6 - 4</span>
+<span class="font-headline-md text-headline-md text-primary">6 - 2</span>
+</div>
+<div class="flex-1 text-center opacity-60">
+<div class="flex justify-center -space-x-3 mb-2">
+<img alt="Opponent" class="w-12 h-12 rounded-full border-2 border-white shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_RlmTMNrhUTnj77y16Ooukg2nCD-ErGWWRqwFfC05BrvkTSob5uCMUR7l4qEXKG5gikpnOmCJew2kSCWTJzO7fINAJhj4Pm9xl8NrsRNsc6RJvgMUyBkTO845Fd1GrazAREpO_7H6gTrOcj5cnrbScolZoizbJXyODEkQynJc6FLynsINjraJLBLRSSxVMHwS0mnEKPNXPwJloAnXZkbdrWVnDHDtYBMHw2Cxj0MRIC-C1Xf259FXgqYfjunNDaC1FYRuLzGglRI"/>
+<img alt="Opponent" class="w-12 h-12 rounded-full border-2 border-white shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7pwc4f3WxeliLSXMalMMjyyUTU6AypD6ON6Z87niWoJK1FpjKGRZcCBoLerB8n3KokU2TtHHASdv7RGkxnQqP30hyofL5kmuVNzglPgsDNncAD9JAJLTS5WQ47dae_kM1zB4o7Bbr_mEWTWXX-csZTRsk2Ssul_s2W3Ps8tsEROK_bF5BM4p3BKJogwAKl5WW4X0VddDWERLz7UZ0S13OZzRazqPXzTPhJQ8qdQQgv0n3KkSndurHV6XHl1rdLrqZWEihU5HRLIA"/>
+</div>
+<p class="font-label-lg text-label-lg truncate">Олег &amp; Юрий</p>
+</div>
+</div>
+</div>
+<!-- Match Card 2 -->
+<div class="bg-white rounded-xl p-5 border border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="emoji_events">emoji_events</span>
+<span class="font-label-sm text-label-sm text-secondary">12 Окт • Tournament Mode</span>
+</div>
+<div class="bg-surface-variant text-secondary px-2 py-0.5 rounded text-[10px] font-bold uppercase">Поражение</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex-1 text-center opacity-60">
+<div class="flex justify-center -space-x-3 mb-2">
+<img alt="Me" class="w-12 h-12 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOqxxeRW1py-0TL8asVmYmEHkc431MfhnBYhGOze700yhk3_UTVfnBUpK8aDwWr0Yv942Y2I9aBq2r_uO28sVu81fyYA-2sCXct9ppRd5l0WKsLzbZ8r775KxAvfp-sLUAKsk2efs1rqGwUba0pE4FcJQAE_T9MWjD5ZcKcI8mwIOnC36240kBbHXomDtkFxwoRk1yGGtJUVfnjNxs6xJqG7_z1xKicpQucMOpU-B7s8KrvS036SBm4wopSJFltDYzEnYgT2-L4sE"/>
+<img alt="Partner" class="w-12 h-12 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1GYnzD8H81QPNUB7bgGHNYxMBWGFARuOvKPiDCMe4unNrK1nAnOC3qAPPPwIRdH_eGpygN0WfPNkVGUjl6_3jjlqK3Sde2UCAFhCS470yxUfnXYq8yzdcLffIsqQp1NlXFukIKRuRRiYb-7JssBiqsoR0idVygOeIHsBOYNbKqzh5bywTOUYICgReJQAyJZ2IWj0NOPb8bMne8ClR_gJvQGzDoOqPTXg3U3bl3EgVBlzGXFbE4LRhz2_al2FWGXyI4Adc4I9-lk4"/>
+</div>
+<p class="font-label-lg text-label-lg">Вы &amp; Саша</p>
+</div>
+<div class="px-6 flex flex-col items-center">
+<span class="font-headline-md text-headline-md text-error">18 - 21</span>
+</div>
+<div class="flex-1 text-center">
+<div class="flex justify-center -space-x-3 mb-2">
+<img alt="Opponent" class="w-12 h-12 rounded-full border-2 border-white shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAByMYV-K39-lKvJNHxXKXQFxp32bx2wRDp8IgOV_o4s5qd5vVxQihpNkLGxIaCl5yTNe8lrB8tn1XdCyfQ4S9lzN1Om-AKUQ_j0IjJP5kzYColKth8-8iqwjRIA68XPA75dgWwlnX9tItZnTheiNeZB9g_-JyPq-wGxOZHOdt7ynErqicLZD_FHiAlj3lZKTLzEUReMU-pXBKjOmQ1lutfcAGdNX8vyyl4dNAWo9jP6kGQeFvm4nx31us3x6uYfN_cdj_EPNypcrM"/>
+<img alt="Opponent" class="w-12 h-12 rounded-full border-2 border-white shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCH-jRpKpeaxSfHCOz48wdllG8k3amkYkgpKufc_ej9YQv6yzSVrLglQYDRugPx3s0lW0at_dvQiAkFJEIrdvjESA0fDkqpJz94UoD3DCFJ0O5KWIjIU2PC9cYugJTrMMNEthYoq9Nj9o4XJIkQMqhDWzHqxodF_EemnNwrZtF97YuwX40191NWMkzN1TCSe767hbeyIaiygnZQOO__m1NoCR4GDF3cAAf0Mxv2QtFuH5nj7jqRYy76ZgSptK21d9TRCk92fTjZ8J8"/>
+</div>
+<p class="font-label-lg text-label-lg">Кирилл &amp; Дима</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Create Game Modal Overlay -->
+<div class="fixed inset-0 bg-on-background/60 backdrop-blur-sm z-[100] hidden flex items-end sm:items-center justify-center p-4" id="createModal">
+<div class="bg-surface w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 space-y-6 animate-in slide-in-from-bottom duration-300">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md">Новая игра</h3>
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors" onclick="closeCreateFlow()">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<!-- Flow Steps: Simplified -->
+<div class="space-y-6">
+<!-- Add Players -->
+<div class="space-y-3">
+<label class="font-label-lg text-label-lg">Добавить игроков</label>
+<div class="flex gap-3 kinetic-scroll overflow-x-auto pb-2">
+<button class="flex flex-col items-center gap-1 min-w-[70px]">
+<div class="w-14 h-14 rounded-full border-2 border-dashed border-outline flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</div>
+<span class="text-[10px] font-medium">Поиск</span>
+</button>
+<div class="flex flex-col items-center gap-1 min-w-[70px]">
+<img alt="Fav" class="w-14 h-14 rounded-full border-2 border-primary-container p-0.5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQMAmpmepDGohgtRg2MsZ64XZNpjFs4kDqgdEqpgv-ore5ZMLgZczXexMr2WiPQxHj6T_k9cIw6fxgL1wy8jzvHWt2Nlx0CEPUkLZzNl3PjwAhe1lGTxo5RBqK070YFSShtDFGLO-qnsRH5fuvTJgEGdfTeWxGu6Gf7b-A93U7mfmGmlIRVr63i-d06tZvePW6wCcD-eld9y0eN4U9vum5O1AZeKoZVCAg2nPN1-y431kFnZPQP_AOPrLMqplBEwfWD_Rm49vyVLk"/>
+<span class="text-[10px] font-medium">Иван</span>
+</div>
+<div class="flex flex-col items-center gap-1 min-w-[70px]">
+<img alt="Fav" class="w-14 h-14 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9XMMWf6mFQYasI3IhxyvpoAiyx0o5dRIEFAE-GmQRcV_TaFGu1CwOb9FP8w48Xj_PToGv6VGR-9rjEsrE0q8NpFBSXQ9HXli4nwPQpvc7J-1Y-nI0-7fIY_OkyGQrDr5rZzr-47OoPboFtu6YwC7L7vW8pp9ULJSjRnVfKbcM0I_1-thSo3P78TimAY8063Ck99-qd851f0UqTwqD5GH1-nNZmdiBEww2kkPRcMvp0sxcUsfenQDRa3R9gAX4MmtIM4blLhQNDPc"/>
+<span class="text-[10px] font-medium">Саша</span>
+</div>
+</div>
+</div>
+<!-- Presets -->
+<div class="grid grid-cols-2 gap-3">
+<button class="p-4 rounded-xl border-2 border-primary bg-primary/5 text-left transition-all">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="format_list_numbered" style="font-variation-settings: 'FILL' 1;">format_list_numbered</span>
+<p class="font-label-lg text-label-lg">Classic</p>
+<p class="text-[10px] opacity-70">Теннисные правила, 2 сета</p>
+</button>
+<button class="p-4 rounded-xl border border-outline-variant text-left hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-secondary mb-2" data-icon="leaderboard">leaderboard</span>
+<p class="font-label-lg text-label-lg">Tournament</p>
+<p class="text-[10px] opacity-70">Счёт до лимита, разрыв 2 очка</p>
+</button>
+</div>
+<!-- Rules -->
+<div class="space-y-4">
+<p class="font-label-lg text-label-lg">Специальные правила</p>
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-2 rounded-full border border-primary bg-primary text-white font-label-sm text-label-sm transition-all">Golden Ball</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant text-secondary font-label-sm text-label-sm hover:bg-surface-variant transition-all">Deuce Rule</button>
+</div>
+</div>
+<button class="w-full bg-primary text-white py-4 rounded-xl font-label-lg text-label-lg shadow-lg active:scale-95 transition-all">
+                    НАЧАТЬ МАТЧ
+                </button>
+</div>
+</div>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-5 py-3 bg-surface dark:bg-on-background shadow-[0_-4px_20px_0_rgba(0,0,0,0.05)]">
+<button class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-3 py-1 transition-all duration-200 active:scale-95 hover:bg-secondary-container dark:hover:bg-secondary rounded-xl">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-3 py-1 transition-all duration-200 active:scale-95 hover:bg-secondary-container dark:hover:bg-secondary rounded-xl">
+<span class="material-symbols-outlined" data-icon="emoji_events">emoji_events</span>
+<span class="font-label-sm text-label-sm">Tournaments</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl px-3 py-1 transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined" data-icon="sports_tennis" style="font-variation-settings: 'FILL' 1;">sports_tennis</span>
+<span class="font-label-sm text-label-sm">Games</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-3 py-1 transition-all duration-200 active:scale-95 hover:bg-secondary-container dark:hover:bg-secondary rounded-xl">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-label-sm text-label-sm">Rankings</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-3 py-1 transition-all duration-200 active:scale-95 hover:bg-secondary-container dark:hover:bg-secondary rounded-xl">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</button>
+</nav>
+<script>
+        function openCreateFlow() {
+            const modal = document.getElementById('createModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCreateFlow() {
+            const modal = document.getElementById('createModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal when clicking backdrop
+        document.getElementById('createModal').addEventListener('click', (e) => {
+            if (e.target.id === 'createModal') closeCreateFlow();
+        });
+    </script>
+</body></html>
