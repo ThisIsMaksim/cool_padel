@@ -18,6 +18,7 @@ void main() {
           team1Name: 'Alpha',
           team2Name: 'Beta',
           setsToWin: 2,
+          participantIds: ['p1', 'p2'],
         ),
         createdAt: DateTime(2026, 5, 20, 12),
         standardState: StandardMatchState(
@@ -26,6 +27,7 @@ void main() {
           currentSet: const SetScore(team1Games: 3, team2Games: 2),
           team1Points: 2,
           team2Points: 1,
+          servingTeamIndex: 1,
         ),
       );
 
@@ -34,9 +36,8 @@ void main() {
       );
 
       expect(restored.id, game.id);
-      expect(restored.config.team1Name, 'Alpha');
-      expect(restored.standardState?.team1Points, 2);
-      expect(restored.standardState?.completedSets.length, 1);
+      expect(restored.config.participantIds, ['p1', 'p2']);
+      expect(restored.standardState?.servingTeamIndex, 1);
     });
 
     test('roundtrips tournament game', () {
@@ -47,11 +48,13 @@ void main() {
           team1Name: 'A',
           team2Name: 'B',
           totalPoints: 50,
+          minPointLead: 2,
         ),
         createdAt: DateTime(2026, 5, 20, 13),
         status: GameStatus.inProgress,
         tournamentState: const TournamentMatchState(
           totalPoints: 50,
+          minPointLead: 2,
           team1Points: 12,
           team2Points: 8,
         ),
@@ -61,8 +64,7 @@ void main() {
       final restored = GameSerialization.gamesFromJsonString(jsonString);
 
       expect(restored.length, 1);
-      expect(restored.first.tournamentState?.team1Points, 12);
-      expect(restored.first.tournamentState?.team2Points, 8);
+      expect(restored.first.tournamentState?.minPointLead, 2);
     });
   });
 

@@ -57,8 +57,8 @@ void main() {
   });
 
   group('TournamentMatchState', () {
-    test('ends when total points reached', () {
-      var state = TournamentMatchState(totalPoints: 10);
+    test('ends when total points reached with min lead', () {
+      var state = const TournamentMatchState(totalPoints: 10, minPointLead: 2);
       for (var i = 0; i < 4; i++) {
         state = state.scorePoint(0);
       }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_theme.dart';
-
 class TeamScorePanel extends StatelessWidget {
   const TeamScorePanel({
     super.key,
@@ -82,38 +80,6 @@ class TeamScorePanel extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class MatchFinishedBanner extends StatelessWidget {
-  const MatchFinishedBanner({super.key, required this.winnerName});
-
-  final String winnerName;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.accentColor,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.emoji_events, color: AppTheme.team1Color),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              'Победитель: $winnerName',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          ),
-        ],
       ),
     );
   }

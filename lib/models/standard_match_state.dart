@@ -1,3 +1,5 @@
+import 'deuce_rule.dart';
+
 class SetScore {
   const SetScore({required this.team1Games, required this.team2Games});
 
@@ -17,6 +19,8 @@ enum PointPhase { normal, deuce, team1Advantage, team2Advantage }
 class StandardMatchState {
   StandardMatchState({
     required this.setsToWin,
+    this.deuceRule = DeuceRule.advantage,
+    this.servingTeamIndex = 0,
     List<SetScore>? completedSets,
     this.currentSet = const SetScore(team1Games: 0, team2Games: 0),
     this.team1Points = 0,
@@ -27,6 +31,8 @@ class StandardMatchState {
   }) : completedSets = List.unmodifiable(completedSets ?? []);
 
   final int setsToWin;
+  final DeuceRule deuceRule;
+  final int servingTeamIndex;
   final List<SetScore> completedSets;
   final SetScore currentSet;
   final int team1Points;
@@ -34,6 +40,8 @@ class StandardMatchState {
   final PointPhase pointPhase;
   final bool isTiebreak;
   final int? winnerIndex;
+
+  int get receivingTeamIndex => servingTeamIndex == 0 ? 1 : 0;
 
   int get team1Sets =>
       completedSets.where((s) => s.team1Games > s.team2Games).length;
@@ -43,18 +51,17 @@ class StandardMatchState {
 
   bool get isFinished => winnerIndex != null;
 
-  String? get winnerName => winnerIndex == null
-      ? null
-      : winnerIndex == 0
-          ? 'team1'
-          : 'team2';
+  bool get isDeuceSituation =>
+      pointPhase == PointPhase.deuce ||
+      pointPhase == PointPhase.team1Advantage ||
+      pointPhase == PointPhase.team2Advantage;
 
   String formatPoint(int points, int teamIndex) {
     if (isTiebreak) return '$points';
 
     switch (pointPhase) {
       case PointPhase.deuce:
-        return '40';
+        return deuceRule == DeuceRule.goldenPoint ? '40' : '40';
       case PointPhase.team1Advantage:
         return teamIndex == 0 ? 'AD' : '40';
       case PointPhase.team2Advantage:
@@ -83,10 +90,16 @@ class StandardMatchState {
   StandardMatchState _scoreRegularPoint(int teamIndex) {
     final isTeam1 = teamIndex == 0;
 
+    if (pointPhase == PointPhase.deuce &&
+        deuceRule == DeuceRule.goldenPoint) {
+      return _winGame(teamIndex: teamIndex);
+    }
+
     switch (pointPhase) {
       case PointPhase.deuce:
         return copyWith(
-          pointPhase: isTeam1 ? PointPhase.team1Advantage : PointPhase.team2Advantage,
+          pointPhase:
+              isTeam1 ? PointPhase.team1Advantage : PointPhase.team2Advantage,
         );
 
       case PointPhase.team1Advantage:
@@ -148,6 +161,7 @@ class StandardMatchState {
 
     final t1 = newSet.team1Games;
     final t2 = newSet.team2Games;
+    final nextServer = servingTeamIndex == 0 ? 1 : 0;
 
     if (t1 == 6 && t2 == 6) {
       return copyWith(
@@ -156,6 +170,7 @@ class StandardMatchState {
         team2Points: 0,
         pointPhase: PointPhase.normal,
         isTiebreak: true,
+        servingTeamIndex: nextServer,
       );
     }
 
@@ -168,6 +183,7 @@ class StandardMatchState {
       team1Points: 0,
       team2Points: 0,
       pointPhase: PointPhase.normal,
+      servingTeamIndex: nextServer,
     );
   }
 
@@ -203,13 +219,25 @@ class StandardMatchState {
       team2Points: 0,
       pointPhase: PointPhase.normal,
       isTiebreak: false,
+      servingTeamIndex: teamIndex == 0 ? 1 : 0,
     );
   }
 
+  StandardMatchState updateDeuceRule(DeuceRule rule) {
+    if (rule == deuceRule) return this;
+
+    if (rule == DeuceRule.goldenPoint &&
+        (pointPhase == PointPhase.team1Advantage ||
+            pointPhase == PointPhase.team2Advantage)) {
+      return copyWith(deuceRule: rule, pointPhase: PointPhase.deuce);
+    }
+
+    return copyWith(deuceRule: rule);
+  }
+
   StandardMatchState undoLastPoint() {
-    // Упрощённый сброс текущего розыгрыша — для MVP достаточно сброса очка
     if (isFinished) {
-      return copyWith(winnerIndex: null);
+      return copyWith(winnerIndex: null, clearWinner: true);
     }
 
     if (isTiebreak) {
@@ -253,9 +281,13 @@ class StandardMatchState {
     bool? isTiebreak,
     int? winnerIndex,
     bool clearWinner = false,
+    DeuceRule? deuceRule,
+    int? servingTeamIndex,
   }) {
     return StandardMatchState(
       setsToWin: setsToWin,
+      deuceRule: deuceRule ?? this.deuceRule,
+      servingTeamIndex: servingTeamIndex ?? this.servingTeamIndex,
       completedSets: completedSets ?? this.completedSets,
       currentSet: currentSet ?? this.currentSet,
       team1Points: team1Points ?? this.team1Points,

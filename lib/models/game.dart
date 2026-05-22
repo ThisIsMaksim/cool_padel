@@ -26,6 +26,8 @@ class Game {
 
   String get modeLabel => config.mode.title;
 
+  bool get isActive => status == GameStatus.inProgress;
+
   String get scoreSummary {
     if (config.mode == MatchMode.standard && standardState != null) {
       final state = standardState!;
