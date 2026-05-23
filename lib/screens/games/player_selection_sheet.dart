@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/player.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/glass_select_tile.dart';
 import '../../widgets/player_avatar.dart';
 
 /// Sentinel returned when the user clears the slot.
@@ -10,6 +11,8 @@ class ClearPlayerSlot {
 }
 
 const clearPlayerSlot = ClearPlayerSlot();
+
+enum _PlayerListTab { all, favorites }
 
 Future<Object?> showPlayerSelectionSheet(
   BuildContext context, {
@@ -58,6 +61,7 @@ class _PlayerSelectionSheet extends StatefulWidget {
 class _PlayerSelectionSheetState extends State<_PlayerSelectionSheet> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
+  _PlayerListTab _tab = _PlayerListTab.all;
 
   @override
   void dispose() {
@@ -70,23 +74,37 @@ class _PlayerSelectionSheetState extends State<_PlayerSelectionSheet> {
     return !widget.assignedIds.contains(player.id);
   }
 
-  List<Player> get _filteredPlayers {
+  bool _matchesSearch(Player player) {
     final q = _searchQuery.toLowerCase();
-    return widget.allPlayers.where((p) {
-      if (!_isAvailable(p)) return false;
-      if (q.isEmpty) return true;
-      return p.name.toLowerCase().contains(q) ||
-          p.club.toLowerCase().contains(q);
-    }).toList();
+    if (q.isEmpty) return true;
+    return player.name.toLowerCase().contains(q) ||
+        player.club.toLowerCase().contains(q);
   }
 
-  List<Player> get _availableFavorites =>
-      widget.favorites.where(_isAvailable).toList();
+  List<Player> get _visiblePlayers {
+    final source =
+        _tab == _PlayerListTab.all ? widget.allPlayers : widget.favorites;
+
+    return source.where((p) => _isAvailable(p) && _matchesSearch(p)).toList();
+  }
+
+  String get _emptyMessage {
+    if (_tab == _PlayerListTab.favorites && widget.favorites.isEmpty) {
+      return 'В избранном пока никого нет';
+    }
+    if (_searchQuery.isNotEmpty) {
+      return 'Участники не найдены';
+    }
+    return _tab == _PlayerListTab.favorites
+        ? 'Нет доступных избранных игроков'
+        : 'Участники не найдены';
+  }
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final players = _visiblePlayers;
 
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -131,52 +149,46 @@ class _PlayerSelectionSheetState extends State<_PlayerSelectionSheet> {
             ),
             onChanged: (v) => setState(() => _searchQuery = v),
           ),
-          if (_availableFavorites.isNotEmpty) ...[
-            const SizedBox(height: 16),
-            Text(
-              'ИЗБРАННЫЕ',
-              style: AppTheme.labelCaps(
-                scheme,
-                color: AppTheme.secondary.withValues(alpha: 0.6),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: GlassSelectTile(
+                  label: 'Все',
+                  selected: _tab == _PlayerListTab.all,
+                  onTap: () => setState(() => _tab = _PlayerListTab.all),
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              height: 90,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: _availableFavorites.length,
-                separatorBuilder: (_, _) => const SizedBox(width: 8),
-                itemBuilder: (context, index) {
-                  final player = _availableFavorites[index];
-                  return _FavoriteTile(
-                    player: player,
-                    onTap: () => Navigator.pop(context, player),
-                  );
-                },
+              const SizedBox(width: 8),
+              Expanded(
+                child: GlassSelectTile(
+                  label: 'Избранные',
+                  selected: _tab == _PlayerListTab.favorites,
+                  onTap: () => setState(() => _tab = _PlayerListTab.favorites),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
           const SizedBox(height: 12),
           ConstrainedBox(
             constraints: BoxConstraints(
               maxHeight: MediaQuery.sizeOf(context).height * 0.45,
             ),
-            child: _filteredPlayers.isEmpty
+            child: players.isEmpty
                 ? Padding(
                     padding: const EdgeInsets.symmetric(vertical: 24),
                     child: Text(
-                      'Участники не найдены',
+                      _emptyMessage,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   )
                 : ListView.separated(
                     shrinkWrap: true,
-                    itemCount: _filteredPlayers.length,
+                    itemCount: players.length,
                     separatorBuilder: (_, _) => const SizedBox(height: 8),
                     itemBuilder: (context, index) {
-                      final player = _filteredPlayers[index];
+                      final player = players[index];
                       final isCurrent = player.id == widget.currentPlayerId;
                       return AppTheme.glassSurface(
                         glow: isCurrent,
@@ -228,40 +240,6 @@ class _PlayerSelectionSheetState extends State<_PlayerSelectionSheet> {
             ),
           ],
         ],
-      ),
-    );
-  }
-}
-
-class _FavoriteTile extends StatelessWidget {
-  const _FavoriteTile({
-    required this.player,
-    required this.onTap,
-  });
-
-  final Player player;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return AppTheme.glassSurface(
-      radius: AppTheme.radiusMd,
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      onTap: onTap,
-      child: SizedBox(
-        width: 72,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            PlayerAvatar(player: player, radius: 16),
-            const SizedBox(height: 4),
-            Text(
-              player.name.split(' ').first,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-          ],
-        ),
       ),
     );
   }
