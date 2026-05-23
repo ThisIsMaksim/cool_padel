@@ -6,17 +6,22 @@ import '../models/match_config.dart';
 import '../models/match_mode.dart';
 import '../models/standard_match_state.dart';
 import '../models/tournament_match_state.dart';
+import '../services/api_client.dart';
 import '../services/wear_sync_service.dart';
+import '../storage/game_serialization.dart';
 import '../storage/games_storage.dart';
 
 class GamesRepository extends ChangeNotifier {
   GamesRepository({
     required GamesStorage storage,
+    ApiClient? api,
     WearSyncService? wearSync,
   })  : _storage = storage,
+        _api = api,
         _wearSync = wearSync ?? WearSyncService();
 
   final GamesStorage _storage;
+  final ApiClient? _api;
   final WearSyncService _wearSync;
   final List<Game> _games = [];
   bool _isLoaded = false;
@@ -34,6 +39,22 @@ class GamesRepository extends ChangeNotifier {
   int get activeCount => activeGames.length;
 
   Future<void> load() async {
+    if (_api?.token != null) {
+      try {
+        final list = await _api!.getList('/games');
+        _games
+          ..clear()
+          ..addAll(
+            list
+                .whereType<Map<String, dynamic>>()
+                .map(GameSerialization.gameFromJson),
+          );
+        _isLoaded = true;
+        notifyListeners();
+        return;
+      } catch (_) {}
+    }
+
     final saved = await _storage.loadGames();
     _games
       ..clear()
@@ -49,11 +70,26 @@ class GamesRepository extends ChangeNotifier {
     return null;
   }
 
-  Game createGame(
+  Future<Game> createGame(
     MatchConfig config, {
     int servingTeamIndex = 0,
     int servingPlayerIndex = 0,
-  }) {
+  }) async {
+    if (_api?.token != null) {
+      try {
+        final json = await _api!.post('/games', body: {
+          'config': GameSerialization.matchConfigToJson(config),
+          'servingTeamIndex': servingTeamIndex,
+          'servingPlayerIndex': servingPlayerIndex,
+        });
+        final game = GameSerialization.gameFromJson(json);
+        _games.insert(0, game);
+        notifyListeners();
+        _syncWear(game);
+        return game;
+      } catch (_) {}
+    }
+
     final game = Game(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       config: config,
@@ -93,6 +129,7 @@ class GamesRepository extends ChangeNotifier {
     notifyListeners();
     _persist();
     _syncWear(_games[index]);
+    _patchStandardState(id, state);
   }
 
   void updateTournamentState(String id, TournamentMatchState state) {
@@ -106,6 +143,7 @@ class GamesRepository extends ChangeNotifier {
     notifyListeners();
     _persist();
     _syncWear(_games[index]);
+    _patchTournamentState(id, state);
   }
 
   void updateDeuceRule(String id, DeuceRule rule) {
@@ -128,12 +166,41 @@ class GamesRepository extends ChangeNotifier {
     );
     notifyListeners();
     _persist();
+    _patchDeuceRule(id, rule);
   }
 
   void removeGame(String id) {
     _games.removeWhere((g) => g.id == id);
     notifyListeners();
     _persist();
+    if (_api?.token != null) {
+      _api!.delete('/games/$id').ignore();
+    }
+  }
+
+  void _patchStandardState(String id, StandardMatchState state) {
+    if (_api?.token == null) return;
+    _api!
+        .patch('/games/$id/standard-state', body: {
+          'standardState': GameSerialization.standardStateToJson(state),
+        })
+        .ignore();
+  }
+
+  void _patchTournamentState(String id, TournamentMatchState state) {
+    if (_api?.token == null) return;
+    _api!
+        .patch('/games/$id/tournament-state', body: {
+          'tournamentState': GameSerialization.tournamentStateToJson(state),
+        })
+        .ignore();
+  }
+
+  void _patchDeuceRule(String id, DeuceRule rule) {
+    if (_api?.token == null) return;
+    _api!
+        .patch('/games/$id/deuce-rule', body: {'deuceRule': rule.name})
+        .ignore();
   }
 
   void _syncWear(Game game) {

@@ -5,23 +5,36 @@ import '../data/mock_data.dart';
 import '../models/player.dart';
 import '../models/tournament.dart';
 import '../models/user_profile.dart';
+import '../services/api_client.dart';
 
 class SocialRepository extends ChangeNotifier {
-  SocialRepository(this._prefs) {
+  SocialRepository(this._prefs, this._api) : _useApi = true;
+
+  SocialRepository.offline(this._prefs)
+      : _api = null,
+        _useApi = false {
     _tournaments = MockData.tournaments();
+    _players = MockData.players;
     _restoreFavorites();
   }
 
+  final SharedPreferences _prefs;
+  final ApiClient? _api;
+  final bool _useApi;
+
   static const _favoritesKey = 'favorites_v1';
 
-  final SharedPreferences _prefs;
-  late List<Tournament> _tournaments;
+  List<Tournament> _tournaments = [];
+  List<Player> _players = [];
   final Set<String> _favoriteIds = {};
+  bool _isLoaded = false;
 
-  List<Player> get allPlayers => MockData.players;
+  bool get isLoaded => _isLoaded;
+
+  List<Player> get allPlayers => List.unmodifiable(_players);
 
   List<Player> get ratingList =>
-      [...MockData.players]..sort((a, b) => b.rating.compareTo(a.rating));
+      [..._players]..sort((a, b) => b.rating.compareTo(a.rating));
 
   List<Tournament> get tournaments => List.unmodifiable(_tournaments);
 
@@ -32,10 +45,50 @@ class SocialRepository extends ChangeNotifier {
   Set<String> get favoriteIds => Set.unmodifiable(_favoriteIds);
 
   List<Player> get favorites =>
-      allPlayers.where((p) => _favoriteIds.contains(p.id)).toList();
+      _players.where((p) => _favoriteIds.contains(p.id)).toList();
+
+  Future<void> load() async {
+    if (!_useApi || _api == null) {
+      _isLoaded = true;
+      return;
+    }
+
+    try {
+      final results = await Future.wait([
+        _api.getList('/players'),
+        _api.getList('/tournaments'),
+        _api.getList('/users/me/favorites'),
+      ]);
+
+      _players = results[0]
+          .whereType<Map<String, dynamic>>()
+          .map(Player.fromJson)
+          .toList();
+
+      _tournaments = results[1]
+          .whereType<Map<String, dynamic>>()
+          .map(Tournament.fromJson)
+          .toList();
+
+      _favoriteIds
+        ..clear()
+        ..addAll(
+          results[2]
+              .whereType<Map<String, dynamic>>()
+              .map((p) => p['id'] as String),
+        );
+    } catch (_) {
+      _players = MockData.players;
+      _tournaments = MockData.tournaments();
+      await _restoreFavorites();
+    }
+
+    _isLoaded = true;
+    notifyListeners();
+  }
 
   Player? playerById(String id) {
-    for (final p in allPlayers) {
+    for (final p in _players) {
       if (p.id == id) return p;
     }
     return null;
@@ -51,6 +104,22 @@ class SocialRepository extends ChangeNotifier {
   }
 
   Future<void> toggleFavorite(String playerId) async {
+    if (_useApi && _api != null) {
+      try {
+        final json =
+            await _api.patch('/users/me/favorites/$playerId/toggle');
+        final ids = (json['favoriteIds'] as List<dynamic>?)
+                ?.map((e) => e as String)
+                .toList() ??
+            [];
+        _favoriteIds
+          ..clear()
+          ..addAll(ids);
+        notifyListeners();
+        return;
+      } catch (_) {}
+    }
+
     if (_favoriteIds.contains(playerId)) {
       _favoriteIds.remove(playerId);
     } else {
@@ -67,7 +136,39 @@ class SocialRepository extends ChangeNotifier {
     return null;
   }
 
-  String? registerForTournament({
+  Future<String?> registerForTournament({
+    required String tournamentId,
+    required String userId,
+    String? partnerId,
+  }) async {
+    if (_useApi && _api != null) {
+      try {
+        final json = await _api.post(
+          '/tournaments/$tournamentId/register',
+          body: partnerId == null ? {} : {'partnerId': partnerId},
+        );
+        final updated = Tournament.fromJson(json);
+        final index = _tournaments.indexWhere((t) => t.id == tournamentId);
+        if (index != -1) {
+          _tournaments[index] = updated;
+        }
+        notifyListeners();
+        return null;
+      } on ApiException catch (e) {
+        return e.message;
+      } catch (_) {
+        return 'Не удалось записаться на турнир';
+      }
+    }
+
+    return _registerLocal(
+      tournamentId: tournamentId,
+      userId: userId,
+      partnerId: partnerId,
+    );
+  }
+
+  String? _registerLocal({
     required String tournamentId,
     required String userId,
     String? partnerId,

@@ -42,4 +42,16 @@ class Player {
       avatarColor: avatarColor,
     );
   }
+
+  factory Player.fromJson(Map<String, dynamic> json) {
+    return Player(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      rating: json['rating'] as int? ?? 1500,
+      level: json['level'] as String? ?? 'B',
+      club: json['club'] as String? ?? '',
+      city: json['city'] as String? ?? '',
+      avatarColor: json['avatarColor'] as int?,
+    );
+  }
 }

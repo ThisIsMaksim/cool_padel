@@ -149,8 +149,8 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
     );
   }
 
-  void _register(Tournament tournament, String userId) {
-    final error = widget.appState.social.registerForTournament(
+  Future<void> _register(Tournament tournament, String userId) async {
+    final error = await widget.appState.social.registerForTournament(
       tournamentId: tournament.id,
       userId: userId,
       partnerId: _selectedPartnerId,

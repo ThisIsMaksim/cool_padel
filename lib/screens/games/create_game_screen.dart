@@ -109,7 +109,7 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
     final serveSetup = await showServeSelectionDialog(context, config);
     if (serveSetup == null || !mounted) return;
 
-    final game = widget.appState.games.createGame(
+    final game = await widget.appState.games.createGame(
       config,
       servingTeamIndex: serveSetup.servingTeamIndex,
       servingPlayerIndex: serveSetup.servingPlayerIndex,

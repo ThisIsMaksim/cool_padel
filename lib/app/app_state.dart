@@ -16,7 +16,22 @@ class AppState extends ChangeNotifier {
   final SocialRepository social;
 
   Future<void> initialize() async {
-    await games.load();
+    if (auth.isAuthenticated) {
+      await Future.wait([
+        games.load(),
+        social.load(),
+      ]);
+    } else {
+      await games.load();
+    }
+  }
+
+  Future<void> onAuthenticated() async {
+    await Future.wait([
+      games.load(),
+      social.load(),
+    ]);
+    notifyListeners();
   }
 
   void refresh() => notifyListeners();

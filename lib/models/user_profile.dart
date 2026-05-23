@@ -46,4 +46,20 @@ class UserProfile {
       tournamentHistory: tournamentHistory ?? this.tournamentHistory,
     );
   }
+
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
+    return UserProfile(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      email: json['email'] as String,
+      rating: json['rating'] as int? ?? 1500,
+      level: json['level'] as String? ?? 'B',
+      club: json['club'] as String? ?? '',
+      city: json['city'] as String? ?? '',
+      tournamentHistory: (json['tournamentHistory'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+    );
+  }
 }

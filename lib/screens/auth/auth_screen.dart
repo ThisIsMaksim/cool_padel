@@ -38,6 +38,10 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
+    await widget.appState.onAuthenticated();
+
+    if (!mounted) return;
+
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
         builder: (_) => MainShellScreen(appState: widget.appState),
@@ -159,6 +163,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
       return;
     }
+
+    await widget.appState.onAuthenticated();
+
+    if (!mounted) return;
 
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute<void>(

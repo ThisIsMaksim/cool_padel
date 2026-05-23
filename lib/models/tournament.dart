@@ -62,4 +62,28 @@ class Tournament {
       status: status ?? this.status,
     );
   }
+
+  factory Tournament.fromJson(Map<String, dynamic> json) {
+    return Tournament(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      club: json['club'] as String,
+      address: json['address'] as String,
+      dateTime: DateTime.parse(json['dateTime'] as String),
+      level: json['level'] as String,
+      format: TournamentFormat.values.byName(json['format'] as String),
+      maxParticipants: json['maxParticipants'] as int,
+      organizerId: json['organizerId'] as String,
+      participantIds: (json['participantIds'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      waitlistIds: (json['waitlistIds'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      status: TournamentStatus.values.byName(json['status'] as String),
+    );
+  }
 }
