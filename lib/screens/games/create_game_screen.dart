@@ -8,6 +8,8 @@ import '../../models/match_config.dart';
 import '../../models/match_mode.dart';
 import '../../models/player.dart';
 import '../../models/team_member.dart';
+import '../../theme/app_theme.dart';
+import '../../widgets/glass_select_tile.dart';
 import '../../widgets/player_avatar.dart';
 import '../../widgets/team_slot_picker.dart';
 import 'active_game_screen.dart';
@@ -208,50 +210,68 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
   Widget build(BuildContext context) {
     final favorites = widget.appState.social.favorites;
 
+    final scheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Новая игра')),
       body: ListView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.marginMobile),
         children: [
-          Text('Формат', style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 12),
-          SegmentedButton<GameFormat>(
-            segments: GameFormat.values
-                .map((f) => ButtonSegment(value: f, label: Text(f.label)))
-                .toList(),
-            selected: {_format},
-            onSelectionChanged: (v) => setState(() {
-              _format = v.first;
-              _team1Left = _team1Right = _team2Left = _team2Right = null;
-              _team1Single = _team2Single = null;
-              _selectedSlot = null;
-            }),
-          ),
+          _SectionLabel('ФОРМАТ'),
           const SizedBox(height: 8),
-          Text(
-            _format.subtitle,
-            style: Theme.of(context).textTheme.bodySmall,
+          Row(
+            children: GameFormat.values.map((format) {
+              final isLast = format == GameFormat.values.last;
+              return Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(right: isLast ? 0 : 8),
+                  child: GlassSelectTile(
+                    label: format.label,
+                    subtitle: format == _format ? format.subtitle : null,
+                    selected: _format == format,
+                    onTap: () => setState(() {
+                      _format = format;
+                      _team1Left = _team1Right = _team2Left = _team2Right = null;
+                      _team1Single = _team2Single = null;
+                      _selectedSlot = null;
+                    }),
+                  ),
+                ),
+              );
+            }).toList(),
           ),
           const SizedBox(height: 20),
-          Text('Пресет', style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 12),
-          SegmentedButton<MatchMode>(
-            segments: MatchMode.values
-                .map((m) => ButtonSegment(value: m, label: Text(m.title)))
-                .toList(),
-            selected: {_mode},
-            onSelectionChanged: (v) => setState(() => _mode = v.first),
+          _SectionLabel('ПРЕСЕТ'),
+          const SizedBox(height: 8),
+          Row(
+            children: MatchMode.values.map((mode) {
+              final isLast = mode == MatchMode.values.last;
+              return Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(right: isLast ? 0 : 8),
+                  child: GlassSelectTile(
+                    label: mode.title,
+                    selected: _mode == mode,
+                    onTap: () => setState(() => _mode = mode),
+                  ),
+                ),
+              );
+            }).toList(),
           ),
           if (_mode == MatchMode.standard) ...[
             const SizedBox(height: 20),
-            Text('Deuce', style: Theme.of(context).textTheme.titleMedium),
+            _SectionLabel('DEUCE'),
+            const SizedBox(height: 8),
             ...DeuceRule.values.map((rule) {
-              return RadioListTile<DeuceRule>(
-                value: rule,
-                groupValue: _deuceRule,
-                onChanged: (v) => setState(() => _deuceRule = v!),
-                title: Text(rule.title),
-                subtitle: Text(rule.subtitle),
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: GlassSelectTile(
+                  label: rule.title,
+                  subtitle: rule.subtitle,
+                  selected: _deuceRule == rule,
+                  onTap: () => setState(() => _deuceRule = rule),
+                  centerText: false,
+                ),
               );
             }),
           ] else ...[
@@ -264,8 +284,8 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
             ),
           ],
           const SizedBox(height: 20),
-          Text('Команды', style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 8),
+          _SectionLabel('КОМАНДЫ'),
+          const SizedBox(height: 4),
           Text(
             'Выберите позицию, затем игрока из списка',
             style: Theme.of(context).textTheme.bodySmall,
@@ -291,7 +311,7 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
           ),
           if (favorites.isNotEmpty) ...[
             const SizedBox(height: 20),
-            Text('Избранные', style: Theme.of(context).textTheme.labelLarge),
+            _SectionLabel('ИЗБРАННЫЕ'),
             const SizedBox(height: 8),
             SizedBox(
               height: 90,
@@ -331,16 +351,58 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
               t2s: _team2Single,
               player: p,
             );
-            return ListTile(
-              leading: PlayerAvatar(player: p, radius: 18),
-              title: Text(p.name),
-              subtitle: Text('${p.rating} · ${p.club}'),
-              trailing: slot != null ? Chip(label: Text(slot)) : null,
-              onTap: () => _assignPlayer(p),
+            final assigned = slot != null;
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: AppTheme.glassSurface(
+                glow: assigned,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                onTap: () => _assignPlayer(p),
+                child: Row(
+                  children: [
+                    PlayerAvatar(player: p, radius: 18),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            p.name,
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                          Text(
+                            '${p.rating} · ${p.club}',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (slot != null)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primary.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(
+                            color: AppTheme.primary.withValues(alpha: 0.3),
+                          ),
+                        ),
+                        child: Text(
+                          slot.toUpperCase(),
+                          style: AppTheme.labelCaps(scheme, color: AppTheme.primary)
+                              .copyWith(fontSize: 10),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
             );
           }),
           const SizedBox(height: 24),
-          FilledButton(onPressed: _startGame, child: const Text('Далее')),
+          FilledButton(onPressed: _startGame, child: const Text('ДАЛЕЕ')),
         ],
       ),
     );
@@ -359,6 +421,23 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
   }
 }
 
+class _SectionLabel extends StatelessWidget {
+  const _SectionLabel(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: AppTheme.labelCaps(
+        Theme.of(context).colorScheme,
+        color: AppTheme.secondary.withValues(alpha: 0.6),
+      ),
+    );
+  }
+}
+
 class _PlayerPickTile extends StatelessWidget {
   const _PlayerPickTile({
     required this.player,
@@ -372,20 +451,13 @@ class _PlayerPickTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return AppTheme.glassSurface(
+      glow: selected,
+      radius: AppTheme.radiusMd,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
+      child: SizedBox(
         width: 72,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: selected
-                ? Theme.of(context).colorScheme.primary
-                : Colors.grey.shade300,
-            width: selected ? 2 : 1,
-          ),
-          borderRadius: BorderRadius.circular(12),
-        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

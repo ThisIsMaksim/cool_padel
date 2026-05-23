@@ -7,6 +7,7 @@ import '../../models/match_config.dart';
 import '../../models/match_mode.dart';
 import '../../models/team_member.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/glass_select_tile.dart';
 import '../../widgets/match_widgets.dart';
 import '../../widgets/team_score_panel.dart';
 
@@ -58,28 +59,54 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
   }
 
   Widget _teamRoster(MatchConfig config) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Состав', style: Theme.of(context).textTheme.labelLarge),
-            const SizedBox(height: 8),
-            _teamLine('К1', config.team1Members),
-            const SizedBox(height: 4),
-            _teamLine('К2', config.team2Members),
-          ],
-        ),
+    final scheme = Theme.of(context).colorScheme;
+    return AppTheme.glassSurface(
+      padding: const EdgeInsets.all(AppTheme.cardPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'СОСТАВ',
+            style: AppTheme.labelCaps(
+              scheme,
+              color: AppTheme.secondary.withValues(alpha: 0.6),
+            ),
+          ),
+          const SizedBox(height: 12),
+          _teamLine('К1', config.team1Members, AppTheme.team1Color),
+          const SizedBox(height: 8),
+          _teamLine('К2', config.team2Members, AppTheme.team2Color),
+        ],
       ),
     );
   }
 
-  Widget _teamLine(String label, List<TeamMember> members) {
+  Widget _teamLine(String label, List<TeamMember> members, Color color) {
+    final scheme = Theme.of(context).colorScheme;
     final text = members
         .map((m) => m.side != null ? '${m.shortName} (${m.side!.label})' : m.shortName)
         .join(' · ');
-    return Text('$label: $text');
+    return Row(
+      children: [
+        Container(
+          width: 28,
+          height: 28,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+          ),
+          child: Text(
+            label,
+            style: AppTheme.labelCaps(scheme, color: color).copyWith(fontSize: 10),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
+        ),
+      ],
+    );
   }
 
   Widget _buildStandard(BuildContext context, Game game) {
@@ -116,7 +143,7 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.marginMobile),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -130,31 +157,43 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
             _teamRoster(config),
             const SizedBox(height: 12),
             if (state.isTiebreak)
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Text(
-                    'Тай-брейк',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleMedium,
+              AppTheme.glassSurface(
+                glow: true,
+                padding: const EdgeInsets.all(12),
+                child: Text(
+                  'ТАЙ-БРЕЙК',
+                  textAlign: TextAlign.center,
+                  style: AppTheme.labelCaps(
+                    Theme.of(context).colorScheme,
+                    color: AppTheme.primary,
                   ),
                 ),
               ),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Text('Сеты ${state.team1Sets}:${state.team2Sets}'),
-                    Text(
-                      'Геймы ${state.currentSet.team1Games}:${state.currentSet.team2Games}',
+            AppTheme.glassSurface(
+              child: Column(
+                children: [
+                  Text(
+                    '${state.team1Sets}:${state.team2Sets}',
+                    style: AppTheme.dataMono(
+                      Theme.of(context).colorScheme,
+                      size: 32,
                     ),
-                    Text(
-                      'Deuce: ${state.deuceRule.title}',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'СЕТЫ',
+                    style: AppTheme.labelCaps(Theme.of(context).colorScheme),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Геймы ${state.currentSet.team1Games}:${state.currentSet.team2Games}',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  Text(
+                    'Deuce: ${state.deuceRule.title}',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
               ),
             ),
             if (state.isFinished)
@@ -230,7 +269,7 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.marginMobile),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -243,19 +282,32 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
             const SizedBox(height: 12),
             _teamRoster(config),
             const SizedBox(height: 12),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Text('Лимит ${state.totalPoints} · разница ${state.minPointLead}'),
-                    const SizedBox(height: 8),
-                    LinearProgressIndicator(value: state.progress),
-                    Text(
-                      '${state.playedPoints}/${state.totalPoints} очков',
+            AppTheme.glassSurface(
+              child: Column(
+                children: [
+                  Text(
+                    'Лимит ${state.totalPoints} · разница ${state.minPointLead}',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: 12),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                    child: LinearProgressIndicator(
+                      value: state.progress,
+                      backgroundColor: AppTheme.surfaceContainerHigh,
+                      color: AppTheme.primary,
+                      minHeight: 6,
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${state.playedPoints}/${state.totalPoints} очков',
+                    style: AppTheme.dataMono(
+                      Theme.of(context).colorScheme,
+                      size: 16,
+                    ),
+                  ),
+                ],
               ),
             ),
             if (state.isFinished && winnerName != null)
@@ -306,19 +358,57 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
   }
 
   Future<void> _pickDeuceRule(Game game) async {
+    final scheme = Theme.of(context).colorScheme;
     final selected = await showModalBottomSheet<DeuceRule>(
       context: context,
-      builder: (ctx) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: DeuceRule.values
-            .map(
-              (rule) => ListTile(
-                title: Text(rule.title),
-                subtitle: Text(rule.subtitle),
-                onTap: () => Navigator.pop(ctx, rule),
+      backgroundColor: AppTheme.surfaceContainer,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppTheme.radiusXl)),
+      ),
+      builder: (ctx) => Padding(
+        padding: const EdgeInsets.fromLTRB(
+          AppTheme.marginMobile,
+          12,
+          AppTheme.marginMobile,
+          24,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                  color: AppTheme.outline.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(999),
+                ),
               ),
-            )
-            .toList(),
+            ),
+            Text(
+              'ПРАВИЛО DEUCE',
+              style: AppTheme.labelCaps(
+                scheme,
+                color: AppTheme.secondary.withValues(alpha: 0.6),
+              ),
+            ),
+            const SizedBox(height: 12),
+            ...DeuceRule.values.map(
+              (rule) => Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: GlassSelectTile(
+                  label: rule.title,
+                  subtitle: rule.subtitle,
+                  selected: game.standardState!.deuceRule == rule,
+                  onTap: () => Navigator.pop(ctx, rule),
+                  centerText: false,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
 

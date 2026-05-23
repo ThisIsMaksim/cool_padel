@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../models/game_format.dart';
 import '../../models/match_config.dart';
+import '../../theme/app_theme.dart';
+import '../../widgets/glass_select_tile.dart';
 
 class ServeSetup {
   const ServeSetup({
@@ -20,6 +22,10 @@ Future<ServeSetup?> showServeSelectionDialog(
   return showModalBottomSheet<ServeSetup>(
     context: context,
     isScrollControlled: true,
+    backgroundColor: AppTheme.surfaceContainer,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(AppTheme.radiusXl)),
+    ),
     builder: (ctx) => _ServeSelectionSheet(config: config),
   );
 }
@@ -52,21 +58,33 @@ class _ServeSelectionSheetState extends State<_ServeSelectionSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     final members = _servingTeamIndex == null
         ? <dynamic>[]
         : widget.config.membersForTeam(_servingTeamIndex!);
 
     return Padding(
       padding: EdgeInsets.fromLTRB(
-        20,
-        20,
-        20,
-        20 + MediaQuery.of(context).viewInsets.bottom,
+        AppTheme.marginMobile,
+        12,
+        AppTheme.marginMobile,
+        24 + MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 20),
+              decoration: BoxDecoration(
+                color: AppTheme.outline.withValues(alpha: 0.4),
+                borderRadius: BorderRadius.circular(999),
+              ),
+            ),
+          ),
           Text(
             'Кто подаёт первым?',
             style: Theme.of(context).textTheme.titleLarge,
@@ -76,13 +94,19 @@ class _ServeSelectionSheetState extends State<_ServeSelectionSheet> {
             'Соперники должны знать, кто начинает подачу',
             style: Theme.of(context).textTheme.bodySmall,
           ),
-          const SizedBox(height: 20),
-          Text('Команда', style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: 24),
+          Text(
+            'КОМАНДА',
+            style: AppTheme.labelCaps(
+              scheme,
+              color: AppTheme.secondary.withValues(alpha: 0.6),
+            ),
+          ),
           const SizedBox(height: 8),
           Row(
             children: [
               Expanded(
-                child: _TeamServeOption(
+                child: GlassSelectTile(
                   label: widget.config.team1Name,
                   selected: _servingTeamIndex == 0,
                   onTap: () => setState(() {
@@ -93,7 +117,7 @@ class _ServeSelectionSheetState extends State<_ServeSelectionSheet> {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _TeamServeOption(
+                child: GlassSelectTile(
                   label: widget.config.team2Name,
                   selected: _servingTeamIndex == 1,
                   onTap: () => setState(() {
@@ -106,16 +130,23 @@ class _ServeSelectionSheetState extends State<_ServeSelectionSheet> {
           ),
           if (_isDoubles && _servingTeamIndex != null) ...[
             const SizedBox(height: 20),
-            Text('Игрок', style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              'ИГРОК',
+              style: AppTheme.labelCaps(
+                scheme,
+                color: AppTheme.secondary.withValues(alpha: 0.6),
+              ),
+            ),
             const SizedBox(height: 8),
             ...List.generate(members.length, (index) {
               final member = members[index];
               return Padding(
                 padding: const EdgeInsets.only(bottom: 8),
-                child: _TeamServeOption(
+                child: GlassSelectTile(
                   label: member.displayWithSide,
                   selected: _servingPlayerIndex == index,
                   onTap: () => setState(() => _servingPlayerIndex = index),
+                  centerText: false,
                 ),
               );
             }),
@@ -126,51 +157,9 @@ class _ServeSelectionSheetState extends State<_ServeSelectionSheet> {
                     (!_isDoubles || _servingPlayerIndex != null)
                 ? _confirm
                 : null,
-            child: const Text('Начать игру'),
+            child: const Text('НАЧАТЬ ИГРУ'),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _TeamServeOption extends StatelessWidget {
-  const _TeamServeOption({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: selected
-                ? Theme.of(context).colorScheme.primary
-                : Colors.grey.shade400,
-            width: selected ? 2 : 1,
-          ),
-          color: selected
-              ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.08)
-              : null,
-        ),
-        child: Text(
-          label,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-          ),
-        ),
       ),
     );
   }

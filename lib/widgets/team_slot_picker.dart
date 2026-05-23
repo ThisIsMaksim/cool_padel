@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../models/game_format.dart';
-import '../../models/player.dart';
-import '../../models/team_member.dart';
+import '../models/game_format.dart';
+import '../models/player.dart';
+import '../models/team_member.dart';
+import '../theme/app_theme.dart';
+import 'glass_select_tile.dart';
 
 class TeamSlotPicker extends StatelessWidget {
   const TeamSlotPicker({
@@ -35,7 +37,7 @@ class TeamSlotPicker extends StatelessWidget {
         children: [
           Expanded(
             child: _SlotCard(
-              label: 'Команда 1',
+              label: 'КОМАНДА 1',
               member: team1Single,
               selected: selectedSlot == 't1',
               onTap: () => onSlotTap('t1'),
@@ -44,7 +46,7 @@ class TeamSlotPicker extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: _SlotCard(
-              label: 'Команда 2',
+              label: 'КОМАНДА 2',
               member: team2Single,
               selected: selectedSlot == 't2',
               onTap: () => onSlotTap('t2'),
@@ -55,14 +57,15 @@ class TeamSlotPicker extends StatelessWidget {
     }
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('Команда 1', style: Theme.of(context).textTheme.titleSmall),
+        _TeamLabel(text: 'КОМАНДА 1'),
         const SizedBox(height: 8),
         Row(
           children: [
             Expanded(
               child: _SlotCard(
-                label: CourtSide.left.label,
+                label: CourtSide.left.label.toUpperCase(),
                 member: team1Left,
                 selected: selectedSlot == 't1l',
                 onTap: () => onSlotTap('t1l'),
@@ -71,7 +74,7 @@ class TeamSlotPicker extends StatelessWidget {
             const SizedBox(width: 8),
             Expanded(
               child: _SlotCard(
-                label: CourtSide.right.label,
+                label: CourtSide.right.label.toUpperCase(),
                 member: team1Right,
                 selected: selectedSlot == 't1r',
                 onTap: () => onSlotTap('t1r'),
@@ -80,13 +83,13 @@ class TeamSlotPicker extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        Text('Команда 2', style: Theme.of(context).textTheme.titleSmall),
+        _TeamLabel(text: 'КОМАНДА 2'),
         const SizedBox(height: 8),
         Row(
           children: [
             Expanded(
               child: _SlotCard(
-                label: CourtSide.left.label,
+                label: CourtSide.left.label.toUpperCase(),
                 member: team2Left,
                 selected: selectedSlot == 't2l',
                 onTap: () => onSlotTap('t2l'),
@@ -95,7 +98,7 @@ class TeamSlotPicker extends StatelessWidget {
             const SizedBox(width: 8),
             Expanded(
               child: _SlotCard(
-                label: CourtSide.right.label,
+                label: CourtSide.right.label.toUpperCase(),
                 member: team2Right,
                 selected: selectedSlot == 't2r',
                 onTap: () => onSlotTap('t2r'),
@@ -104,6 +107,23 @@ class TeamSlotPicker extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class _TeamLabel extends StatelessWidget {
+  const _TeamLabel({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: AppTheme.labelCaps(
+        Theme.of(context).colorScheme,
+        color: AppTheme.secondary.withValues(alpha: 0.6),
+      ),
     );
   }
 }
@@ -123,37 +143,16 @@ class _SlotCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    final filled = member != null;
+
+    return GlassSelectTile(
+      label: label,
+      subtitle: member?.shortName ?? 'Выбрать',
+      selected: selected,
+      glow: filled && !selected,
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: selected
-                ? Theme.of(context).colorScheme.primary
-                : Colors.grey.shade400,
-            width: selected ? 2 : 1,
-          ),
-          color: selected
-              ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.08)
-              : Colors.grey.shade50,
-        ),
-        child: Column(
-          children: [
-            Text(label, style: Theme.of(context).textTheme.labelSmall),
-            const SizedBox(height: 8),
-            Text(
-              member?.shortName ?? '—',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      centerText: true,
     );
   }
 }

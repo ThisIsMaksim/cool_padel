@@ -54,23 +54,33 @@ class ServingBanner extends StatelessWidget {
     final receiverLabel =
         receiverSide != null ? '$receiverName ($receiverSide)' : receiverName;
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Row(
-          children: [
-            const Icon(Icons.sports_tennis, color: AppTheme.brandPrimary),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                'Подача: $serverLabel → $receiverLabel',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
+    return AppTheme.glassSurface(
+      glow: true,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Row(
+        children: [
+          const Icon(Icons.sports_tennis, color: AppTheme.primary),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'ПОДАЧА',
+                  style: AppTheme.labelCaps(
+                    Theme.of(context).colorScheme,
+                    color: AppTheme.secondary.withValues(alpha: 0.6),
+                  ).copyWith(fontSize: 10),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '$serverLabel → $receiverLabel',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
