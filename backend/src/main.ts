@@ -17,9 +17,15 @@ async function bootstrap() {
 
   const config = app.get(ConfigService);
   const corsOrigin = config.get<string>('CORS_ORIGIN', '*');
+
   app.enableCors({
-    origin: corsOrigin === '*' ? true : corsOrigin.split(','),
+    origin:
+      corsOrigin === '*'
+        ? true
+        : corsOrigin.split(',').map((o) => o.trim()),
     credentials: true,
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   });
 
   const port = Number(config.get<string>('PORT', '3000'));

@@ -21,6 +21,6 @@ echo "==> Resolving dependencies"
 flutter pub get
 
 echo "==> Building web release"
-flutter build web --release --no-wasm-dry-run
+flutter build web --release --no-wasm-dry-run --dart-define=API_BASE_URL=/api/v1
 
 echo "==> Done: build/web"
