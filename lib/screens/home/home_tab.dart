@@ -53,10 +53,17 @@ class HomeTab extends StatelessWidget {
                   height: 190,
                   child: PageView.builder(
                     controller: PageController(viewportFraction: 0.88),
+                    padEnds: false,
+                    clipBehavior: Clip.none,
                     itemCount: carouselItems.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.only(left: 12, right: 4),
+                        padding: EdgeInsets.only(
+                          left: index == 0 ? AppTheme.marginMobile : 12,
+                          right: index == carouselItems.length - 1
+                              ? AppTheme.marginMobile
+                              : 12,
+                        ),
                         child: _CarouselCard(
                           appState: appState,
                           item: carouselItems[index],
