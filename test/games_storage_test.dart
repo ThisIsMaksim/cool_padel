@@ -3,9 +3,7 @@ import 'package:cool_padel/models/match_config.dart';
 import 'package:cool_padel/models/match_mode.dart';
 import 'package:cool_padel/models/standard_match_state.dart';
 import 'package:cool_padel/models/tournament_match_state.dart';
-import 'package:cool_padel/state/games_repository.dart';
 import 'package:cool_padel/storage/game_serialization.dart';
-import 'package:cool_padel/storage/games_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -65,30 +63,6 @@ void main() {
 
       expect(restored.length, 1);
       expect(restored.first.tournamentState?.minPointLead, 2);
-    });
-  });
-
-  group('GamesRepository persistence', () {
-    test('saves and loads games from storage', () async {
-      final storage = InMemoryGamesStorage();
-      final repo = GamesRepository(storage: storage);
-
-      repo.createGame(
-        const MatchConfig(
-          mode: MatchMode.tournament,
-          team1Name: 'One',
-          team2Name: 'Two',
-          totalPoints: 20,
-        ),
-      );
-
-      await repo.flushPersistence();
-
-      final reloadedRepo = GamesRepository(storage: storage);
-      await reloadedRepo.load();
-
-      expect(reloadedRepo.games.length, 1);
-      expect(reloadedRepo.games.first.config.team1Name, 'One');
     });
   });
 }

@@ -21,6 +21,19 @@ class MainShellScreen extends StatefulWidget {
 class _MainShellScreenState extends State<MainShellScreen> {
   int _currentIndex = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final error = widget.appState.bootstrapError;
+      if (error != null && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error)),
+        );
+      }
+    });
+  }
+
   void _openCreateGame() {
     Navigator.of(context).push(
       MaterialPageRoute<void>(

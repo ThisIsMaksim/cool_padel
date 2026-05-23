@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../repositories/auth_repository.dart';
 import '../repositories/social_repository.dart';
+import '../services/api_client.dart';
 import '../state/games_repository.dart';
 
 class AppState extends ChangeNotifier {
@@ -15,22 +16,31 @@ class AppState extends ChangeNotifier {
   final GamesRepository games;
   final SocialRepository social;
 
+  String? bootstrapError;
+
   Future<void> initialize() async {
-    if (auth.isAuthenticated) {
+    if (!auth.isAuthenticated) return;
+    await _loadRemoteData();
+  }
+
+  Future<void> onAuthenticated() async {
+    bootstrapError = null;
+    await _loadRemoteData();
+    notifyListeners();
+  }
+
+  Future<void> _loadRemoteData() async {
+    try {
       await Future.wait([
         games.load(),
         social.load(),
       ]);
-    } else {
-      await games.load();
+      bootstrapError = null;
+    } on ApiException catch (e) {
+      bootstrapError = e.message;
+    } catch (_) {
+      bootstrapError = 'Не удалось загрузить данные с сервера';
     }
-  }
-
-  Future<void> onAuthenticated() async {
-    await Future.wait([
-      games.load(),
-      social.load(),
-    ]);
     notifyListeners();
   }
 

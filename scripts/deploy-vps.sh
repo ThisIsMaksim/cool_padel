@@ -4,6 +4,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 FLUTTER="${FLUTTER:-$HOME/flutter/bin/flutter}"
 WEB_ROOT="${WEB_ROOT:-/var/www/cool-padel/web}"
+DEPLOY_DOMAIN="${DEPLOY_DOMAIN:-130-193-59-193.sslip.io}"
+CERTBOT_EMAIL="${CERTBOT_EMAIL:-}"
 
 echo "==> Backend: install & build"
 cd "$ROOT/backend"
@@ -36,15 +38,33 @@ sudo mkdir -p "$WEB_ROOT"
 sudo rsync -a --delete "$ROOT/build/web/" "$WEB_ROOT/"
 
 echo "==> Nginx"
-if command -v nginx >/dev/null; then
-  sudo cp "$ROOT/deploy/nginx-cool-padel.conf" /etc/nginx/sites-available/cool-padel
-  sudo ln -sf /etc/nginx/sites-available/cool-padel /etc/nginx/sites-enabled/cool-padel
-  sudo rm -f /etc/nginx/sites-enabled/default
-  sudo nginx -t
-  sudo systemctl reload nginx
-else
-  echo "nginx not installed — skip. Install: sudo apt install nginx"
+if ! command -v nginx >/dev/null; then
+  sudo DEBIAN_FRONTEND=noninteractive apt-get update -qq
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nginx
 fi
 
-echo "Done. API: http://127.0.0.1:3000/api/v1/health"
-echo "Web:  http://$(hostname -I | awk '{print $1}')/"
+sudo cp "$ROOT/deploy/nginx-cool-padel.conf" /etc/nginx/sites-available/cool-padel
+sudo sed -i "s/server_name .*/server_name ${DEPLOY_DOMAIN};/" /etc/nginx/sites-available/cool-padel
+sudo ln -sf /etc/nginx/sites-available/cool-padel /etc/nginx/sites-enabled/cool-padel
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo nginx -t
+sudo systemctl reload nginx
+
+echo "==> HTTPS (Let's Encrypt)"
+if ! command -v certbot >/dev/null; then
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y certbot python3-certbot-nginx
+fi
+
+CERTBOT_ARGS=(--nginx -d "$DEPLOY_DOMAIN" --non-interactive --agree-tos --redirect)
+if [[ -n "$CERTBOT_EMAIL" ]]; then
+  CERTBOT_ARGS+=(--email "$CERTBOT_EMAIL")
+else
+  CERTBOT_ARGS+=(--register-unsafely-without-email)
+fi
+
+sudo certbot "${CERTBOT_ARGS[@]}" || echo "Certbot failed — check DNS for $DEPLOY_DOMAIN"
+
+echo ""
+echo "Done."
+echo "  API:  https://${DEPLOY_DOMAIN}/api/v1/health"
+echo "  Web:  https://${DEPLOY_DOMAIN}/"
