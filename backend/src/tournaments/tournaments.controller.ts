@@ -11,6 +11,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { AuthUser } from '../auth/auth.types';
 import {
+  CreateTournamentDto,
   ListTournamentsQueryDto,
   RegisterTournamentDto,
 } from '../common/dto/api.dto';
@@ -29,6 +30,14 @@ export class TournamentsController {
   @Get('active')
   active() {
     return this.tournamentsService.active();
+  }
+
+  @Post()
+  create(
+    @CurrentUser() user: AuthUser,
+    @Body() dto: CreateTournamentDto,
+  ) {
+    return this.tournamentsService.create(user.publicId, dto);
   }
 
   @Get(':id')

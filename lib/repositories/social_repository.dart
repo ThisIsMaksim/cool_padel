@@ -138,6 +138,43 @@ class SocialRepository extends ChangeNotifier {
     }).toList();
   }
 
+  List<String> get tournamentClubs {
+    final clubs = _tournaments.map((t) => t.club).toSet().toList()..sort();
+    return clubs;
+  }
+
+  Future<(String?, Tournament?)> createTournament({
+    required String title,
+    required String description,
+    required String club,
+    required String address,
+    required DateTime dateTime,
+    required String level,
+    required TournamentFormat format,
+    required int maxParticipants,
+  }) async {
+    _requireAuth();
+    try {
+      final json = await _api.post('/tournaments', body: {
+        'title': title,
+        'description': description,
+        'club': club,
+        'address': address,
+        'dateTime': dateTime.toUtc().toIso8601String(),
+        'level': level,
+        'format': format.name,
+        'maxParticipants': maxParticipants,
+      });
+      final created = Tournament.fromJson(json);
+      _tournaments = [..._tournaments, created]
+        ..sort((a, b) => a.dateTime.compareTo(b.dateTime));
+      notifyListeners();
+      return (null, created);
+    } on ApiException catch (e) {
+      return (e.message, null);
+    }
+  }
+
   void _requireAuth() {
     if (_api.token == null) {
       throw ApiException('Требуется авторизация');

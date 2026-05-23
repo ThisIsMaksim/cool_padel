@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../app/app_state.dart';
 import '../../models/tournament.dart';
+import 'create_tournament_screen.dart';
 import 'tournament_detail_screen.dart';
 
 class TournamentsTab extends StatefulWidget {
@@ -31,6 +32,7 @@ class _TournamentsTabState extends State<TournamentsTab> {
           format: _format,
           club: _club,
         );
+        final clubs = widget.appState.social.tournamentClubs;
 
         return SafeArea(
           bottom: false,
@@ -39,9 +41,20 @@ class _TournamentsTabState extends State<TournamentsTab> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-                  child: Text(
-                    'Турниры',
-                    style: Theme.of(context).textTheme.headlineMedium,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Турниры',
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
+                      ),
+                      IconButton(
+                        tooltip: 'Создать турнир',
+                        onPressed: _openCreate,
+                        icon: const Icon(Icons.add_circle_outline),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -81,6 +94,7 @@ class _TournamentsTabState extends State<TournamentsTab> {
                     level: _level,
                     club: _club,
                     format: _format,
+                    clubs: clubs,
                     onChanged: (day, level, club, format) {
                       setState(() {
                         _day = day;
@@ -121,6 +135,14 @@ class _TournamentsTabState extends State<TournamentsTab> {
           appState: widget.appState,
           tournamentId: id,
         ),
+      ),
+    );
+  }
+
+  void _openCreate() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => CreateTournamentScreen(appState: widget.appState),
       ),
     );
   }
@@ -166,6 +188,7 @@ class _FiltersBar extends StatelessWidget {
     required this.level,
     required this.club,
     required this.format,
+    required this.clubs,
     required this.onChanged,
   });
 
@@ -173,6 +196,7 @@ class _FiltersBar extends StatelessWidget {
   final String level;
   final String club;
   final TournamentFormat? format;
+  final List<String> clubs;
   final void Function(String, String, String, TournamentFormat?) onChanged;
 
   @override
@@ -199,9 +223,7 @@ class _FiltersBar extends StatelessWidget {
           label: 'Клуб: $club',
           onTap: () => _pick(context, 'Клуб', [
             'Все',
-            'Padel Club Moscow',
-            'Sky Padel',
-            'Luzhniki Padel',
+            ...clubs,
           ], club, (v) {
             onChanged(day, level, v, format);
           }),

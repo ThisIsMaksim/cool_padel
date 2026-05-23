@@ -37,9 +37,7 @@ class HomeTab extends StatelessWidget {
                 child: AppHeader(
                   title: 'CoolPadel',
                   showLogo: true,
-                  notificationCount: 2,
                   onProfileTap: onOpenProfile,
-                  onNotificationsTap: () {},
                 ),
               ),
               const SliverToBoxAdapter(
@@ -98,59 +96,73 @@ class HomeTab extends StatelessWidget {
                 ),
               ),
               const SliverToBoxAdapter(
-                child: SectionHeader(title: 'Рядом'),
+                child: SectionHeader(title: 'Ближайшие турниры'),
               ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppTheme.marginMobile,
-                    0,
-                    AppTheme.marginMobile,
-                    120,
-                  ),
-                  child: AppTheme.glassSurface(
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 64,
-                          height: 64,
-                          decoration: BoxDecoration(
-                            color: AppTheme.surfaceContainerHigh,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(
-                            Icons.local_offer,
-                            color: AppTheme.primary,
-                            size: 32,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Premium-корт',
-                                style:
-                                    Theme.of(context).textTheme.titleMedium,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'Скидка 20% · Padel Club Moscow',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Icon(
-                          Icons.chevron_right,
-                          color: AppTheme.secondary,
-                        ),
-                      ],
+              if (upcomingTournaments.isEmpty)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      AppTheme.marginMobile,
+                      0,
+                      AppTheme.marginMobile,
+                      120,
+                    ),
+                    child: AppTheme.glassSurface(
+                      child: Text(
+                        'Пока нет активных турниров. Создайте свой на вкладке «Турниры».',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                     ),
                   ),
+                )
+              else
+                SliverList.separated(
+                  itemCount: upcomingTournaments.length,
+                  separatorBuilder: (_, _) => const SizedBox(height: 10),
+                  itemBuilder: (context, index) {
+                    final tournament = upcomingTournaments[index];
+                    return Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        AppTheme.marginMobile,
+                        0,
+                        AppTheme.marginMobile,
+                        index == upcomingTournaments.length - 1 ? 120 : 0,
+                      ),
+                      child: AppTheme.glassSurface(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) => TournamentDetailScreen(
+                                appState: appState,
+                                tournamentId: tournament.id,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              tournament.title,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '${tournament.club} · ${tournament.formatLabel}',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            Text(
+                              tournament.isFull
+                                  ? 'Мест нет'
+                                  : 'Свободно мест: ${tournament.freeSlots}',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              ),
             ],
           ),
         );

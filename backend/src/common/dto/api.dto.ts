@@ -1,12 +1,14 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsDateString,
   IsEnum,
   IsInt,
   IsObject,
   IsOptional,
   IsString,
   Min,
+  MinLength,
   ValidateNested,
 } from 'class-validator';
 
@@ -48,6 +50,37 @@ export class RegisterTournamentDto {
   @IsOptional()
   @IsString()
   partnerId?: string;
+}
+
+export class CreateTournamentDto {
+  @IsString()
+  @MinLength(3)
+  title!: string;
+
+  @IsString()
+  @MinLength(10)
+  description!: string;
+
+  @IsString()
+  @MinLength(2)
+  club!: string;
+
+  @IsString()
+  @MinLength(3)
+  address!: string;
+
+  @IsDateString()
+  dateTime!: string;
+
+  @IsString()
+  level!: string;
+
+  @IsEnum(['singles', 'doubles'])
+  format!: 'singles' | 'doubles';
+
+  @IsInt()
+  @Min(2)
+  maxParticipants!: number;
 }
 
 export class ListTournamentsQueryDto {

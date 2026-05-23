@@ -7,6 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Tournament, TournamentDocument } from './schemas/tournament.schema';
 import {
+  CreateTournamentDto,
   ListTournamentsQueryDto,
   RegisterTournamentDto,
 } from '../common/dto/api.dto';
@@ -38,6 +39,40 @@ export class TournamentsService {
     if (!tournament) {
       throw new NotFoundException('Tournament not found');
     }
+    return this.toClientJson(tournament);
+  }
+
+  async create(organizerId: string, dto: CreateTournamentDto) {
+    const dateTime = new Date(dto.dateTime);
+    if (Number.isNaN(dateTime.getTime())) {
+      throw new BadRequestException('Некорректная дата турнира');
+    }
+    if (dateTime.getTime() <= Date.now()) {
+      throw new BadRequestException('Дата турнира должна быть в будущем');
+    }
+    if (dto.format === 'doubles' && dto.maxParticipants % 2 !== 0) {
+      throw new BadRequestException(
+        'Для парного турнира число участников должно быть чётным',
+      );
+    }
+
+    const publicId = `t_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+    const tournament = await this.tournamentModel.create({
+      publicId,
+      title: dto.title.trim(),
+      description: dto.description.trim(),
+      club: dto.club.trim(),
+      address: dto.address.trim(),
+      dateTime,
+      level: dto.level,
+      format: dto.format,
+      maxParticipants: dto.maxParticipants,
+      organizerId,
+      participantIds: [organizerId],
+      waitlistIds: [],
+      status: 'open',
+    });
+
     return this.toClientJson(tournament);
   }
 
