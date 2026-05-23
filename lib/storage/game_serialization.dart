@@ -118,6 +118,7 @@ class GameSerialization {
         'team1Points': state.team1Points,
         'team2Points': state.team2Points,
         'pointPhase': state.pointPhase.name,
+        'goldenPointNext': state.goldenPointNext,
         'isTiebreak': state.isTiebreak,
         'winnerIndex': state.winnerIndex,
         'history': state.history.map(standardStateToJson).toList(growable: false),
@@ -138,6 +139,7 @@ class GameSerialization {
       team1Points: json['team1Points'] as int? ?? 0,
       team2Points: json['team2Points'] as int? ?? 0,
       pointPhase: PointPhase.values.byName(json['pointPhase'] as String),
+      goldenPointNext: json['goldenPointNext'] as bool? ?? false,
       isTiebreak: json['isTiebreak'] as bool? ?? false,
       winnerIndex: json['winnerIndex'] as int?,
       history: (json['history'] as List<dynamic>?)

@@ -27,6 +27,7 @@ class StandardMatchState {
     this.team1Points = 0,
     this.team2Points = 0,
     this.pointPhase = PointPhase.normal,
+    this.goldenPointNext = false,
     this.isTiebreak = false,
     this.winnerIndex,
     List<StandardMatchState>? history,
@@ -42,6 +43,7 @@ class StandardMatchState {
   final int team1Points;
   final int team2Points;
   final PointPhase pointPhase;
+  final bool goldenPointNext;
   final bool isTiebreak;
   final int? winnerIndex;
   final List<StandardMatchState> history;
@@ -68,7 +70,7 @@ class StandardMatchState {
 
     switch (pointPhase) {
       case PointPhase.deuce:
-        return '40';
+        return goldenPointNext ? 'GP' : '40';
       case PointPhase.team1Advantage:
         return teamIndex == 0 ? 'AD' : '40';
       case PointPhase.team2Advantage:
@@ -103,13 +105,11 @@ class StandardMatchState {
   StandardMatchState _scoreRegularPoint(int teamIndex) {
     final isTeam1 = teamIndex == 0;
 
-    if (pointPhase == PointPhase.deuce &&
-        deuceRule == DeuceRule.goldenPoint) {
-      return _winGame(teamIndex: teamIndex);
-    }
-
     switch (pointPhase) {
       case PointPhase.deuce:
+        if (deuceRule == DeuceRule.goldenPoint && goldenPointNext) {
+          return _winGame(teamIndex: teamIndex);
+        }
         return copyWith(
           pointPhase:
               isTeam1 ? PointPhase.team1Advantage : PointPhase.team2Advantage,
@@ -119,13 +119,19 @@ class StandardMatchState {
         if (isTeam1) {
           return _winGame(teamIndex: 0);
         }
-        return copyWith(pointPhase: PointPhase.deuce);
+        return copyWith(
+          pointPhase: PointPhase.deuce,
+          goldenPointNext: deuceRule == DeuceRule.goldenPoint,
+        );
 
       case PointPhase.team2Advantage:
         if (!isTeam1) {
           return _winGame(teamIndex: 1);
         }
-        return copyWith(pointPhase: PointPhase.deuce);
+        return copyWith(
+          pointPhase: PointPhase.deuce,
+          goldenPointNext: deuceRule == DeuceRule.goldenPoint,
+        );
 
       case PointPhase.normal:
         final myPoints = isTeam1 ? team1Points : team2Points;
@@ -136,11 +142,11 @@ class StandardMatchState {
         }
 
         if (myPoints == 2 && oppPoints == 3) {
-          return copyWith(pointPhase: PointPhase.deuce);
+          return copyWith(pointPhase: PointPhase.deuce, goldenPointNext: false);
         }
 
         if (myPoints == 3 && oppPoints == 3) {
-          return copyWith(pointPhase: PointPhase.deuce);
+          return copyWith(pointPhase: PointPhase.deuce, goldenPointNext: false);
         }
 
         return copyWith(
@@ -188,6 +194,7 @@ class StandardMatchState {
         team1Points: 0,
         team2Points: 0,
         pointPhase: PointPhase.normal,
+        goldenPointNext: false,
         isTiebreak: true,
         servingTeamIndex: nextServer,
       );
@@ -202,6 +209,7 @@ class StandardMatchState {
       team1Points: 0,
       team2Points: 0,
       pointPhase: PointPhase.normal,
+      goldenPointNext: false,
       servingTeamIndex: nextServer,
       servingPlayerIndex: teamIndex == servingTeamIndex
           ? (servingPlayerIndex == 0 ? 1 : 0)
@@ -229,6 +237,7 @@ class StandardMatchState {
         team1Points: 0,
         team2Points: 0,
         pointPhase: PointPhase.normal,
+        goldenPointNext: false,
         isTiebreak: false,
         winnerIndex: newTeam1Sets >= setsToWin ? 0 : 1,
       );
@@ -240,6 +249,7 @@ class StandardMatchState {
       team1Points: 0,
       team2Points: 0,
       pointPhase: PointPhase.normal,
+      goldenPointNext: false,
       isTiebreak: false,
       servingTeamIndex: teamIndex == 0 ? 1 : 0,
       servingPlayerIndex: 0,
@@ -252,7 +262,15 @@ class StandardMatchState {
     if (rule == DeuceRule.goldenPoint &&
         (pointPhase == PointPhase.team1Advantage ||
             pointPhase == PointPhase.team2Advantage)) {
-      return copyWith(deuceRule: rule, pointPhase: PointPhase.deuce);
+      return copyWith(
+        deuceRule: rule,
+        pointPhase: PointPhase.deuce,
+        goldenPointNext: true,
+      );
+    }
+
+    if (rule == DeuceRule.advantage) {
+      return copyWith(deuceRule: rule, goldenPointNext: false);
     }
 
     return copyWith(deuceRule: rule);
@@ -270,6 +288,7 @@ class StandardMatchState {
     int? team1Points,
     int? team2Points,
     PointPhase? pointPhase,
+    bool? goldenPointNext,
     bool? isTiebreak,
     int? winnerIndex,
     bool clearWinner = false,
@@ -289,6 +308,7 @@ class StandardMatchState {
       team1Points: team1Points ?? this.team1Points,
       team2Points: team2Points ?? this.team2Points,
       pointPhase: pointPhase ?? this.pointPhase,
+      goldenPointNext: goldenPointNext ?? this.goldenPointNext,
       isTiebreak: isTiebreak ?? this.isTiebreak,
       winnerIndex: clearWinner ? null : (winnerIndex ?? this.winnerIndex),
       history: clearHistory ? const [] : (history ?? this.history),

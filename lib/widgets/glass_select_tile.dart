@@ -41,7 +41,7 @@ class GlassSelectTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppTheme.radiusLg),
             border: Border.all(
               color: selected ? AppTheme.primary : AppTheme.glassBorder,
-              width: selected ? 1.5 : 1,
+              width: 1.5,
             ),
             boxShadow: showGlow
                 ? [

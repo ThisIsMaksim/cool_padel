@@ -1,6 +1,6 @@
 enum DeuceRule {
   advantage('Преимущество', 'Классические правила deuce / AD'),
-  goldenPoint('Золотой мяч', 'При 40:40 следующее очко выигрывает гейм');
+  goldenPoint('Золотой мяч', 'После возврата с AD на 40:40 следующее очко решает гейм');
 
   const DeuceRule(this.title, this.subtitle);
 

@@ -1,3 +1,4 @@
+import 'package:cool_padel/models/deuce_rule.dart';
 import 'package:cool_padel/models/standard_match_state.dart';
 import 'package:cool_padel/models/tournament_match_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -37,6 +38,49 @@ void main() {
 
       state = state.scorePoint(1);
       expect(state.pointPhase, PointPhase.deuce);
+    });
+
+    test('golden point only after returning from advantage to deuce', () {
+      var state = StandardMatchState(
+        setsToWin: 2,
+        deuceRule: DeuceRule.goldenPoint,
+      );
+
+      for (var i = 0; i < 3; i++) {
+        state = state.scorePoint(0);
+        state = state.scorePoint(1);
+      }
+      expect(state.pointPhase, PointPhase.deuce);
+      expect(state.goldenPointNext, isFalse);
+
+      state = state.scorePoint(0);
+      expect(state.pointPhase, PointPhase.team1Advantage);
+
+      state = state.scorePoint(1);
+      expect(state.pointPhase, PointPhase.deuce);
+      expect(state.goldenPointNext, isTrue);
+      expect(state.formatPoint(state.team1Points, 0), 'GP');
+
+      state = state.scorePoint(1);
+      expect(state.currentSet.team2Games, 1);
+      expect(state.pointPhase, PointPhase.normal);
+      expect(state.goldenPointNext, isFalse);
+    });
+
+    test('first deuce with golden point rule still uses advantage', () {
+      var state = StandardMatchState(
+        setsToWin: 2,
+        deuceRule: DeuceRule.goldenPoint,
+      );
+
+      for (var i = 0; i < 3; i++) {
+        state = state.scorePoint(0);
+        state = state.scorePoint(1);
+      }
+
+      state = state.scorePoint(0);
+      expect(state.pointPhase, PointPhase.team1Advantage);
+      expect(state.currentSet.team1Games, 0);
     });
 
     test('match finishes when team wins required sets', () {

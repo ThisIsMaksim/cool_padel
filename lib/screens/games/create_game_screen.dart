@@ -227,7 +227,7 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
                   padding: EdgeInsets.only(right: isLast ? 0 : 8),
                   child: GlassSelectTile(
                     label: format.label,
-                    subtitle: format == _format ? format.subtitle : null,
+                    subtitle: format.subtitle,
                     selected: _format == format,
                     onTap: () => setState(() {
                       _format = format;
