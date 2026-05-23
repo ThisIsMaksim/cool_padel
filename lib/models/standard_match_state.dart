@@ -21,6 +21,7 @@ class StandardMatchState {
     required this.setsToWin,
     this.deuceRule = DeuceRule.advantage,
     this.servingTeamIndex = 0,
+    this.servingPlayerIndex = 0,
     List<SetScore>? completedSets,
     this.currentSet = const SetScore(team1Games: 0, team2Games: 0),
     this.team1Points = 0,
@@ -28,11 +29,14 @@ class StandardMatchState {
     this.pointPhase = PointPhase.normal,
     this.isTiebreak = false,
     this.winnerIndex,
-  }) : completedSets = List.unmodifiable(completedSets ?? []);
+    List<StandardMatchState>? history,
+  })  : completedSets = List.unmodifiable(completedSets ?? []),
+        history = List.unmodifiable(history ?? []);
 
   final int setsToWin;
   final DeuceRule deuceRule;
   final int servingTeamIndex;
+  final int servingPlayerIndex;
   final List<SetScore> completedSets;
   final SetScore currentSet;
   final int team1Points;
@@ -40,6 +44,7 @@ class StandardMatchState {
   final PointPhase pointPhase;
   final bool isTiebreak;
   final int? winnerIndex;
+  final List<StandardMatchState> history;
 
   int get receivingTeamIndex => servingTeamIndex == 0 ? 1 : 0;
 
@@ -51,6 +56,8 @@ class StandardMatchState {
 
   bool get isFinished => winnerIndex != null;
 
+  bool get canUndo => history.isNotEmpty;
+
   bool get isDeuceSituation =>
       pointPhase == PointPhase.deuce ||
       pointPhase == PointPhase.team1Advantage ||
@@ -61,7 +68,7 @@ class StandardMatchState {
 
     switch (pointPhase) {
       case PointPhase.deuce:
-        return deuceRule == DeuceRule.goldenPoint ? '40' : '40';
+        return '40';
       case PointPhase.team1Advantage:
         return teamIndex == 0 ? 'AD' : '40';
       case PointPhase.team2Advantage:
@@ -80,12 +87,18 @@ class StandardMatchState {
   StandardMatchState scorePoint(int teamIndex) {
     if (isFinished) return this;
 
-    if (isTiebreak) {
-      return _scoreTiebreakPoint(teamIndex);
-    }
+    final next = isTiebreak
+        ? _scoreTiebreakPoint(teamIndex)
+        : _scoreRegularPoint(teamIndex);
 
-    return _scoreRegularPoint(teamIndex);
+    return next._appendHistory(this);
   }
+
+  StandardMatchState _appendHistory(StandardMatchState previous) {
+    return copyWith(history: [...previous.history, previous.withoutHistory()]);
+  }
+
+  StandardMatchState withoutHistory() => copyWith(clearHistory: true);
 
   StandardMatchState _scoreRegularPoint(int teamIndex) {
     final isTeam1 = teamIndex == 0;
@@ -151,7 +164,13 @@ class StandardMatchState {
       );
     }
 
-    return copyWith(team1Points: newTeam1, team2Points: newTeam2);
+    return copyWith(
+      team1Points: newTeam1,
+      team2Points: newTeam2,
+      servingTeamIndex: (newTeam1 + newTeam2).isOdd
+          ? (servingTeamIndex == 0 ? 1 : 0)
+          : servingTeamIndex,
+    );
   }
 
   StandardMatchState _winGame({required int teamIndex}) {
@@ -184,6 +203,9 @@ class StandardMatchState {
       team2Points: 0,
       pointPhase: PointPhase.normal,
       servingTeamIndex: nextServer,
+      servingPlayerIndex: teamIndex == servingTeamIndex
+          ? (servingPlayerIndex == 0 ? 1 : 0)
+          : servingPlayerIndex,
     );
   }
 
@@ -220,6 +242,7 @@ class StandardMatchState {
       pointPhase: PointPhase.normal,
       isTiebreak: false,
       servingTeamIndex: teamIndex == 0 ? 1 : 0,
+      servingPlayerIndex: 0,
     );
   }
 
@@ -236,40 +259,9 @@ class StandardMatchState {
   }
 
   StandardMatchState undoLastPoint() {
-    if (isFinished) {
-      return copyWith(winnerIndex: null, clearWinner: true);
-    }
-
-    if (isTiebreak) {
-      if (team1Points == 0 && team2Points == 0) return this;
-      if (team1Points > team2Points) {
-        return copyWith(team1Points: team1Points - 1);
-      }
-      return copyWith(team2Points: team2Points - 1);
-    }
-
-    if (pointPhase == PointPhase.team1Advantage) {
-      return copyWith(pointPhase: PointPhase.deuce);
-    }
-    if (pointPhase == PointPhase.team2Advantage) {
-      return copyWith(pointPhase: PointPhase.deuce);
-    }
-    if (pointPhase == PointPhase.deuce) {
-      return copyWith(
-        pointPhase: PointPhase.normal,
-        team1Points: 3,
-        team2Points: 3,
-      );
-    }
-
-    if (team1Points > 0 && team1Points >= team2Points) {
-      return copyWith(team1Points: team1Points - 1);
-    }
-    if (team2Points > 0) {
-      return copyWith(team2Points: team2Points - 1);
-    }
-
-    return this;
+    if (history.isEmpty) return this;
+    final previous = history.last;
+    return previous.copyWith(history: history.sublist(0, history.length - 1));
   }
 
   StandardMatchState copyWith({
@@ -283,11 +275,15 @@ class StandardMatchState {
     bool clearWinner = false,
     DeuceRule? deuceRule,
     int? servingTeamIndex,
+    int? servingPlayerIndex,
+    List<StandardMatchState>? history,
+    bool clearHistory = false,
   }) {
     return StandardMatchState(
       setsToWin: setsToWin,
       deuceRule: deuceRule ?? this.deuceRule,
       servingTeamIndex: servingTeamIndex ?? this.servingTeamIndex,
+      servingPlayerIndex: servingPlayerIndex ?? this.servingPlayerIndex,
       completedSets: completedSets ?? this.completedSets,
       currentSet: currentSet ?? this.currentSet,
       team1Points: team1Points ?? this.team1Points,
@@ -295,6 +291,7 @@ class StandardMatchState {
       pointPhase: pointPhase ?? this.pointPhase,
       isTiebreak: isTiebreak ?? this.isTiebreak,
       winnerIndex: clearWinner ? null : (winnerIndex ?? this.winnerIndex),
+      history: clearHistory ? const [] : (history ?? this.history),
     );
   }
 }

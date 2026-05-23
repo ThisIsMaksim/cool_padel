@@ -52,7 +52,7 @@ void main() {
         ),
         createdAt: DateTime(2026, 5, 20, 13),
         status: GameStatus.inProgress,
-        tournamentState: const TournamentMatchState(
+        tournamentState: TournamentMatchState(
           totalPoints: 50,
           minPointLead: 2,
           team1Points: 12,

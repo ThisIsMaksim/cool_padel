@@ -54,11 +54,38 @@ void main() {
       expect(state.winnerIndex, 0);
       expect(state.team1Sets, 2);
     });
+
+    test('undo reverts finished game', () {
+      var state = StandardMatchState(setsToWin: 2);
+      for (var point = 0; point < 4; point++) {
+        state = state.scorePoint(0);
+      }
+      expect(state.currentSet.team1Games, 1);
+
+      state = state.undoLastPoint();
+      expect(state.currentSet.team1Games, 0);
+      expect(state.team1Points, 3);
+    });
+
+    test('undo reverts match win', () {
+      var state = StandardMatchState(setsToWin: 1);
+      for (var game = 0; game < 6; game++) {
+        for (var point = 0; point < 4; point++) {
+          state = state.scorePoint(0);
+        }
+      }
+      expect(state.isFinished, isTrue);
+
+      state = state.undoLastPoint();
+      expect(state.isFinished, isFalse);
+      expect(state.team1Sets, 0);
+      expect(state.currentSet.team1Games, 5);
+    });
   });
 
   group('TournamentMatchState', () {
     test('ends when total points reached with min lead', () {
-      var state = const TournamentMatchState(totalPoints: 10, minPointLead: 2);
+      var state = TournamentMatchState(totalPoints: 10, minPointLead: 2);
       for (var i = 0; i < 4; i++) {
         state = state.scorePoint(0);
       }
@@ -79,6 +106,23 @@ void main() {
       state = state.scorePoint(0);
       expect(state.team1Points, 1);
       expect(state.team2Points, 0);
+    });
+
+    test('undo reverts match finish', () {
+      var state = TournamentMatchState(totalPoints: 10, minPointLead: 2);
+      for (var i = 0; i < 4; i++) {
+        state = state.scorePoint(0);
+      }
+      for (var i = 0; i < 5; i++) {
+        state = state.scorePoint(1);
+      }
+      state = state.scorePoint(1);
+      expect(state.isFinished, isTrue);
+
+      state = state.undoLastPoint();
+      expect(state.isFinished, isFalse);
+      expect(state.team1Points, 4);
+      expect(state.team2Points, 5);
     });
   });
 }

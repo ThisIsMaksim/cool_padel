@@ -39,13 +39,21 @@ class ServingBanner extends StatelessWidget {
     super.key,
     required this.serverName,
     required this.receiverName,
+    this.serverSide,
+    this.receiverSide,
   });
 
   final String serverName;
   final String receiverName;
+  final String? serverSide;
+  final String? receiverSide;
 
   @override
   Widget build(BuildContext context) {
+    final serverLabel = serverSide != null ? '$serverName ($serverSide)' : serverName;
+    final receiverLabel =
+        receiverSide != null ? '$receiverName ($receiverSide)' : receiverName;
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -55,7 +63,7 @@ class ServingBanner extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                'Подача: $serverName → $receiverName',
+                'Подача: $serverLabel → $receiverLabel',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),

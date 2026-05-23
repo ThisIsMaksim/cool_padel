@@ -49,7 +49,11 @@ class GamesRepository extends ChangeNotifier {
     return null;
   }
 
-  Game createGame(MatchConfig config) {
+  Game createGame(
+    MatchConfig config, {
+    int servingTeamIndex = 0,
+    int servingPlayerIndex = 0,
+  }) {
     final game = Game(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       config: config,
@@ -58,12 +62,16 @@ class GamesRepository extends ChangeNotifier {
           ? StandardMatchState(
               setsToWin: config.setsToWin,
               deuceRule: config.deuceRule,
+              servingTeamIndex: servingTeamIndex,
+              servingPlayerIndex: servingPlayerIndex,
             )
           : null,
       tournamentState: config.mode == MatchMode.tournament
           ? TournamentMatchState(
               totalPoints: config.totalPoints,
               minPointLead: config.minPointLead,
+              servingTeamIndex: servingTeamIndex,
+              servingPlayerIndex: servingPlayerIndex,
             )
           : null,
     );

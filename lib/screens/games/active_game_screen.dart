@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../app/app_state.dart';
 import '../../models/deuce_rule.dart';
 import '../../models/game.dart';
+import '../../models/match_config.dart';
 import '../../models/match_mode.dart';
+import '../../models/team_member.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/match_widgets.dart';
 import '../../widgets/team_score_panel.dart';
@@ -42,15 +44,52 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
     );
   }
 
+  ({String server, String receiver, String? serverSide, String? receiverSide})
+      _serveLabels(MatchConfig config, int teamIndex, int playerIndex) {
+    final server = config.serverMember(teamIndex, playerIndex);
+    final receiver = config.receiverMember(teamIndex, playerIndex);
+    return (
+      server: server?.shortName ?? config.membersForTeam(teamIndex).first.shortName,
+      receiver: receiver?.shortName ??
+          config.membersForTeam(teamIndex == 0 ? 1 : 0).first.shortName,
+      serverSide: server?.side?.label,
+      receiverSide: receiver?.side?.label,
+    );
+  }
+
+  Widget _teamRoster(MatchConfig config) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Состав', style: Theme.of(context).textTheme.labelLarge),
+            const SizedBox(height: 8),
+            _teamLine('К1', config.team1Members),
+            const SizedBox(height: 4),
+            _teamLine('К2', config.team2Members),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _teamLine(String label, List<TeamMember> members) {
+    final text = members
+        .map((m) => m.side != null ? '${m.shortName} (${m.side!.label})' : m.shortName)
+        .join(' · ');
+    return Text('$label: $text');
+  }
+
   Widget _buildStandard(BuildContext context, Game game) {
     final state = game.standardState!;
     final config = game.config;
-    final serverName = state.servingTeamIndex == 0
-        ? config.team1Name
-        : config.team2Name;
-    final receiverName = state.receivingTeamIndex == 0
-        ? config.team1Name
-        : config.team2Name;
+    final serve = _serveLabels(
+      config,
+      state.servingTeamIndex,
+      state.servingPlayerIndex,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -63,13 +102,16 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
               onPressed: () => _pickDeuceRule(game),
             ),
           IconButton(
-            onPressed: () {
-              widget.appState.games.updateStandardState(
-                game.id,
-                state.undoLastPoint(),
-              );
-            },
+            onPressed: state.canUndo
+                ? () {
+                    widget.appState.games.updateStandardState(
+                      game.id,
+                      state.undoLastPoint(),
+                    );
+                  }
+                : null,
             icon: const Icon(Icons.undo),
+            tooltip: 'Отменить',
           ),
         ],
       ),
@@ -79,11 +121,14 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ServingBanner(
-              serverName: serverName,
-              receiverName: receiverName,
+              serverName: serve.server,
+              receiverName: serve.receiver,
+              serverSide: serve.serverSide,
+              receiverSide: serve.receiverSide,
             ),
             const SizedBox(height: 12),
-            _WearHint(),
+            _teamRoster(config),
+            const SizedBox(height: 12),
             if (state.isTiebreak)
               Card(
                 child: Padding(
@@ -154,12 +199,11 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
   Widget _buildTournament(BuildContext context, Game game) {
     final state = game.tournamentState!;
     final config = game.config;
-    final serverName = state.servingTeamIndex == 0
-        ? config.team1Name
-        : config.team2Name;
-    final receiverName = state.receivingTeamIndex == 0
-        ? config.team1Name
-        : config.team2Name;
+    final serve = _serveLabels(
+      config,
+      state.servingTeamIndex,
+      state.servingPlayerIndex,
+    );
 
     final winnerName = state.winnerIndex == 0
         ? config.team1Name
@@ -172,13 +216,16 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
         title: Text(game.title),
         actions: [
           IconButton(
-            onPressed: () {
-              widget.appState.games.updateTournamentState(
-                game.id,
-                state.undoLastPoint(),
-              );
-            },
+            onPressed: state.canUndo
+                ? () {
+                    widget.appState.games.updateTournamentState(
+                      game.id,
+                      state.undoLastPoint(),
+                    );
+                  }
+                : null,
             icon: const Icon(Icons.undo),
+            tooltip: 'Отменить',
           ),
         ],
       ),
@@ -188,11 +235,14 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ServingBanner(
-              serverName: serverName,
-              receiverName: receiverName,
+              serverName: serve.server,
+              receiverName: serve.receiver,
+              serverSide: serve.serverSide,
+              receiverSide: serve.receiverSide,
             ),
             const SizedBox(height: 12),
-            _WearHint(),
+            _teamRoster(config),
+            const SizedBox(height: 12),
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -275,19 +325,5 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
     if (selected != null) {
       widget.appState.games.updateDeuceRule(game.id, selected);
     }
-  }
-}
-
-class _WearHint extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: AppTheme.accent.withValues(alpha: 0.35),
-      child: const ListTile(
-        leading: Icon(Icons.watch, color: AppTheme.brandPrimary),
-        title: Text('Apple Watch / Wear OS'),
-        subtitle: Text('Счёт синхронизируется с часами (интеграция в разработке)'),
-      ),
-    );
   }
 }

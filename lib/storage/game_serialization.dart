@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import '../models/deuce_rule.dart';
 import '../models/game.dart';
+import '../models/game_format.dart';
 import '../models/match_config.dart';
 import '../models/match_mode.dart';
 import '../models/standard_match_state.dart';
+import '../models/team_member.dart';
 import '../models/tournament_match_state.dart';
 
 class GameSerialization {
@@ -51,6 +53,11 @@ class GameSerialization {
         'mode': config.mode.name,
         'team1Name': config.team1Name,
         'team2Name': config.team2Name,
+        'gameFormat': config.gameFormat.name,
+        'team1Members':
+            config.team1Members.map((m) => m.toJson()).toList(growable: false),
+        'team2Members':
+            config.team2Members.map((m) => m.toJson()).toList(growable: false),
         'participantIds': config.participantIds,
         'setsToWin': config.setsToWin,
         'totalPoints': config.totalPoints,
@@ -63,6 +70,17 @@ class GameSerialization {
       mode: MatchMode.values.byName(json['mode'] as String),
       team1Name: json['team1Name'] as String,
       team2Name: json['team2Name'] as String,
+      gameFormat: json['gameFormat'] != null
+          ? GameFormat.values.byName(json['gameFormat'] as String)
+          : GameFormat.doubles2x2,
+      team1Members: (json['team1Members'] as List<dynamic>?)
+              ?.map((e) => TeamMember.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      team2Members: (json['team2Members'] as List<dynamic>?)
+              ?.map((e) => TeamMember.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       participantIds: (json['participantIds'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -93,6 +111,7 @@ class GameSerialization {
         'setsToWin': state.setsToWin,
         'deuceRule': state.deuceRule.name,
         'servingTeamIndex': state.servingTeamIndex,
+        'servingPlayerIndex': state.servingPlayerIndex,
         'completedSets':
             state.completedSets.map(setScoreToJson).toList(growable: false),
         'currentSet': setScoreToJson(state.currentSet),
@@ -101,6 +120,7 @@ class GameSerialization {
         'pointPhase': state.pointPhase.name,
         'isTiebreak': state.isTiebreak,
         'winnerIndex': state.winnerIndex,
+        'history': state.history.map(standardStateToJson).toList(growable: false),
       };
 
   static StandardMatchState standardStateFromJson(Map<String, dynamic> json) {
@@ -110,6 +130,7 @@ class GameSerialization {
           ? DeuceRule.values.byName(json['deuceRule'] as String)
           : DeuceRule.advantage,
       servingTeamIndex: json['servingTeamIndex'] as int? ?? 0,
+      servingPlayerIndex: json['servingPlayerIndex'] as int? ?? 0,
       completedSets: (json['completedSets'] as List<dynamic>)
           .map((item) => setScoreFromJson(item as Map<String, dynamic>))
           .toList(),
@@ -119,6 +140,11 @@ class GameSerialization {
       pointPhase: PointPhase.values.byName(json['pointPhase'] as String),
       isTiebreak: json['isTiebreak'] as bool? ?? false,
       winnerIndex: json['winnerIndex'] as int?,
+      history: (json['history'] as List<dynamic>?)
+              ?.map((item) =>
+                  standardStateFromJson(item as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
   }
 
@@ -129,9 +155,12 @@ class GameSerialization {
         'totalPoints': state.totalPoints,
         'minPointLead': state.minPointLead,
         'servingTeamIndex': state.servingTeamIndex,
+        'servingPlayerIndex': state.servingPlayerIndex,
         'team1Points': state.team1Points,
         'team2Points': state.team2Points,
         'winnerIndex': state.winnerIndex,
+        'history':
+            state.history.map(tournamentStateToJson).toList(growable: false),
       };
 
   static TournamentMatchState tournamentStateFromJson(
@@ -141,9 +170,15 @@ class GameSerialization {
       totalPoints: json['totalPoints'] as int,
       minPointLead: json['minPointLead'] as int? ?? 2,
       servingTeamIndex: json['servingTeamIndex'] as int? ?? 0,
+      servingPlayerIndex: json['servingPlayerIndex'] as int? ?? 0,
       team1Points: json['team1Points'] as int? ?? 0,
       team2Points: json['team2Points'] as int? ?? 0,
       winnerIndex: json['winnerIndex'] as int?,
+      history: (json['history'] as List<dynamic>?)
+              ?.map((item) =>
+                  tournamentStateFromJson(item as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
   }
 }
