@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../models/game_format.dart';
-import '../models/player.dart';
 import '../models/team_member.dart';
 import '../theme/app_theme.dart';
 import 'glass_select_tile.dart';
@@ -16,7 +15,6 @@ class TeamSlotPicker extends StatelessWidget {
     required this.team2Right,
     required this.team1Single,
     required this.team2Single,
-    required this.selectedSlot,
     required this.onSlotTap,
   });
 
@@ -27,7 +25,6 @@ class TeamSlotPicker extends StatelessWidget {
   final TeamMember? team2Right;
   final TeamMember? team1Single;
   final TeamMember? team2Single;
-  final String? selectedSlot;
   final ValueChanged<String> onSlotTap;
 
   @override
@@ -39,7 +36,6 @@ class TeamSlotPicker extends StatelessWidget {
             child: _SlotCard(
               label: 'КОМАНДА 1',
               member: team1Single,
-              selected: selectedSlot == 't1',
               onTap: () => onSlotTap('t1'),
             ),
           ),
@@ -48,7 +44,6 @@ class TeamSlotPicker extends StatelessWidget {
             child: _SlotCard(
               label: 'КОМАНДА 2',
               member: team2Single,
-              selected: selectedSlot == 't2',
               onTap: () => onSlotTap('t2'),
             ),
           ),
@@ -67,7 +62,6 @@ class TeamSlotPicker extends StatelessWidget {
               child: _SlotCard(
                 label: CourtSide.left.label.toUpperCase(),
                 member: team1Left,
-                selected: selectedSlot == 't1l',
                 onTap: () => onSlotTap('t1l'),
               ),
             ),
@@ -76,7 +70,6 @@ class TeamSlotPicker extends StatelessWidget {
               child: _SlotCard(
                 label: CourtSide.right.label.toUpperCase(),
                 member: team1Right,
-                selected: selectedSlot == 't1r',
                 onTap: () => onSlotTap('t1r'),
               ),
             ),
@@ -91,7 +84,6 @@ class TeamSlotPicker extends StatelessWidget {
               child: _SlotCard(
                 label: CourtSide.left.label.toUpperCase(),
                 member: team2Left,
-                selected: selectedSlot == 't2l',
                 onTap: () => onSlotTap('t2l'),
               ),
             ),
@@ -100,7 +92,6 @@ class TeamSlotPicker extends StatelessWidget {
               child: _SlotCard(
                 label: CourtSide.right.label.toUpperCase(),
                 member: team2Right,
-                selected: selectedSlot == 't2r',
                 onTap: () => onSlotTap('t2r'),
               ),
             ),
@@ -132,13 +123,11 @@ class _SlotCard extends StatelessWidget {
   const _SlotCard({
     required this.label,
     required this.member,
-    required this.selected,
     required this.onTap,
   });
 
   final String label;
   final TeamMember? member;
-  final bool selected;
   final VoidCallback onTap;
 
   @override
@@ -148,30 +137,11 @@ class _SlotCard extends StatelessWidget {
     return GlassSelectTile(
       label: label,
       subtitle: member?.shortName ?? 'Выбрать',
-      selected: selected,
-      glow: filled && !selected,
+      selected: false,
+      glow: filled,
       onTap: onTap,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       centerText: true,
     );
   }
-}
-
-String? playerSlotLabel({
-  required GameFormat format,
-  required TeamMember? t1l,
-  required TeamMember? t1r,
-  required TeamMember? t2l,
-  required TeamMember? t2r,
-  required TeamMember? t1s,
-  required TeamMember? t2s,
-  required Player player,
-}) {
-  if (t1l?.playerId == player.id) return 'К1 · ${CourtSide.left.label}';
-  if (t1r?.playerId == player.id) return 'К1 · ${CourtSide.right.label}';
-  if (t2l?.playerId == player.id) return 'К2 · ${CourtSide.left.label}';
-  if (t2r?.playerId == player.id) return 'К2 · ${CourtSide.right.label}';
-  if (t1s?.playerId == player.id) return 'К1';
-  if (t2s?.playerId == player.id) return 'К2';
-  return null;
 }

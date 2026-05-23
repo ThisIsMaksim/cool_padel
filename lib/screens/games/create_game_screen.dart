@@ -10,9 +10,9 @@ import '../../models/player.dart';
 import '../../models/team_member.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/glass_select_tile.dart';
-import '../../widgets/player_avatar.dart';
 import '../../widgets/team_slot_picker.dart';
 import 'active_game_screen.dart';
+import 'player_selection_sheet.dart';
 import 'serve_selection_dialog.dart';
 
 class CreateGameScreen extends StatefulWidget {
@@ -34,25 +34,12 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
   TeamMember? _team2Right;
   TeamMember? _team1Single;
   TeamMember? _team2Single;
-  String? _selectedSlot;
-  final _searchController = TextEditingController();
   final _totalPointsController = TextEditingController(text: '50');
-  String _searchQuery = '';
 
   @override
   void dispose() {
-    _searchController.dispose();
     _totalPointsController.dispose();
     super.dispose();
-  }
-
-  List<Player> get _filteredPlayers {
-    final q = _searchQuery.toLowerCase();
-    return widget.appState.social.allPlayers.where((p) {
-      if (q.isEmpty) return true;
-      return p.name.toLowerCase().contains(q) ||
-          p.club.toLowerCase().contains(q);
-    }).toList();
   }
 
   Set<String> get _assignedIds => {
@@ -140,42 +127,44 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
     );
   }
 
-  void _assignPlayer(Player player) {
-    if (_selectedSlot == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Сначала выберите позицию в команде')),
-      );
-      return;
-    }
-
-    if (_assignedIds.contains(player.id)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Игрок уже добавлен в команду')),
-      );
-      return;
-    }
-
-    final member = TeamMember.fromPlayer(
-      player,
-      side: _sideForSlot(_selectedSlot!),
+  Future<void> _pickPlayerForSlot(String slot) async {
+    final currentMember = _memberForSlot(slot);
+    final result = await showPlayerSelectionSheet(
+      context,
+      slotTitle: _slotTitle(slot),
+      allPlayers: widget.appState.social.allPlayers,
+      favorites: widget.appState.social.favorites,
+      assignedIds: _assignedIds,
+      currentPlayerId: currentMember?.playerId,
     );
 
-    setState(() {
-      switch (_selectedSlot) {
-        case 't1l':
-          _team1Left = member;
-        case 't1r':
-          _team1Right = member;
-        case 't2l':
-          _team2Left = member;
-        case 't2r':
-          _team2Right = member;
-        case 't1':
-          _team1Single = member;
-        case 't2':
-          _team2Single = member;
-      }
-    });
+    if (!mounted || result == null) return;
+
+    if (result is ClearPlayerSlot) {
+      setState(() => _clearSlot(slot));
+      return;
+    }
+
+    if (result is! Player) return;
+
+    final member = TeamMember.fromPlayer(
+      result,
+      side: _sideForSlot(slot),
+    );
+
+    setState(() => _setMemberForSlot(slot, member));
+  }
+
+  String _slotTitle(String slot) {
+    return switch (slot) {
+      't1l' => 'Команда 1 · ${CourtSide.left.label}',
+      't1r' => 'Команда 1 · ${CourtSide.right.label}',
+      't2l' => 'Команда 2 · ${CourtSide.left.label}',
+      't2r' => 'Команда 2 · ${CourtSide.right.label}',
+      't1' => 'Команда 1',
+      't2' => 'Команда 2',
+      _ => 'Позиция',
+    };
   }
 
   CourtSide? _sideForSlot(String slot) {
@@ -186,32 +175,54 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
     };
   }
 
+  void _setMemberForSlot(String slot, TeamMember member) {
+    switch (slot) {
+      case 't1l':
+        _team1Left = member;
+      case 't1r':
+        _team1Right = member;
+      case 't2l':
+        _team2Left = member;
+      case 't2r':
+        _team2Right = member;
+      case 't1':
+        _team1Single = member;
+      case 't2':
+        _team2Single = member;
+    }
+  }
+
   void _clearSlot(String slot) {
-    setState(() {
-      switch (slot) {
-        case 't1l':
-          _team1Left = null;
-        case 't1r':
-          _team1Right = null;
-        case 't2l':
-          _team2Left = null;
-        case 't2r':
-          _team2Right = null;
-        case 't1':
-          _team1Single = null;
-        case 't2':
-          _team2Single = null;
-      }
-      _selectedSlot = slot;
-    });
+    switch (slot) {
+      case 't1l':
+        _team1Left = null;
+      case 't1r':
+        _team1Right = null;
+      case 't2l':
+        _team2Left = null;
+      case 't2r':
+        _team2Right = null;
+      case 't1':
+        _team1Single = null;
+      case 't2':
+        _team2Single = null;
+    }
+  }
+
+  TeamMember? _memberForSlot(String slot) {
+    return switch (slot) {
+      't1l' => _team1Left,
+      't1r' => _team1Right,
+      't2l' => _team2Left,
+      't2r' => _team2Right,
+      't1' => _team1Single,
+      't2' => _team2Single,
+      _ => null,
+    };
   }
 
   @override
   Widget build(BuildContext context) {
-    final favorites = widget.appState.social.favorites;
-
-    final scheme = Theme.of(context).colorScheme;
-
     return Scaffold(
       appBar: AppBar(title: const Text('Новая игра')),
       body: ListView(
@@ -233,7 +244,6 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
                       _format = format;
                       _team1Left = _team1Right = _team2Left = _team2Right = null;
                       _team1Single = _team2Single = null;
-                      _selectedSlot = null;
                     }),
                   ),
                 ),
@@ -287,7 +297,7 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
           _SectionLabel('КОМАНДЫ'),
           const SizedBox(height: 4),
           Text(
-            'Выберите позицию, затем игрока из списка',
+            'Нажмите на позицию, чтобы выбрать игрока',
             style: Theme.of(context).textTheme.bodySmall,
           ),
           const SizedBox(height: 12),
@@ -299,125 +309,13 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
             team2Right: _team2Right,
             team1Single: _team1Single,
             team2Single: _team2Single,
-            selectedSlot: _selectedSlot,
-            onSlotTap: (slot) => setState(() {
-              final member = _memberForSlot(slot);
-              if (member != null) {
-                _clearSlot(slot);
-              } else {
-                _selectedSlot = slot;
-              }
-            }),
+            onSlotTap: _pickPlayerForSlot,
           ),
-          if (favorites.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            _SectionLabel('ИЗБРАННЫЕ'),
-            const SizedBox(height: 8),
-            SizedBox(
-              height: 90,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: favorites.length,
-                separatorBuilder: (_, _) => const SizedBox(width: 8),
-                itemBuilder: (context, index) {
-                  final p = favorites[index];
-                  return _PlayerPickTile(
-                    player: p,
-                    selected: _assignedIds.contains(p.id),
-                    onTap: () => _assignPlayer(p),
-                  );
-                },
-              ),
-            ),
-          ],
-          const SizedBox(height: 12),
-          TextField(
-            controller: _searchController,
-            decoration: const InputDecoration(
-              labelText: 'Поиск участника',
-              prefixIcon: Icon(Icons.search),
-            ),
-            onChanged: (v) => setState(() => _searchQuery = v),
-          ),
-          const SizedBox(height: 12),
-          ..._filteredPlayers.map((p) {
-            final slot = playerSlotLabel(
-              format: _format,
-              t1l: _team1Left,
-              t1r: _team1Right,
-              t2l: _team2Left,
-              t2r: _team2Right,
-              t1s: _team1Single,
-              t2s: _team2Single,
-              player: p,
-            );
-            final assigned = slot != null;
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: AppTheme.glassSurface(
-                glow: assigned,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                onTap: () => _assignPlayer(p),
-                child: Row(
-                  children: [
-                    PlayerAvatar(player: p, radius: 18),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            p.name,
-                            style: Theme.of(context).textTheme.titleSmall,
-                          ),
-                          Text(
-                            '${p.rating} · ${p.club}',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (slot != null)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppTheme.primary.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(999),
-                          border: Border.all(
-                            color: AppTheme.primary.withValues(alpha: 0.3),
-                          ),
-                        ),
-                        child: Text(
-                          slot.toUpperCase(),
-                          style: AppTheme.labelCaps(scheme, color: AppTheme.primary)
-                              .copyWith(fontSize: 10),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            );
-          }),
           const SizedBox(height: 24),
           FilledButton(onPressed: _startGame, child: const Text('ДАЛЕЕ')),
         ],
       ),
     );
-  }
-
-  TeamMember? _memberForSlot(String slot) {
-    return switch (slot) {
-      't1l' => _team1Left,
-      't1r' => _team1Right,
-      't2l' => _team2Left,
-      't2r' => _team2Right,
-      't1' => _team1Single,
-      't2' => _team2Single,
-      _ => null,
-    };
   }
 }
 
@@ -433,43 +331,6 @@ class _SectionLabel extends StatelessWidget {
       style: AppTheme.labelCaps(
         Theme.of(context).colorScheme,
         color: AppTheme.secondary.withValues(alpha: 0.6),
-      ),
-    );
-  }
-}
-
-class _PlayerPickTile extends StatelessWidget {
-  const _PlayerPickTile({
-    required this.player,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final Player player;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return AppTheme.glassSurface(
-      glow: selected,
-      radius: AppTheme.radiusMd,
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      onTap: onTap,
-      child: SizedBox(
-        width: 72,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            PlayerAvatar(player: player, radius: 16),
-            const SizedBox(height: 4),
-            Text(
-              player.name.split(' ').first,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-          ],
-        ),
       ),
     );
   }
