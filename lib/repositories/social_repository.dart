@@ -27,6 +27,12 @@ class SocialRepository extends ChangeNotifier {
 
   List<Tournament> get tournaments => List.unmodifiable(_tournaments);
 
+  List<Tournament> get myTournaments => _tournaments
+      .where((t) => t.organizerId == _myPublicId)
+      .toList();
+
+  String? _myPublicId;
+
   List<Tournament> get activeTournaments => _tournaments
       .where((t) => t.status != TournamentStatus.finished)
       .toList();
@@ -36,8 +42,9 @@ class SocialRepository extends ChangeNotifier {
   List<Player> get favorites =>
       _players.where((p) => _favoriteIds.contains(p.id)).toList();
 
-  Future<void> load() async {
+  Future<void> load({String? myPublicId}) async {
     _requireAuth();
+    _myPublicId = myPublicId;
 
     final results = await Future.wait([
       _api.getList('/players'),

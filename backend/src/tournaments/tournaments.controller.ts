@@ -32,6 +32,11 @@ export class TournamentsController {
     return this.tournamentsService.active();
   }
 
+  @Get('mine')
+  mine(@CurrentUser() user: AuthUser) {
+    return this.tournamentsService.mine(user.publicId);
+  }
+
   @Post()
   create(
     @CurrentUser() user: AuthUser,

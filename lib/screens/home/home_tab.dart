@@ -7,6 +7,8 @@ import '../../theme/app_theme.dart';
 import '../../widgets/app_header.dart';
 import '../../widgets/section_header.dart';
 import '../games/active_game_screen.dart';
+import '../notifications/notifications_screen.dart';
+import '../open_matches/open_matches_section.dart';
 import '../tournaments/tournament_detail_screen.dart';
 
 class HomeTab extends StatelessWidget {
@@ -22,12 +24,18 @@ class HomeTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: Listenable.merge([appState.games, appState.social]),
+      listenable: Listenable.merge([
+        appState.games,
+        appState.social,
+        appState.openMatches,
+        appState.notifications,
+      ]),
       builder: (context, _) {
         final upcomingGames = appState.games.activeGames.take(5).toList();
         final upcomingTournaments =
             appState.social.activeTournaments.take(5).toList();
         final carouselItems = _carouselItems(upcomingGames, upcomingTournaments);
+        final stats = appState.games.stats;
 
         return SafeArea(
           bottom: false,
@@ -37,7 +45,47 @@ class HomeTab extends StatelessWidget {
                 child: AppHeader(
                   title: 'CoolPadel',
                   showLogo: true,
+                  notificationCount: appState.notifications.unreadCount,
                   onProfileTap: onOpenProfile,
+                  onNotificationsTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) =>
+                            NotificationsScreen(appState: appState),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppTheme.marginMobile,
+                    0,
+                    AppTheme.marginMobile,
+                    8,
+                  ),
+                  child: Row(
+                    children: [
+                      _QuickStat(
+                        label: 'Побед',
+                        value: '${stats.wins}',
+                        glow: stats.currentStreak > 0,
+                      ),
+                      const SizedBox(width: 12),
+                      _QuickStat(
+                        label: 'Win rate',
+                        value: '${stats.winRate}%',
+                      ),
+                      const SizedBox(width: 12),
+                      _QuickStat(
+                        label: 'Серия',
+                        value: stats.currentStreak > 0
+                            ? '+${stats.currentStreak}'
+                            : '${stats.currentStreak}',
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SliverToBoxAdapter(
@@ -76,23 +124,36 @@ class HomeTab extends StatelessWidget {
               ),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppTheme.marginMobile,
+                  padding: const EdgeInsets.fromLTRB(
+                    AppTheme.marginMobile,
+                    0,
+                    AppTheme.marginMobile,
+                    8,
                   ),
                   child: Row(
                     children: [
                       _QuickStat(
-                        label: 'Серия побед',
-                        value: '${appState.games.activeCount}',
-                        glow: true,
+                        label: 'Матчей',
+                        value: '${stats.totalGames}',
                       ),
                       const SizedBox(width: 12),
                       _QuickStat(
-                        label: 'Турниры',
-                        value: '${appState.social.activeTournaments.length}',
+                        label: 'Лучшая серия',
+                        value: '${stats.bestWinStreak}',
                       ),
                     ],
                   ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppTheme.marginMobile,
+                    8,
+                    AppTheme.marginMobile,
+                    8,
+                  ),
+                  child: OpenMatchesSection(appState: appState),
                 ),
               ),
               const SliverToBoxAdapter(

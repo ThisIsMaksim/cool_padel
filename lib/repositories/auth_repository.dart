@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config/api_config.dart';
+import '../models/account_type.dart';
 import '../models/user_profile.dart';
 import '../services/api_client.dart';
 
@@ -60,8 +61,13 @@ class AuthRepository extends ChangeNotifier {
     required String name,
     required String email,
     required String password,
+    required AccountType accountType,
   }) async {
-    if (name.trim().length < 2) return 'Введите имя';
+    if (name.trim().length < 2) {
+      return accountType == AccountType.club
+          ? 'Введите название клуба'
+          : 'Введите имя';
+    }
     if (!email.contains('@')) return 'Некорректный email';
     if (password.length < 6) return 'Пароль минимум 6 символов';
 
@@ -70,6 +76,7 @@ class AuthRepository extends ChangeNotifier {
         'name': name.trim(),
         'email': email.trim(),
         'password': password,
+        'accountType': accountType.apiValue,
       });
       await _applyAuthResponse(json);
       return null;
@@ -83,6 +90,15 @@ class AuthRepository extends ChangeNotifier {
   Future<void> logout() async {
     await _clearSession();
     notifyListeners();
+  }
+
+  Future<void> refreshProfile() async {
+    if (_api.token == null) return;
+    try {
+      final json = await _api.get('/users/me');
+      _currentUser = UserProfile.fromJson(json);
+      notifyListeners();
+    } catch (_) {}
   }
 
   Future<void> _applyAuthResponse(Map<String, dynamic> json) async {

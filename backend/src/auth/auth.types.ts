@@ -15,6 +15,7 @@ export interface AuthResponse {
     level: string;
     club: string;
     city: string;
+    accountType: 'personal' | 'club';
     tournamentHistory: string[];
   };
 }

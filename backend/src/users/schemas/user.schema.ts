@@ -26,6 +26,9 @@ export class User {
   @Prop({ default: '' })
   city!: string;
 
+  @Prop({ required: true, enum: ['personal', 'club'], default: 'personal' })
+  accountType!: 'personal' | 'club';
+
   @Prop()
   avatarColor?: number;
 

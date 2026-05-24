@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../app/app_state.dart';
+import '../../models/account_type.dart';
+import '../../theme/app_theme.dart';
+import '../../widgets/glass_select_tile.dart';
 import '../main_shell_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -139,6 +142,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
+  AccountType _accountType = AccountType.personal;
   bool _loading = false;
 
   @override
@@ -155,6 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       name: _name.text,
       email: _email.text,
       password: _password.text,
+      accountType: _accountType,
     );
     if (!mounted) return;
     setState(() => _loading = false);
@@ -183,9 +188,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [
+          Text(
+            'Тип аккаунта',
+            style: AppTheme.labelCaps(
+              Theme.of(context).colorScheme,
+              color: AppTheme.secondary.withValues(alpha: 0.6),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: AccountType.values.map((type) {
+              final isLast = type == AccountType.values.last;
+              return Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(right: isLast ? 0 : 8),
+                  child: GlassSelectTile(
+                    label: type.title,
+                    subtitle: type.subtitle,
+                    selected: _accountType == type,
+                    onTap: () => setState(() => _accountType = type),
+                    centerText: false,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 20),
           TextField(
             controller: _name,
-            decoration: const InputDecoration(labelText: 'Имя'),
+            decoration: InputDecoration(
+              labelText: _accountType == AccountType.club
+                  ? 'Название клуба'
+                  : 'Имя',
+            ),
             textCapitalization: TextCapitalization.words,
           ),
           const SizedBox(height: 16),

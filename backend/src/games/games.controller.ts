@@ -28,12 +28,21 @@ export class GamesController {
 
   @Get()
   list(@CurrentUser() user: AuthUser, @Query() query: ListGamesQueryDto) {
-    return this.gamesService.list(user.userId, query.status);
+    return this.gamesService.listForUser(
+      user.userId,
+      user.publicId,
+      query.status,
+    );
+  }
+
+  @Get('stats')
+  stats(@CurrentUser() user: AuthUser) {
+    return this.gamesService.statsForUser(user.publicId);
   }
 
   @Get(':id')
   get(@CurrentUser() user: AuthUser, @Param('id') id: string) {
-    return this.gamesService.getById(user.userId, id);
+    return this.gamesService.getById(user.userId, user.publicId, id);
   }
 
   @Post()

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../app/app_state.dart';
 import '../../models/deuce_rule.dart';
@@ -199,10 +200,20 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
             if (state.isFinished)
               Padding(
                 padding: const EdgeInsets.only(top: 12),
-                child: MatchFinishedBanner(
-                  winnerName: state.winnerIndex == 0
-                      ? config.team1Name
-                      : config.team2Name,
+                child: Column(
+                  children: [
+                    MatchFinishedBanner(
+                      winnerName: state.winnerIndex == 0
+                          ? config.team1Name
+                          : config.team2Name,
+                    ),
+                    const SizedBox(height: 8),
+                    OutlinedButton.icon(
+                      onPressed: () => _shareResult(game),
+                      icon: const Icon(Icons.share_outlined),
+                      label: const Text('Поделиться результатом'),
+                    ),
+                  ],
                 ),
               ),
             const SizedBox(height: 16),
@@ -313,7 +324,17 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
             if (state.isFinished && winnerName != null)
               Padding(
                 padding: const EdgeInsets.only(top: 12),
-                child: MatchFinishedBanner(winnerName: winnerName),
+                child: Column(
+                  children: [
+                    MatchFinishedBanner(winnerName: winnerName),
+                    const SizedBox(height: 8),
+                    OutlinedButton.icon(
+                      onPressed: () => _shareResult(game),
+                      icon: const Icon(Icons.share_outlined),
+                      label: const Text('Поделиться результатом'),
+                    ),
+                  ],
+                ),
               ),
             const SizedBox(height: 16),
             Expanded(
@@ -347,14 +368,29 @@ class _ActiveGameScreenState extends State<ActiveGameScreen> {
 
   void _scoreStandard(int teamIndex) {
     final game = _game!;
+    final wasFinished = game.standardState!.isFinished;
     final newState = game.standardState!.scorePoint(teamIndex);
     widget.appState.games.updateStandardState(game.id, newState);
+    if (newState.isFinished && !wasFinished) {
+      widget.appState.afterGameFinished();
+    }
   }
 
   void _scoreTournament(int teamIndex) {
     final game = _game!;
+    final wasFinished = game.tournamentState!.isFinished;
     final newState = game.tournamentState!.scorePoint(teamIndex);
     widget.appState.games.updateTournamentState(game.id, newState);
+    if (newState.isFinished && !wasFinished) {
+      widget.appState.afterGameFinished();
+    }
+  }
+
+  Future<void> _shareResult(Game game) async {
+    await Share.share(
+      '${game.title}\n${game.scoreSummary}\n— CoolPadel',
+      subject: game.title,
+    );
   }
 
   Future<void> _pickDeuceRule(Game game) async {

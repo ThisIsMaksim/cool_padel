@@ -158,6 +158,7 @@ class GameSerialization {
         'minPointLead': state.minPointLead,
         'servingTeamIndex': state.servingTeamIndex,
         'servingPlayerIndex': state.servingPlayerIndex,
+        'firstServingTeamIndex': state.firstServingTeamIndex,
         'team1Points': state.team1Points,
         'team2Points': state.team2Points,
         'winnerIndex': state.winnerIndex,
@@ -168,13 +169,23 @@ class GameSerialization {
   static TournamentMatchState tournamentStateFromJson(
     Map<String, dynamic> json,
   ) {
+    final team1Points = json['team1Points'] as int? ?? 0;
+    final team2Points = json['team2Points'] as int? ?? 0;
+    final servingTeamIndex = json['servingTeamIndex'] as int? ?? 0;
+    final played = team1Points + team2Points;
+    final firstServingTeamIndex = json['firstServingTeamIndex'] as int? ??
+        (played == 0
+            ? servingTeamIndex
+            : (played.isEven ? servingTeamIndex : 1 - servingTeamIndex));
+
     return TournamentMatchState(
       totalPoints: json['totalPoints'] as int,
       minPointLead: json['minPointLead'] as int? ?? 2,
-      servingTeamIndex: json['servingTeamIndex'] as int? ?? 0,
+      servingTeamIndex: servingTeamIndex,
       servingPlayerIndex: json['servingPlayerIndex'] as int? ?? 0,
-      team1Points: json['team1Points'] as int? ?? 0,
-      team2Points: json['team2Points'] as int? ?? 0,
+      firstServingTeamIndex: firstServingTeamIndex,
+      team1Points: team1Points,
+      team2Points: team2Points,
       winnerIndex: json['winnerIndex'] as int?,
       history: (json['history'] as List<dynamic>?)
               ?.map((item) =>

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../app/app_state.dart';
 import '../../models/tournament.dart';
+import '../../theme/app_theme.dart';
 import 'create_tournament_screen.dart';
 import 'tournament_detail_screen.dart';
 
@@ -26,6 +27,7 @@ class _TournamentsTabState extends State<TournamentsTab> {
       listenable: widget.appState.social,
       builder: (context, _) {
         final active = widget.appState.social.activeTournaments;
+        final all = widget.appState.social.tournaments;
         final filtered = widget.appState.social.filterTournaments(
           day: _day,
           level: _level,
@@ -33,6 +35,36 @@ class _TournamentsTabState extends State<TournamentsTab> {
           club: _club,
         );
         final clubs = widget.appState.social.tournamentClubs;
+        final hasFilters = _day != 'Все' ||
+            _level != 'Все' ||
+            _club != 'Все' ||
+            _format != null;
+
+        if (all.isEmpty) {
+          return SafeArea(
+            bottom: false,
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                    child: Text(
+                      'Турниры',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                  ),
+                ),
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 120),
+                    child: _EmptyTournamentsState(onCreate: _openCreate),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
 
         return SafeArea(
           bottom: false,
@@ -68,24 +100,25 @@ class _TournamentsTabState extends State<TournamentsTab> {
                     ),
                   ),
                 ),
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 130,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: active.length,
-                    separatorBuilder: (_, _) => const SizedBox(width: 10),
-                    itemBuilder: (context, index) {
-                      final t = active[index];
-                      return _ActiveTournamentChip(
-                        tournament: t,
-                        onTap: () => _openDetail(t.id),
-                      );
-                    },
+              if (active.isNotEmpty)
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 130,
+                    child: ListView.separated(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: active.length,
+                      separatorBuilder: (_, _) => const SizedBox(width: 10),
+                      itemBuilder: (context, index) {
+                        final t = active[index];
+                        return _ActiveTournamentChip(
+                          tournament: t,
+                          onTap: () => _openDetail(t.id),
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
@@ -120,6 +153,19 @@ class _TournamentsTabState extends State<TournamentsTab> {
                   );
                 },
               ),
+              if (filtered.isEmpty && hasFilters)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+                    child: AppTheme.glassSurface(
+                      child: Text(
+                        'По выбранным фильтрам турниров нет',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
               const SliverToBoxAdapter(child: SizedBox(height: 120)),
             ],
           ),
@@ -143,6 +189,46 @@ class _TournamentsTabState extends State<TournamentsTab> {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => CreateTournamentScreen(appState: widget.appState),
+      ),
+    );
+  }
+}
+
+class _EmptyTournamentsState extends StatelessWidget {
+  const _EmptyTournamentsState({required this.onCreate});
+
+  final VoidCallback onCreate;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppTheme.glassSurface(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.emoji_events_outlined,
+            size: 56,
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.7),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Пока нет турниров',
+            style: Theme.of(context).textTheme.titleLarge,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Создайте первый турнир или дождитесь, пока клубы опубликуют свои события',
+            style: Theme.of(context).textTheme.bodyMedium,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          FilledButton.icon(
+            onPressed: onCreate,
+            icon: const Icon(Icons.add),
+            label: const Text('Создать турнир'),
+          ),
+        ],
       ),
     );
   }

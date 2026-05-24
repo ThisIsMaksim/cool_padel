@@ -117,3 +117,26 @@ export class BatchIdsDto {
   @Type(() => String)
   ids?: string[];
 }
+
+export class CreateOpenMatchDto {
+  @IsString()
+  @MinLength(2)
+  club!: string;
+
+  @IsOptional()
+  @IsString()
+  address?: string;
+
+  @IsDateString()
+  dateTime!: string;
+
+  @IsString()
+  level!: string;
+
+  @IsEnum(['singles', 'doubles'])
+  format!: 'singles' | 'doubles';
+
+  @IsOptional()
+  @IsString()
+  note?: string;
+}

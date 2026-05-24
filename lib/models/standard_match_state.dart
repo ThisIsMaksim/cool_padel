@@ -96,6 +96,8 @@ class StandardMatchState {
     return next._appendHistory(this);
   }
 
+  static int _alternateServingPlayer(int playerIndex) => playerIndex == 0 ? 1 : 0;
+
   StandardMatchState _appendHistory(StandardMatchState previous) {
     return copyWith(history: [...previous.history, previous.withoutHistory()]);
   }
@@ -113,6 +115,7 @@ class StandardMatchState {
         return copyWith(
           pointPhase:
               isTeam1 ? PointPhase.team1Advantage : PointPhase.team2Advantage,
+          servingPlayerIndex: _alternateServingPlayer(servingPlayerIndex),
         );
 
       case PointPhase.team1Advantage:
@@ -122,6 +125,7 @@ class StandardMatchState {
         return copyWith(
           pointPhase: PointPhase.deuce,
           goldenPointNext: deuceRule == DeuceRule.goldenPoint,
+          servingPlayerIndex: _alternateServingPlayer(servingPlayerIndex),
         );
 
       case PointPhase.team2Advantage:
@@ -131,6 +135,7 @@ class StandardMatchState {
         return copyWith(
           pointPhase: PointPhase.deuce,
           goldenPointNext: deuceRule == DeuceRule.goldenPoint,
+          servingPlayerIndex: _alternateServingPlayer(servingPlayerIndex),
         );
 
       case PointPhase.normal:
@@ -142,16 +147,25 @@ class StandardMatchState {
         }
 
         if (myPoints == 2 && oppPoints == 3) {
-          return copyWith(pointPhase: PointPhase.deuce, goldenPointNext: false);
+          return copyWith(
+            pointPhase: PointPhase.deuce,
+            goldenPointNext: false,
+            servingPlayerIndex: _alternateServingPlayer(servingPlayerIndex),
+          );
         }
 
         if (myPoints == 3 && oppPoints == 3) {
-          return copyWith(pointPhase: PointPhase.deuce, goldenPointNext: false);
+          return copyWith(
+            pointPhase: PointPhase.deuce,
+            goldenPointNext: false,
+            servingPlayerIndex: _alternateServingPlayer(servingPlayerIndex),
+          );
         }
 
         return copyWith(
           team1Points: isTeam1 ? team1Points + 1 : team1Points,
           team2Points: !isTeam1 ? team2Points + 1 : team2Points,
+          servingPlayerIndex: _alternateServingPlayer(servingPlayerIndex),
         );
     }
   }
@@ -176,6 +190,7 @@ class StandardMatchState {
       servingTeamIndex: (newTeam1 + newTeam2).isOdd
           ? (servingTeamIndex == 0 ? 1 : 0)
           : servingTeamIndex,
+      servingPlayerIndex: _alternateServingPlayer(servingPlayerIndex),
     );
   }
 
@@ -211,9 +226,7 @@ class StandardMatchState {
       pointPhase: PointPhase.normal,
       goldenPointNext: false,
       servingTeamIndex: nextServer,
-      servingPlayerIndex: teamIndex == servingTeamIndex
-          ? (servingPlayerIndex == 0 ? 1 : 0)
-          : servingPlayerIndex,
+      servingPlayerIndex: 0,
     );
   }
 

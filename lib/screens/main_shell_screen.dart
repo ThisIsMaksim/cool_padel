@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../app/app_state.dart';
 import '../widgets/whoop_bottom_nav.dart';
+import 'club/club_home_tab.dart';
 import 'games/create_game_screen.dart';
 import 'games/games_tab.dart';
 import 'home/home_tab.dart';
@@ -44,11 +45,17 @@ class _MainShellScreenState extends State<MainShellScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isClub = widget.appState.auth.currentUser?.isClub ?? false;
     final tabs = [
-      HomeTab(
-        appState: widget.appState,
-        onOpenProfile: () => setState(() => _currentIndex = 4),
-      ),
+      isClub
+          ? ClubHomeTab(
+              appState: widget.appState,
+              onOpenProfile: () => setState(() => _currentIndex = 4),
+            )
+          : HomeTab(
+              appState: widget.appState,
+              onOpenProfile: () => setState(() => _currentIndex = 4),
+            ),
       TournamentsTab(appState: widget.appState),
       GamesTab(appState: widget.appState),
       RatingTab(appState: widget.appState),

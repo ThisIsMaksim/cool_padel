@@ -104,6 +104,7 @@ export class UsersService {
       level: user.level,
       club: user.club,
       city: user.city,
+      accountType: user.accountType ?? 'personal',
       tournamentHistory,
     };
   }

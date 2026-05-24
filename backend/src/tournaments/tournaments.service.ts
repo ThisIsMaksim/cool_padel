@@ -11,12 +11,14 @@ import {
   ListTournamentsQueryDto,
   RegisterTournamentDto,
 } from '../common/dto/api.dto';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class TournamentsService {
   constructor(
     @InjectModel(Tournament.name)
     private readonly tournamentModel: Model<TournamentDocument>,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async list(query: ListTournamentsQueryDto) {
@@ -30,6 +32,14 @@ export class TournamentsService {
     const tournaments = await this.tournamentModel
       .find({ status: { $ne: 'finished' } })
       .sort({ dateTime: 1 })
+      .exec();
+    return tournaments.map((t) => this.toClientJson(t));
+  }
+
+  async mine(organizerId: string) {
+    const tournaments = await this.tournamentModel
+      .find({ organizerId })
+      .sort({ dateTime: -1 })
       .exec();
     return tournaments.map((t) => this.toClientJson(t));
   }
@@ -113,6 +123,13 @@ export class TournamentsService {
       if (!tournament.waitlistIds.includes(userId)) {
         tournament.waitlistIds.push(userId);
         await tournament.save();
+        await this.notificationsService.create({
+          userPublicId: userId,
+          type: 'tournament_waitlist',
+          title: 'Лист ожидания',
+          body: `Вы в листе ожидания на «${tournament.title}»`,
+          linkPath: `/t/${tournament.publicId}`,
+        });
       }
       return this.toClientJson(tournament);
     }
@@ -122,6 +139,15 @@ export class TournamentsService {
       tournament.status = 'full';
     }
     await tournament.save();
+
+    await this.notificationsService.create({
+      userPublicId: userId,
+      type: 'tournament_registered',
+      title: 'Запись на турнир',
+      body: `Вы записаны на «${tournament.title}»`,
+      linkPath: `/t/${tournament.publicId}`,
+    });
+
     return this.toClientJson(tournament);
   }
 

@@ -125,6 +125,20 @@ void main() {
       expect(state.team1Sets, 0);
       expect(state.currentSet.team1Games, 5);
     });
+
+    test('alternates serving player every point within a game', () {
+      var state = StandardMatchState(setsToWin: 2);
+      expect(state.servingPlayerIndex, 0);
+
+      state = state.scorePoint(0);
+      expect(state.servingPlayerIndex, 1);
+
+      state = state.scorePoint(0);
+      expect(state.servingPlayerIndex, 0);
+
+      state = state.scorePoint(1);
+      expect(state.servingPlayerIndex, 1);
+    });
   });
 
   group('TournamentMatchState', () {
@@ -167,6 +181,26 @@ void main() {
       expect(state.isFinished, isFalse);
       expect(state.team1Points, 4);
       expect(state.team2Points, 5);
+    });
+
+    test('alternates teams and players every point', () {
+      var state = TournamentMatchState(
+        totalPoints: 20,
+        servingTeamIndex: 0,
+        servingPlayerIndex: 0,
+      );
+
+      state = state.scorePoint(0);
+      expect(state.servingTeamIndex, 1);
+      expect(state.servingPlayerIndex, 0);
+
+      state = state.scorePoint(1);
+      expect(state.servingTeamIndex, 0);
+      expect(state.servingPlayerIndex, 1);
+
+      state = state.scorePoint(0);
+      expect(state.servingTeamIndex, 1);
+      expect(state.servingPlayerIndex, 1);
     });
   });
 }

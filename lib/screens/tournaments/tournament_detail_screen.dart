@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../app/app_state.dart';
 import '../../models/player.dart';
 import '../../models/tournament.dart';
+import '../../utils/app_links.dart';
 import '../../widgets/player_avatar.dart';
 
 class TournamentDetailScreen extends StatefulWidget {
@@ -46,10 +50,49 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
         final isWaitlisted = tournament.waitlistIds.contains(userId);
 
         return Scaffold(
-          appBar: AppBar(title: Text(tournament.title)),
+          appBar: AppBar(
+            title: Text(tournament.title),
+            actions: [
+              IconButton(
+                tooltip: 'Поделиться',
+                icon: const Icon(Icons.share_outlined),
+                onPressed: () => _shareTournament(tournament),
+              ),
+            ],
+          ),
           body: ListView(
             padding: const EdgeInsets.all(20),
             children: [
+              Center(
+                child: Column(
+                  children: [
+                    QrImageView(
+                      data: AppLinks.tournament(tournament.id),
+                      size: 160,
+                      backgroundColor: Colors.white,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'QR для регистрации',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Clipboard.setData(
+                          ClipboardData(
+                            text: AppLinks.tournament(tournament.id),
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Ссылка скопирована')),
+                        );
+                      },
+                      child: const Text('Копировать ссылку'),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
               Text(tournament.description),
               const SizedBox(height: 16),
               _InfoRow(icon: Icons.place, text: tournament.address),
@@ -175,7 +218,15 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
         ),
       ),
     );
+    await widget.appState.notifications.load();
     setState(() {});
+  }
+
+  Future<void> _shareTournament(Tournament tournament) async {
+    final link = AppLinks.tournament(tournament.id);
+    final text =
+        '${tournament.title}\n${tournament.club} · ${tournament.formatLabel}\n$link';
+    await Share.share(text, subject: tournament.title);
   }
 
   String _formatDate(DateTime dt) {

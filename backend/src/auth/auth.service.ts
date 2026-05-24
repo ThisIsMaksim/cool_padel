@@ -25,21 +25,28 @@ export class AuthService {
     }
 
     const passwordHash = await bcrypt.hash(dto.password, 10);
+    const isClub = dto.accountType === 'club';
+    const trimmedName = dto.name.trim();
     const user =
       existing ??
       (await this.usersService.create({
         email: dto.email.toLowerCase(),
-        name: dto.name.trim(),
+        name: trimmedName,
         rating: 1500,
         level: 'B',
-        club: '',
+        club: isClub ? trimmedName : '',
         city: '',
+        accountType: dto.accountType,
         isSeedPlayer: false,
       }));
 
-    user.name = dto.name.trim();
+    user.name = trimmedName;
     user.passwordHash = passwordHash;
     user.isSeedPlayer = false;
+    user.accountType = dto.accountType;
+    if (isClub) {
+      user.club = trimmedName;
+    }
     if (!user.publicId) {
       user.publicId = `user_${Math.abs(this.hashCode(dto.email))}`;
     }
@@ -100,6 +107,7 @@ export class AuthService {
             level: 'B',
             club: '',
             city: '',
+            accountType: 'personal',
             tournamentHistory: history,
           },
     };

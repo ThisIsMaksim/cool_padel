@@ -4,16 +4,20 @@ class TournamentMatchState {
     this.minPointLead = 2,
     this.servingTeamIndex = 0,
     this.servingPlayerIndex = 0,
+    int? firstServingTeamIndex,
     this.team1Points = 0,
     this.team2Points = 0,
     this.winnerIndex,
     List<TournamentMatchState>? history,
-  }) : history = List.unmodifiable(history ?? []);
+  })  : firstServingTeamIndex =
+            firstServingTeamIndex ?? servingTeamIndex,
+        history = List.unmodifiable(history ?? []);
 
   final int totalPoints;
   final int minPointLead;
   final int servingTeamIndex;
   final int servingPlayerIndex;
+  final int firstServingTeamIndex;
   final int team1Points;
   final int team2Points;
   final int? winnerIndex;
@@ -37,12 +41,26 @@ class TournamentMatchState {
     return (t1 - t2).abs() >= minPointLead;
   }
 
+  ({int teamIndex, int playerIndex}) _nextServer(int pointsPlayed) {
+    final nextTeam = pointsPlayed.isEven
+        ? firstServingTeamIndex
+        : (1 - firstServingTeamIndex);
+    final serveOrdinal = nextTeam == firstServingTeamIndex
+        ? (pointsPlayed ~/ 2) + 1
+        : ((pointsPlayed + 1) ~/ 2);
+    return (
+      teamIndex: nextTeam,
+      playerIndex: (serveOrdinal - 1) % 2,
+    );
+  }
+
   TournamentMatchState scorePoint(int teamIndex) {
     if (isFinished) return this;
 
     final newTeam1 = teamIndex == 0 ? team1Points + 1 : team1Points;
     final newTeam2 = teamIndex == 1 ? team2Points + 1 : team2Points;
-    final nextServer = servingTeamIndex == 0 ? 1 : 0;
+    final played = newTeam1 + newTeam2;
+    final nextServer = _nextServer(played);
 
     TournamentMatchState next;
     if (_shouldFinish(newTeam1, newTeam2)) {
@@ -54,8 +72,9 @@ class TournamentMatchState {
       next = TournamentMatchState(
         totalPoints: totalPoints,
         minPointLead: minPointLead,
-        servingTeamIndex: nextServer,
-        servingPlayerIndex: servingPlayerIndex,
+        firstServingTeamIndex: firstServingTeamIndex,
+        servingTeamIndex: nextServer.teamIndex,
+        servingPlayerIndex: nextServer.playerIndex,
         team1Points: newTeam1,
         team2Points: newTeam2,
         winnerIndex: winner,
@@ -64,10 +83,9 @@ class TournamentMatchState {
       next = TournamentMatchState(
         totalPoints: totalPoints,
         minPointLead: minPointLead,
-        servingTeamIndex: nextServer,
-        servingPlayerIndex: teamIndex == servingTeamIndex
-            ? (servingPlayerIndex == 0 ? 1 : 0)
-            : servingPlayerIndex,
+        firstServingTeamIndex: firstServingTeamIndex,
+        servingTeamIndex: nextServer.teamIndex,
+        servingPlayerIndex: nextServer.playerIndex,
         team1Points: newTeam1,
         team2Points: newTeam2,
       );
@@ -93,6 +111,7 @@ class TournamentMatchState {
     int? minPointLead,
     int? servingTeamIndex,
     int? servingPlayerIndex,
+    int? firstServingTeamIndex,
     int? team1Points,
     int? team2Points,
     int? winnerIndex,
@@ -105,6 +124,8 @@ class TournamentMatchState {
       minPointLead: minPointLead ?? this.minPointLead,
       servingTeamIndex: servingTeamIndex ?? this.servingTeamIndex,
       servingPlayerIndex: servingPlayerIndex ?? this.servingPlayerIndex,
+      firstServingTeamIndex:
+          firstServingTeamIndex ?? this.firstServingTeamIndex,
       team1Points: team1Points ?? this.team1Points,
       team2Points: team2Points ?? this.team2Points,
       winnerIndex: clearWinner ? null : (winnerIndex ?? this.winnerIndex),

@@ -7,6 +7,8 @@ import { PlayersModule } from './players/players.module';
 import { GamesModule } from './games/games.module';
 import { TournamentsModule } from './tournaments/tournaments.module';
 import { SeedModule } from './seed/seed.module';
+import { OpenMatchesModule } from './open-matches/open-matches.module';
+import { NotificationsModule } from './notifications/notifications.module';
 import { HealthController } from './health.controller';
 
 @Module({
@@ -27,6 +29,8 @@ import { HealthController } from './health.controller';
     PlayersModule,
     GamesModule,
     TournamentsModule,
+    OpenMatchesModule,
+    NotificationsModule,
     SeedModule,
   ],
   controllers: [HealthController],

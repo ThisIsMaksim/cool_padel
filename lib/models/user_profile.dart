@@ -1,3 +1,5 @@
+import 'account_type.dart';
+
 class UserProfile {
   const UserProfile({
     required this.id,
@@ -7,6 +9,7 @@ class UserProfile {
     this.level = 'B',
     this.club = '',
     this.city = '',
+    this.accountType = AccountType.personal,
     this.tournamentHistory = const [],
   });
 
@@ -17,7 +20,10 @@ class UserProfile {
   final String level;
   final String club;
   final String city;
+  final AccountType accountType;
   final List<String> tournamentHistory;
+
+  bool get isClub => accountType == AccountType.club;
 
   String get initials {
     final parts = name.trim().split(RegExp(r'\s+'));
@@ -33,6 +39,7 @@ class UserProfile {
     String? level,
     String? club,
     String? city,
+    AccountType? accountType,
     List<String>? tournamentHistory,
   }) {
     return UserProfile(
@@ -43,6 +50,7 @@ class UserProfile {
       level: level ?? this.level,
       club: club ?? this.club,
       city: city ?? this.city,
+      accountType: accountType ?? this.accountType,
       tournamentHistory: tournamentHistory ?? this.tournamentHistory,
     );
   }
@@ -56,6 +64,7 @@ class UserProfile {
       level: json['level'] as String? ?? 'B',
       club: json['club'] as String? ?? '',
       city: json['city'] as String? ?? '',
+      accountType: AccountType.fromApi(json['accountType'] as String?),
       tournamentHistory: (json['tournamentHistory'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
